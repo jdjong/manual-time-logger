@@ -2,7 +2,8 @@ using NUnit.Framework;
 
 namespace ManualTimeLogger.Domain.Tests
 {
-    public class Tests
+    [TestFixture]
+    public class LogEntryInputParserTests
     {
         private LogEntryInputParser _logEntryInputParser;
 
@@ -86,6 +87,7 @@ namespace ManualTimeLogger.Domain.Tests
         [Test]
         [TestCase("#1234 *4.5 $some text 4 and more 3.5", "some text 4 and more 3.5")]
         [TestCase("#1234 $some text 4 and more 3.5 *4.5 more text", "some text 4 and more 3.5  more text")]
+        [TestCase("$some text 4 and more 3.5 *4.5 more text", "some text 4 and more 3.5  more text")]
         public void correct_description_sections(string input, string expectedResult)
         {
             Assert.IsTrue(_logEntryInputParser.TryParse(input, out var logEntry));

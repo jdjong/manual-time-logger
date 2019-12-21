@@ -41,9 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IInputPartSelector.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="LogEntryInputParser.cs" />
+    <Compile Include="InputPartWithoutSpacesSelector.cs" />
+    <Compile Include="SelectorResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="InputPartWithSpacesSelector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
