@@ -1,6 +1,6 @@
 ﻿namespace ManualTimeLogger.App
 {
-    partial class Form1
+    partial class LogEntryInputForm
     {
         /// <summary>
         /// Required designer variable.

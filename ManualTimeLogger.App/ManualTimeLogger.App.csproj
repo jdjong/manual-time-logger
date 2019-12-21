@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="LogEntryInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="LogEntryInputForm.Designer.cs">
+      <DependentUpon>LogEntryInputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +75,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ManualTimeLogger.Domain\ManualTimeLogger.Domain.csproj">
+      <Project>{48368CA5-8710-4BA4-B15A-8D6FA873277D}</Project>
+      <Name>ManualTimeLogger.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManualTimeLogger.Persistence\ManualTimeLogger.Persistence.csproj">
+      <Project>{38D4CCE5-5F79-4D81-AA25-34AD5B46E98D}</Project>
+      <Name>ManualTimeLogger.Persistence</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
