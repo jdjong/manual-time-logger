@@ -3,12 +3,16 @@ using System.Linq;
 
 namespace ManualTimeLogger.Domain
 {
-    public class InputPartWithSpacesSelector : IInputPartSelector
+    /// <summary>
+    /// Gets the full text with spaces starting from the
+    /// section marker until another section marker or the end of the input
+    /// </summary>
+    public class InputPartSelector
     {
         public string SectionMarker { get; }
         public string AllSectionMarkers { get; }
 
-        public InputPartWithSpacesSelector(string sectionMarker, string allSectionMarkers)
+        public InputPartSelector(string sectionMarker, string allSectionMarkers)
         {
             if (string.IsNullOrEmpty(allSectionMarkers)) throw new ArgumentNullException(nameof(allSectionMarkers));
             if (!allSectionMarkers.Contains(sectionMarker)) throw new ArgumentException("Section marker should be contained in allSectionMarkers", nameof(sectionMarker));

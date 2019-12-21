@@ -10,6 +10,7 @@ namespace ManualTimeLogger.Domain
         /// </summary>
         public float Duration { get; }
         public string Description { get; }
+        public string Label { get; }
         public DateTimeOffset CreateDate { get; }
 
         /// <summary>
@@ -18,8 +19,9 @@ namespace ManualTimeLogger.Domain
         /// <param name="issueNumber"></param>
         /// <param name="duration"></param>
         /// <param name="description"></param>
+        /// <param name="label"></param>
         /// <param name="createDate"></param>
-        public LogEntry(int issueNumber, float duration, string description, DateTimeOffset createDate)
+        public LogEntry(int issueNumber, float duration, string description, string label, DateTimeOffset createDate)
         {
             if (issueNumber < 0)
             {
@@ -44,6 +46,7 @@ namespace ManualTimeLogger.Domain
             IssueNumber = issueNumber;
             Duration = duration;
             Description = description;
+            Label = label;
             CreateDate = createDate;
         }
     }

@@ -3,14 +3,14 @@
 namespace ManualTimeLogger.Domain.Tests
 {
     [TestFixture]
-    public class InputPartWithSpacesSelectorTests
+    public class InputPartSelectorTests
     {
-        private InputPartWithSpacesSelector _selector;
+        private InputPartSelector _selector;
 
         [SetUp]
         public void SetUp()
         {
-            _selector = new InputPartWithSpacesSelector("#", "$@#*");
+            _selector = new InputPartSelector("#", "$@#*");
         }
 
         [Test]
@@ -29,6 +29,9 @@ namespace ManualTimeLogger.Domain.Tests
         [TestCase("$test test #123 asd @qwe", "123 asd")]
         [TestCase("#123 asd $test test @qwe", "123 asd")]
         [TestCase("@qwe $test test #123 asd", "123 asd")]
+        [TestCase("$test test#123 asd@qwe", "123 asd")]
+        [TestCase("#123 asd$test test@qwe", "123 asd")]
+        [TestCase("@qwe$test test#123 asd", "123 asd")]
         public void SuccessResults(string input, string expectedInputPart)
         {
             var selectorResult = _selector.Get(input);

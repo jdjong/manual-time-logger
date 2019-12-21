@@ -48,9 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LogEntryInputParserTests.cs" />
-    <Compile Include="InputPartWithoutSpacesSelectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="InputPartWithSpacesSelectorTests.cs" />
+    <Compile Include="InputPartSelectorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
