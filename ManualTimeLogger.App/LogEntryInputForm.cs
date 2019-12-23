@@ -16,5 +16,11 @@ namespace ManualTimeLogger.App
 
             InitializeComponent();
         }
+
+        private int GetTitleBarHeight()
+        {
+            System.Drawing.Rectangle screenRectangle=RectangleToScreen(this.ClientRectangle);
+            return screenRectangle.Top - this.Top;
+        }
     }
 }
