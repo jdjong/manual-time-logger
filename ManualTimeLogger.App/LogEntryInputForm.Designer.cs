@@ -31,13 +31,10 @@ namespace ManualTimeLogger.App
         /// </summary>
         private void InitializeComponent()
         {
-            var formWidth = 244;
-            var formHeight = 44;
-
             this.logEntryTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // textBox1
+            // logEntryTextBox
             // 
             this.logEntryTextBox.Location = new System.Drawing.Point(12, 12);
             this.logEntryTextBox.Name = "logEntryTextBox";
@@ -48,16 +45,16 @@ namespace ManualTimeLogger.App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(formWidth, formHeight);
+            this.ClientSize = new System.Drawing.Size(244, 44);
             this.Controls.Add(this.logEntryTextBox);
+//            this.Location = new System.Drawing.Point(100, 100);
             this.Name = "LogEntryInputForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Log time";
-            this.StartPosition = FormStartPosition.Manual;
-            // Working area is taskbar exclusive. Correct layout is garanteed only for bottom taskbars only.
-            this.Location = new System.Drawing.Point(Screen.PrimaryScreen.WorkingArea.Width - formWidth, Screen.PrimaryScreen.WorkingArea.Height - formHeight - GetTitleBarHeight());
             this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
