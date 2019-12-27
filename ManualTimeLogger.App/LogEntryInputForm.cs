@@ -41,7 +41,6 @@ namespace ManualTimeLogger.App
 
         private void TextBoxKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Home) _logEntryTextBox.Text = string.Empty;
             if (e.KeyCode != Keys.Enter) return;
 
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Tab))
