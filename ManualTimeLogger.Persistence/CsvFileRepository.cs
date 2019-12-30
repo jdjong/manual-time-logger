@@ -20,7 +20,7 @@ namespace ManualTimeLogger.Persistence
             {
                 File.AppendAllLines(
                     FullFilePath, 
-                    new[] {$"\"Issue\";\"Duration (hours)\";\"Description\";\"Label\";"});
+                    new[] {$"\"Issue\";\"Duration (hours)\";\"Description\";\"Label\";\"Create date\""});
             }
         }
 
