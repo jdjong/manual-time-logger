@@ -28,7 +28,7 @@ namespace ManualTimeLogger.Persistence
         {
             File.AppendAllLines(
                 FullFilePath, 
-                new[] {$"\"{logEntry.IssueNumber}\";\"{logEntry.Duration}\";\"{logEntry.Description}\";\"{logEntry.Label}\";\"{logEntry.CreateDate.ToString("yyyyMMdd")}\""});
+                new[] {$"\"{logEntry.IssueNumber}\";\"{logEntry.Duration}\";\"{logEntry.Description}\";\"{logEntry.Label}\";\"{logEntry.CreateDate.ToString("yyyyMMdd")}\";"});
         }
     }
 }
