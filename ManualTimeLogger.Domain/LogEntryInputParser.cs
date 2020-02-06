@@ -11,11 +11,11 @@ namespace ManualTimeLogger.Domain
     ///
     /// Optionally provide:
     ///  * issue number (prepend with #)
+    ///  * label (prepend with @)
     /// </summary>
     public class LogEntryInputParser
     {
         // TODO, do something with logging and parse results/validation results
-        
         private const string IssueNumberSpecialChar = "#";
         private const string DurationSpecialChar = "*";
         private const string DescriptionSpecialChar = "$";
@@ -53,7 +53,7 @@ namespace ManualTimeLogger.Domain
             try
             {
                 logEntry = parseResult 
-                    ? new LogEntry(issueNumber ?? DefaultIssueNumber, duration, description, label, DateTimeOffset.Now)
+                    ? new LogEntry(issueNumber ?? DefaultIssueNumber, duration, description, label, DateTime.Today)
                     : null;
                 return parseResult;
             }

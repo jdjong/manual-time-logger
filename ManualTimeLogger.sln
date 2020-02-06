@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManualTimeLogger.Persistenc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManualTimeLogger.Domain.Tests", "ManualTimeLogger.Domain.Tests\ManualTimeLogger.Domain.Tests.csproj", "{C284E798-C436-4CD7-BCB8-327B5BA7C520}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManualTimeLogger.Persistence.Tests", "ManualTimeLogger.Persistence.Tests\ManualTimeLogger.Persistence.Tests.csproj", "{021955E0-EE5F-43C5-9763-FBDAAEADC356}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C284E798-C436-4CD7-BCB8-327B5BA7C520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C284E798-C436-4CD7-BCB8-327B5BA7C520}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C284E798-C436-4CD7-BCB8-327B5BA7C520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{021955E0-EE5F-43C5-9763-FBDAAEADC356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{021955E0-EE5F-43C5-9763-FBDAAEADC356}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{021955E0-EE5F-43C5-9763-FBDAAEADC356}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{021955E0-EE5F-43C5-9763-FBDAAEADC356}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

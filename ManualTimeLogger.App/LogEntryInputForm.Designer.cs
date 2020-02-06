@@ -40,7 +40,7 @@ namespace ManualTimeLogger.App
             this.logEntryTextBox.CausesValidation = false;
             this.logEntryTextBox.Location = new System.Drawing.Point(12, 12);
             this.logEntryTextBox.Name = "logEntryTextBox";
-            this.logEntryTextBox.Size = new System.Drawing.Size(220, 20);
+            this.logEntryTextBox.Size = new System.Drawing.Size(240, 20);
             this.logEntryTextBox.TabIndex = 0;
             this.logEntryTextBox.WordWrap = false;
             // 
@@ -48,7 +48,7 @@ namespace ManualTimeLogger.App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(244, 44);
+            this.ClientSize = new System.Drawing.Size(264, 44);
             this.Controls.Add(this.logEntryTextBox);
             this.Name = "LogEntryInputForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

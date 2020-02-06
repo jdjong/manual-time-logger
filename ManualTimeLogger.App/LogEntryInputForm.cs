@@ -18,7 +18,8 @@ namespace ManualTimeLogger.App
             _repository = repository;
 
             InitializeComponent();
-            // Working area is task-bar exclusive. Correct layout is guaranteed only for bottom task-bars only.
+
+            // Working area is area without the task-bar. Correct layout is guaranteed for bottom task-bars only.
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - ClientSize.Width, Screen.PrimaryScreen.WorkingArea.Height - ClientSize.Height - GetTitleBarHeight());
 
             _logEntryTextBox = Controls["logEntryTextBox"] as TextBox;
@@ -31,6 +32,8 @@ namespace ManualTimeLogger.App
             {
                 throw new ApplicationException("Text box logEntryTextBox is not a control or a text box");
             }
+
+            DisplayHoursToday();
         }
 
         private int GetTitleBarHeight()
@@ -61,6 +64,13 @@ namespace ManualTimeLogger.App
                 _logEntryTextBox.Text = string.Empty;
                 _logEntryTextBox.ForeColor = Color.Red;
             }
+            
+            DisplayHoursToday();
+        }
+
+        private void DisplayHoursToday()
+        {
+            Text = $"Log time ({_repository.GetTotalLoggedHoursForDate(DateTime.Today).ToString("0.00")})";
         }
 
         private void DetermineTextColor()

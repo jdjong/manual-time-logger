@@ -11,7 +11,7 @@ namespace ManualTimeLogger.Domain
         public float Duration { get; }
         public string Description { get; }
         public string Label { get; }
-        public DateTimeOffset CreateDate { get; }
+        public DateTime CreateDate { get; }
 
         /// <summary>
         /// Represents a log entry
@@ -21,7 +21,7 @@ namespace ManualTimeLogger.Domain
         /// <param name="description"></param>
         /// <param name="label"></param>
         /// <param name="createDate"></param>
-        public LogEntry(int issueNumber, float duration, string description, string label, DateTimeOffset createDate)
+        public LogEntry(int issueNumber, float duration, string description, string label, DateTime createDate)
         {
             if (issueNumber < 0)
             {
@@ -38,7 +38,7 @@ namespace ManualTimeLogger.Domain
                 throw new ArgumentNullException(nameof(description));
             }
 
-            if (createDate.Date == DateTimeOffset.MinValue)
+            if (createDate.Date == DateTime.MinValue)
             {
                 throw new ArgumentException($"Create date is not set; it equals min value", nameof(createDate));
             }
@@ -48,6 +48,42 @@ namespace ManualTimeLogger.Domain
             Description = description;
             Label = label;
             CreateDate = createDate;
+        }
+
+        protected bool Equals(LogEntry other)
+        {
+            return IssueNumber == other.IssueNumber && Duration.Equals(other.Duration) && string.Equals(Description, other.Description) && string.Equals(Label, other.Label) && CreateDate.Equals(other.CreateDate);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((LogEntry) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = IssueNumber;
+                hashCode = (hashCode * 397) ^ Duration.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Description != null ? Description.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Label != null ? Label.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ CreateDate.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(LogEntry left, LogEntry right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(LogEntry left, LogEntry right)
+        {
+            return !Equals(left, right);
         }
     }
 }
