@@ -16,18 +16,26 @@ namespace ManualTimeLogger.Domain
     public class LogEntryInputParser
     {
         // TODO, do something with logging and parse results/validation results
-        private const string IssueNumberSpecialChar = "#";
-        private const string DurationSpecialChar = "*";
-        private const string DescriptionSpecialChar = "$";
-        private const string LabelSpecialChar = "@";
+        private string IssueNumberSpecialChar => "#";
+        private string DurationSpecialChar => "*";
+        private string DescriptionSpecialChar => "$";
+        private string LabelSpecialChar => "@";
         private const string SpaceCharacter = " ";
         private const int DefaultIssueNumber = 0;
 
         // TODO, refactor
-        private readonly InputPartSelector _issueNumberSelector = new InputPartSelector(IssueNumberSpecialChar, SpaceCharacter + IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
-        private readonly InputPartSelector _durationSelector = new InputPartSelector(DurationSpecialChar, SpaceCharacter + IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
-        private readonly InputPartSelector _descriptionSelector = new InputPartSelector(DescriptionSpecialChar, IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
-        private readonly InputPartSelector _labelSelector = new InputPartSelector(LabelSpecialChar, IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
+        private readonly InputPartSelector _issueNumberSelector;
+        private readonly InputPartSelector _durationSelector;
+        private readonly InputPartSelector _descriptionSelector;
+        private readonly InputPartSelector _labelSelector;
+
+        public LogEntryInputParser()
+        {
+            _issueNumberSelector = new InputPartSelector(IssueNumberSpecialChar, SpaceCharacter + IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
+            _durationSelector = new InputPartSelector(DurationSpecialChar, SpaceCharacter + IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
+            _descriptionSelector = new InputPartSelector(DescriptionSpecialChar, IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
+            _labelSelector = new InputPartSelector(LabelSpecialChar, IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
+        }
 
         public bool TryParse(string input, out LogEntry logEntry)
         {

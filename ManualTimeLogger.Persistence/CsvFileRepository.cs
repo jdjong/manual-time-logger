@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ManualTimeLogger.Domain;
@@ -47,6 +48,17 @@ namespace ManualTimeLogger.Persistence
                 .Select(csvLine => new CsvFileLogEntry(csvLine, CsvSeparator))
                 .Where(csvFileLogEntry => csvFileLogEntry.AsDomainObject.CreateDate == date)
                 .Sum(csvFileLogEntry => csvFileLogEntry.AsDomainObject.Duration);
+        }
+
+        public IEnumerable<string> GetExistingLabels()
+        {
+            var csvLines = File.ReadAllLines(FullFilePath);
+
+            return csvLines
+                .Skip(1) // skip header
+                .Select(csvLine => new CsvFileLogEntry(csvLine, CsvSeparator).AsDomainObject.Label)
+                .Where(label => !string.IsNullOrEmpty(label))
+                .Distinct();
         }
     }
 }
