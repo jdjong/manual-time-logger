@@ -9,6 +9,8 @@ namespace ManualTimeLogger.App
 {
     public partial class LogEntryInputForm : Form
     {
+        private readonly bool _isExistingLabelListBoxDisplayFeatureEnabled = false;
+        
         private readonly LogEntryInputParser _inputParser;
         private readonly IRepository _repository;
 
@@ -26,7 +28,7 @@ namespace ManualTimeLogger.App
             logEntryTextBox.KeyUp += TextBoxKeyUp;
 
             labelsListBox.KeyUp += ListBoxKeyUp;
-           
+
             DisplayHoursToday();
         }
 
@@ -39,7 +41,7 @@ namespace ManualTimeLogger.App
         private void TextBoxKeyDown(object sender, KeyEventArgs e)
         {
             // TODO, is @. Duplicate knowledge, because @ is also hardcoded in LogEntryInputParser as special char for label
-            if (e.Shift && e.KeyCode == Keys.D2)
+            if (_isExistingLabelListBoxDisplayFeatureEnabled && e.Shift && e.KeyCode == Keys.D2)
             {
                 labelsListBox.Visible = true;
                 labelsListBox.Items.Clear();
