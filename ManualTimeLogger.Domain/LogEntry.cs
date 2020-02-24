@@ -11,6 +11,7 @@ namespace ManualTimeLogger.Domain
         public float Duration { get; }
         public string Description { get; }
         public string Label { get; }
+        public Activity Activity { get; }
         public DateTime CreateDate { get; }
 
         /// <summary>
@@ -20,8 +21,9 @@ namespace ManualTimeLogger.Domain
         /// <param name="duration"></param>
         /// <param name="description"></param>
         /// <param name="label"></param>
+        /// <param name="activity"></param>
         /// <param name="createDate"></param>
-        public LogEntry(int issueNumber, float duration, string description, string label, DateTime createDate)
+        public LogEntry(int issueNumber, float duration, string description, string label, Activity activity, DateTime createDate)
         {
             if (issueNumber < 0)
             {
@@ -47,6 +49,7 @@ namespace ManualTimeLogger.Domain
             Duration = duration;
             Description = description;
             Label = label;
+            Activity = activity;
             CreateDate = createDate;
         }
 
@@ -71,6 +74,7 @@ namespace ManualTimeLogger.Domain
                 hashCode = (hashCode * 397) ^ Duration.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Description != null ? Description.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Label != null ? Label.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Activity.GetHashCode();
                 hashCode = (hashCode * 397) ^ CreateDate.GetHashCode();
                 return hashCode;
             }

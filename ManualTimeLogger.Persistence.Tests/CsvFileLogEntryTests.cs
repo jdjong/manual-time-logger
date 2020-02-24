@@ -12,7 +12,7 @@ namespace ManualTimeLogger.Persistence.Tests
         public void given_a_log_entry_csv_line_when_creating_the_csv_file_log_entry_then_the_line_string_and_domain_object_are_the_same()
         {
             var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            var csvLine = $"\"12345\";\"1{decimalSeparator}25\";\"TestDescription\";\"TestLabel\";\"20200201\"";
+            var csvLine = $"\"12345\";\"1{decimalSeparator}25\";\"TestDescription\";\"TestLabel\";\"anders\";\"20200201\"";
             var csvFileLogEntry = new CsvFileLogEntry(csvLine, ';');
             var csvFileLogEntry2 = new CsvFileLogEntry(csvFileLogEntry.AsDomainObject, ';');
 
@@ -23,7 +23,7 @@ namespace ManualTimeLogger.Persistence.Tests
         [Test]
         public void given_a_log_entry_object_when_creating_the_csv_file_log_entry_then_the_line_string_and_domain_object_are_the_same()
         {
-            var logEntry = new LogEntry(12345, 1.25f, "TestDescription", "TestLabel", new DateTime(2020,2,1));
+            var logEntry = new LogEntry(12345, 1.25f, "TestDescription", "TestLabel", Activity.anders, new DateTime(2020,2,1));
             
             var csvFileLogEntry = new CsvFileLogEntry(logEntry, ';');
             var csvFileLogEntry2 = new CsvFileLogEntry(csvFileLogEntry.AsCsvLine, ';');

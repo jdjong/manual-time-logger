@@ -14,8 +14,8 @@ namespace ManualTimeLogger.Domain.Tests
         }
 
         [Test]
-        [TestCase("*4.5 $some text and more #1234 *2")]
-        [TestCase("*4.5 $some text and more #1234 #2")]
+        [TestCase("!anders *4.5 $some text and more #1234 *2")]
+        [TestCase("!anders *4.5 $some text and more #1234 #2")]
         [TestCase("*4.5 $some text and more #1234 $2")]
         [TestCase("$some text and more #1234")]
         [TestCase("*4.5 #1234")]
@@ -26,33 +26,33 @@ namespace ManualTimeLogger.Domain.Tests
         }
 
         [Test]
-        [TestCase("*4.5 $some text and more #1234")]
-        [TestCase("$some text and more *8")]
-        [TestCase("*5 #1234 $some text and more")]
-        [TestCase("*4.5$some text and more#1234")]
-        [TestCase("$some text and more*8")]
-        [TestCase("*5#1234$some text and more")]
+        [TestCase("*4.5 $some text and more #1234!anders ")]
+        [TestCase("$some text and more *8!anders ")]
+        [TestCase("*5 #1234 $some text and more!anders ")]
+        [TestCase("*4.5$some text and more#1234!anders ")]
+        [TestCase("$some text and more*8!anders ")]
+        [TestCase("*5#1234$some text and more!anders ")]
         public void correct_input_input_layouts(string input)
         {
             Assert.IsTrue(_logEntryInputParser.TryParse(input, out _));
         }
 
         [Test]
-        [TestCase("#-1234 *4.5 $some text and more")]
-        [TestCase("#123.4 *4.5 $some text and more")]
-        [TestCase("#text *4.5 $some text and more")]
+        [TestCase("#-1234 *4.5 $some text and more!anders ")]
+        [TestCase("#123.4 *4.5 $some text and more!anders ")]
+        [TestCase("#text *4.5 $some text and more!anders ")]
         public void wrong_issue_number_inputs(string input)
         {
             Assert.IsFalse(_logEntryInputParser.TryParse(input, out _));
         }
 
         [Test]
-        [TestCase("#1234 *4.5 $some text and more", 1234)]
-        [TestCase("#0 *4.5 $some text and more", 0)]
-        [TestCase("# *4.5 $some text and more", 0)]
-        [TestCase("#1234*4.5$some text and more", 1234)]
-        [TestCase("#0*4.5$some text and more", 0)]
-        [TestCase("#*4.5$some text and more", 0)]
+        [TestCase("#1234 *4.5 $some text and more!anders ", 1234)]
+        [TestCase("#0 *4.5 $some text and more!anders ", 0)]
+        [TestCase("# *4.5 $some text and more!anders ", 0)]
+        [TestCase("#1234*4.5$some text and more!anders ", 1234)]
+        [TestCase("#0*4.5$some text and more!anders ", 0)]
+        [TestCase("#*4.5$some text and more!anders ", 0)]
         public void correct_issue_number_inputs(string input, int expectedResult)
         {
             Assert.IsTrue(_logEntryInputParser.TryParse(input, out var logEntry));
@@ -60,11 +60,11 @@ namespace ManualTimeLogger.Domain.Tests
         }
 
         [Test]
-        [TestCase("#1234 *4.5. $some text and more")]
-        [TestCase("#1234 *-4.5 $some text and more")]
-        [TestCase("#1234 *text $some text and more")]
-        [TestCase("#1234 *0 $some text and more")]
-        [TestCase("#1234 * $some text and more")]
+        [TestCase("!anders #1234 *4.5. $some text and more")]
+        [TestCase("!anders #1234 *-4.5 $some text and more")]
+        [TestCase("!anders #1234 *text $some text and more")]
+        [TestCase("!anders #1234 *0 $some text and more")]
+        [TestCase("!anders #1234 * $some text and more")]
         public void wrong_duration_inputs(string input)
         {
             Assert.IsFalse(_logEntryInputParser.TryParse(input, out _));
@@ -76,14 +76,14 @@ namespace ManualTimeLogger.Domain.Tests
         /// <param name="input"></param>
         /// <param name="expectedResult"></param>
         [Test]
-        [TestCase("#1234 *4.5 $some text and more", 4.5f)]
-        [TestCase("#1234 *4,5 $some text and more", 4.5f)]
-        [TestCase("#1234 *4 $some text and more", 4)]
-        [TestCase("#1234 *0.1 $some text and more", 0.1f)]
-        [TestCase("#1234*4.5$some text and more", 4.5f)]
-        [TestCase("#1234*4,5$some text and more", 4.5f)]
-        [TestCase("#1234*4 $some text and more", 4)]
-        [TestCase("#1234*0.1$some text and more", 0.1f)]
+        [TestCase("!Mailen #1234 *4.5 $some text and more", 4.5f)]
+        [TestCase("!anders#1234 *4,5 $some text and more", 4.5f)]
+        [TestCase("!Anders#1234 *4 $some text and more", 4)]
+        [TestCase("#1234 *0.1 $some text and more !Anders", 0.1f)]
+        [TestCase("#1234*4.5!Anders$some text and more", 4.5f)]
+        [TestCase("!Anders#1234*4,5$some text and more", 4.5f)]
+        [TestCase("#1234!Anders*4 $some text and more", 4)]
+        [TestCase("#1234!Anders*0.1$some text and more", 0.1f)]
         public void correct_duration_inputs(string input, float expectedResult)
         {
             Assert.IsTrue(_logEntryInputParser.TryParse(input, out var logEntry));
@@ -95,21 +95,21 @@ namespace ManualTimeLogger.Domain.Tests
         /// </summary>
         /// <param name="input"></param>
         [Test]
-        [TestCase("#1234 *4.5 ")]
-        [TestCase("#1234 *4.5 $")]
-        [TestCase("#1234 *4.5 $$")]
+        [TestCase("!anders #1234 *4.5 ")]
+        [TestCase("!anders #1234 *4.5 $")]
+        [TestCase("!anders #1234 *4.5 $$")]
         public void wrong_description_inputs(string input)
         {
             Assert.IsFalse(_logEntryInputParser.TryParse(input, out _));
         }
 
         [Test]
-        [TestCase("#1234 *4.5 $some text 4 and more 3.5", "some text 4 and more 3.5")]
-        [TestCase("#1234 $some text 4 and more 3.5 *4.5 more text", "some text 4 and more 3.5")]
-        [TestCase("$some text 4 and more 3.5 *4.5 more text", "some text 4 and more 3.5")]
-        [TestCase("#1234*4.5$some text 4 and more 3.5", "some text 4 and more 3.5")]
-        [TestCase("#1234$some text 4 and more 3.5*4.5 more text", "some text 4 and more 3.5")]
-        [TestCase("$some text 4 and more 3.5*4.5 more text", "some text 4 and more 3.5")]
+        [TestCase("!Anders#1234 *4.5 $some text 4 and more 3.5", "some text 4 and more 3.5")]
+        [TestCase("!Mailen#1234 $some text 4 and more 3.5 *4.5 more text", "some text 4 and more 3.5")]
+        [TestCase("!Telefoneren $some text 4 and more 3.5 *4.5 more text", "some text 4 and more 3.5")]
+        [TestCase("!Meeting #1234*4.5$some text 4 and more 3.5", "some text 4 and more 3.5")]
+        [TestCase("!Meeting #1234$some text 4 and more 3.5*4.5 more text", "some text 4 and more 3.5")]
+        [TestCase("!Meeting $some text 4 and more 3.5*4.5 more text", "some text 4 and more 3.5")]
         public void correct_description_inputs(string input, string expectedResult)
         {
             Assert.IsTrue(_logEntryInputParser.TryParse(input, out var logEntry));
@@ -128,13 +128,15 @@ namespace ManualTimeLogger.Domain.Tests
         }
 
         [Test]
-        [TestCase("#1234 *4.5 $required description @some text 4 and more 3.5", "some text 4 and more 3.5")]
-        [TestCase("#1234 @some text 4 and more 3.5 *4.5 $required description more text", "some text 4 and more 3.5")]
-        [TestCase("@some text 4 and more 3.5 *4.5 $required description more text", "some text 4 and more 3.5")]
+        [TestCase("!anders #1234 *4.5 $required description @some text 4 and more 3.5", "some text 4 and more 3.5")]
+        [TestCase("!anders #1234 @some text 4 and more 3.5 *4.5 $required description more text", "some text 4 and more 3.5")]
+        [TestCase("!anders @some text 4 and more 3.5 *4.5 $required description more text", "some text 4 and more 3.5")]
         public void correct_label_inputs(string input, string expectedResult)
         {
             Assert.IsTrue(_logEntryInputParser.TryParse(input, out var logEntry));
             Assert.AreEqual(expectedResult, logEntry.Label);
         }
+
+        // TODO, add explicit tests for correct and incorrect activity entries.
     }
 }

@@ -19,12 +19,14 @@ namespace ManualTimeLogger.Domain
         private string DurationSpecialChar => "*";
         private string DescriptionSpecialChar => "$";
         private string LabelSpecialChar => "@";
-        private string AllSectionMarkers => IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar;
+        private string ActivitySpecialChar => "!";
+        private string AllSectionMarkers => IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar + ActivitySpecialChar;
 
         private readonly IssueNumberParser _issueNumberParser;
         private readonly DurationParser _durationParser;
         private readonly DescriptionParser _descriptionParser;
         private readonly LabelParser _labelParser;
+        private readonly ActivityParser _activityParser;
 
         public LogEntryInputParser()
         {
@@ -32,6 +34,7 @@ namespace ManualTimeLogger.Domain
             _durationParser = new DurationParser(new InputPartSelector(DurationSpecialChar, AllSectionMarkers, allowSpaces:false));
             _descriptionParser = new DescriptionParser(new InputPartSelector(DescriptionSpecialChar, AllSectionMarkers, allowSpaces: true));
             _labelParser = new LabelParser(new InputPartSelector(LabelSpecialChar, AllSectionMarkers, allowSpaces: true));
+            _activityParser = new ActivityParser(new InputPartSelector(ActivitySpecialChar, AllSectionMarkers, allowSpaces: true));
         }
 
         public bool TryParse(string input, out LogEntry logEntry)
@@ -40,13 +43,15 @@ namespace ManualTimeLogger.Domain
             var durationParseResult = _durationParser.Parse(input);
             var descriptionParseResult = _descriptionParser.Parse(input);
             var labelParseResult = _labelParser.Parse(input);
+            var activityParseResult = _activityParser.Parse(input);
 
             var isOverallSuccess = !string.IsNullOrEmpty(input) &&
                                    IsSpecialCharacterCountMaxOne(input) &&
                                    issueNumberParseResult.IsSuccess &&
                                    durationParseResult.IsSuccess &&
                                    descriptionParseResult.IsSuccess &&
-                                   labelParseResult.IsSuccess;
+                                   labelParseResult.IsSuccess &&
+                                   activityParseResult.IsSuccess;
 
             try
             {
@@ -55,6 +60,7 @@ namespace ManualTimeLogger.Domain
                         durationParseResult.Value,
                         descriptionParseResult.Value,
                         labelParseResult.Value,
+                        activityParseResult.Value,
                         DateTime.Today)
                     : null;
                 return isOverallSuccess;

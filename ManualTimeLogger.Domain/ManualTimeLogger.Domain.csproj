@@ -41,9 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity.cs" />
     <Compile Include="DescriptionParser.cs" />
     <Compile Include="DurationParser.cs" />
     <Compile Include="IssueNumberParser.cs" />
+    <Compile Include="ActivityParser.cs" />
     <Compile Include="LabelParser.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="LogEntryInputParser.cs" />
