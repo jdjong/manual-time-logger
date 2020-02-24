@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 
 namespace ManualTimeLogger.Domain
@@ -20,126 +19,51 @@ namespace ManualTimeLogger.Domain
         private string DurationSpecialChar => "*";
         private string DescriptionSpecialChar => "$";
         private string LabelSpecialChar => "@";
-        private const string SpaceCharacter = " ";
-        private const int DefaultIssueNumber = 0;
 
-        // TODO, refactor
-        private readonly InputPartSelector _issueNumberSelector;
-        private readonly InputPartSelector _durationSelector;
-        private readonly InputPartSelector _descriptionSelector;
-        private readonly InputPartSelector _labelSelector;
+        private readonly IssueNumberParser _issueNumberParser;
+        private readonly DurationParser _durationParser;
+        private readonly DescriptionParser _descriptionParser;
+        private readonly LabelParser _labelParser;
 
         public LogEntryInputParser()
         {
-            _issueNumberSelector = new InputPartSelector(IssueNumberSpecialChar, SpaceCharacter + IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
-            _durationSelector = new InputPartSelector(DurationSpecialChar, SpaceCharacter + IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
-            _descriptionSelector = new InputPartSelector(DescriptionSpecialChar, IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
-            _labelSelector = new InputPartSelector(LabelSpecialChar, IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar);
+            var allSectionMarkers = IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar;
+
+            _issueNumberParser = new IssueNumberParser(new InputPartSelector(IssueNumberSpecialChar, allSectionMarkers, allowSpaces: false));
+            _durationParser = new DurationParser(new InputPartSelector(DurationSpecialChar, allSectionMarkers, allowSpaces:false));
+            _descriptionParser = new DescriptionParser(new InputPartSelector(DescriptionSpecialChar, allSectionMarkers, allowSpaces: true));
+            _labelParser = new LabelParser(new InputPartSelector(LabelSpecialChar, allSectionMarkers, allowSpaces: true));
         }
 
         public bool TryParse(string input, out LogEntry logEntry)
         {
-            var parseResult = IsInputValid(input);
+            var issueNumberParseResult = _issueNumberParser.Parse(input);
+            var durationParseResult = _durationParser.Parse(input);
+            var descriptionParseResult = _descriptionParser.Parse(input);
+            var labelParseResult = _labelParser.Parse(input);
 
-            if (!TryParseIssueNumberFromSection(input, out var issueNumber))
-            {
-                parseResult = false;
-            }
-            if (!TryParseDurationFromSection(input, out var duration))
-            {
-                parseResult = false;
-            }
-            if (!TryParseDescriptionFromSection(input, out var description))
-            {
-                parseResult = false;
-            }
-            if (!TryParseLabelFromSection(input, out var label))
-            {
-                parseResult = false;
-            }
+            var isOverallSuccess = IsInputValid(input) &&
+                                   issueNumberParseResult.IsSuccess &&
+                                   durationParseResult.IsSuccess &&
+                                   descriptionParseResult.IsSuccess &&
+                                   labelParseResult.IsSuccess;
 
             try
             {
-                logEntry = parseResult 
-                    ? new LogEntry(issueNumber ?? DefaultIssueNumber, duration, description, label, DateTime.Today)
+                logEntry = isOverallSuccess 
+                    ? new LogEntry(issueNumberParseResult.Value,
+                        durationParseResult.Value,
+                        descriptionParseResult.Value,
+                        labelParseResult.Value,
+                        DateTime.Today)
                     : null;
-                return parseResult;
+                return isOverallSuccess;
             }
             catch (Exception)
             {
                 logEntry = null;
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Tries to get label from input string.
-        /// Label is optional.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="label"></param>
-        /// <returns></returns>
-        private bool TryParseLabelFromSection(string input, out string label)
-        {
-            label = _labelSelector.Get(input).InputPart;
-
-            return true;
-        }
-
-
-        /// <summary>
-        /// Tries to get description from input string.
-        /// Description is required.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="description"></param>
-        /// <returns></returns>
-        private bool TryParseDescriptionFromSection(string input, out string description)
-        {
-            description = _descriptionSelector.Get(input).InputPart;
-
-            if (string.IsNullOrEmpty(description))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Tries to get duration from input string.
-        /// duration is required.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="duration"></param>
-        /// <returns></returns>
-        private bool TryParseDurationFromSection(string input, out float duration)
-        {
-            var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            var durationString = _durationSelector.Get(input).InputPart;
-            return float.TryParse(durationString?.Replace(",", decimalSeparator).Replace(".", decimalSeparator), out duration);
-        }
-
-        /// <summary>
-        /// Tries to get issue number from input string.
-        /// Issue number is not required.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="issueNumber"></param>
-        /// <returns></returns>
-        private bool TryParseIssueNumberFromSection(string input, out int? issueNumber)
-        {
-            var issueNumberString = _issueNumberSelector.Get(input).InputPart;
-
-            if (string.IsNullOrEmpty(issueNumberString))
-            {
-                issueNumber = null;
-                return true;
-            }
-
-            var parseResult = int.TryParse(issueNumberString, out var issueNumberParseResult);
-            issueNumber = issueNumberParseResult;
-            return parseResult;
         }
 
         /// <summary>
@@ -164,12 +88,6 @@ namespace ManualTimeLogger.Domain
                 countDurationSpecialChars > 1 ||
                 countLabelSpecialChars > 1 ||
                 countIssueNumberSpecialChars > 1)
-            {
-                return false;
-            }
-
-            // Are some required input parts missing?
-            if (countDurationSpecialChars != 1 || countDescriptionSpecialChars != 1)
             {
                 return false;
             }

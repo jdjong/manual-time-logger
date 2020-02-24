@@ -10,7 +10,7 @@ namespace ManualTimeLogger.Domain.Tests
         [SetUp]
         public void SetUp()
         {
-            _selector = new InputPartSelector("#", "$@#*");
+            _selector = new InputPartSelector("#", "$@#*", allowSpaces: false);
         }
 
         [Test]
@@ -26,12 +26,12 @@ namespace ManualTimeLogger.Domain.Tests
 
         [Test]
         [TestCase("$test test #", "")]
-        [TestCase("$test test #123 asd @qwe", "123 asd")]
-        [TestCase("#123 asd $test test @qwe", "123 asd")]
-        [TestCase("@qwe $test test #123 asd", "123 asd")]
-        [TestCase("$test test#123 asd@qwe", "123 asd")]
-        [TestCase("#123 asd$test test@qwe", "123 asd")]
-        [TestCase("@qwe$test test#123 asd", "123 asd")]
+        [TestCase("$test test #123 asd @qwe", "123")]
+        [TestCase("#123 asd $test test @qwe", "123")]
+        [TestCase("@qwe $test test #123 asd", "123")]
+        [TestCase("$test test#123 asd@qwe", "123")]
+        [TestCase("#123 asd$test test@qwe", "123")]
+        [TestCase("@qwe$test test#123 asd", "123")]
         public void SuccessResults(string input, string expectedInputPart)
         {
             var selectorResult = _selector.Get(input);

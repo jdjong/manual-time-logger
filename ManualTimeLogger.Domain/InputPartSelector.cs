@@ -11,14 +11,17 @@ namespace ManualTimeLogger.Domain
     {
         public string SectionMarker { get; }
         public string AllSectionMarkers { get; }
+        private const string SpaceCharacter = " ";
 
-        public InputPartSelector(string sectionMarker, string allSectionMarkers)
+        public InputPartSelector(string sectionMarker, string allSectionMarkers, bool allowSpaces)
         {
             if (string.IsNullOrEmpty(allSectionMarkers)) throw new ArgumentNullException(nameof(allSectionMarkers));
             if (!allSectionMarkers.Contains(sectionMarker)) throw new ArgumentException("Section marker should be contained in allSectionMarkers", nameof(sectionMarker));
             
             SectionMarker = sectionMarker;
-            AllSectionMarkers = allSectionMarkers;
+            AllSectionMarkers = allowSpaces 
+                ? allSectionMarkers
+                : allSectionMarkers + SpaceCharacter;
         }
 
         public InputPartSelectorResult Get(string input)
