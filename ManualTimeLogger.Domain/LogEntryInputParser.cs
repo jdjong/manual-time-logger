@@ -19,6 +19,7 @@ namespace ManualTimeLogger.Domain
         private string DurationSpecialChar => "*";
         private string DescriptionSpecialChar => "$";
         private string LabelSpecialChar => "@";
+        private string AllSectionMarkers => IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar;
 
         private readonly IssueNumberParser _issueNumberParser;
         private readonly DurationParser _durationParser;
@@ -27,12 +28,10 @@ namespace ManualTimeLogger.Domain
 
         public LogEntryInputParser()
         {
-            var allSectionMarkers = IssueNumberSpecialChar + DurationSpecialChar + DescriptionSpecialChar + LabelSpecialChar;
-
-            _issueNumberParser = new IssueNumberParser(new InputPartSelector(IssueNumberSpecialChar, allSectionMarkers, allowSpaces: false));
-            _durationParser = new DurationParser(new InputPartSelector(DurationSpecialChar, allSectionMarkers, allowSpaces:false));
-            _descriptionParser = new DescriptionParser(new InputPartSelector(DescriptionSpecialChar, allSectionMarkers, allowSpaces: true));
-            _labelParser = new LabelParser(new InputPartSelector(LabelSpecialChar, allSectionMarkers, allowSpaces: true));
+            _issueNumberParser = new IssueNumberParser(new InputPartSelector(IssueNumberSpecialChar, AllSectionMarkers, allowSpaces: false));
+            _durationParser = new DurationParser(new InputPartSelector(DurationSpecialChar, AllSectionMarkers, allowSpaces:false));
+            _descriptionParser = new DescriptionParser(new InputPartSelector(DescriptionSpecialChar, AllSectionMarkers, allowSpaces: true));
+            _labelParser = new LabelParser(new InputPartSelector(LabelSpecialChar, AllSectionMarkers, allowSpaces: true));
         }
 
         public bool TryParse(string input, out LogEntry logEntry)
@@ -42,7 +41,8 @@ namespace ManualTimeLogger.Domain
             var descriptionParseResult = _descriptionParser.Parse(input);
             var labelParseResult = _labelParser.Parse(input);
 
-            var isOverallSuccess = IsInputValid(input) &&
+            var isOverallSuccess = !string.IsNullOrEmpty(input) &&
+                                   IsSpecialCharacterCountMaxOne(input) &&
                                    issueNumberParseResult.IsSuccess &&
                                    durationParseResult.IsSuccess &&
                                    descriptionParseResult.IsSuccess &&
@@ -67,32 +67,15 @@ namespace ManualTimeLogger.Domain
         }
 
         /// <summary>
-        /// Checks if the required sections are provided
-        /// and sections occur once at maximum.
+        /// Checks if sections occur once at maximum.
         /// </summary>
         /// <param name="input"></param>
-        private bool IsInputValid(string input)
+        private bool IsSpecialCharacterCountMaxOne(string input)
         {
-            // There is some input
-            if (string.IsNullOrEmpty(input))
-            {
-                return false;
-            }
-
-            // Only one input part at max.
-            var countDescriptionSpecialChars = input.Count(character => character.ToString() == DescriptionSpecialChar);
-            var countDurationSpecialChars = input.Count(character => character.ToString() == DurationSpecialChar);
-            var countIssueNumberSpecialChars = input.Count(character => character.ToString() == IssueNumberSpecialChar);
-            var countLabelSpecialChars = input.Count(character => character.ToString() == LabelSpecialChar);
-            if (countDescriptionSpecialChars > 1 ||
-                countDurationSpecialChars > 1 ||
-                countLabelSpecialChars > 1 ||
-                countIssueNumberSpecialChars > 1)
-            {
-                return false;
-            }
-
-            return true;
+            return AllSectionMarkers.Aggregate(true, (result, specialChar) =>
+                {
+                    return result && input.Count(character => character == specialChar) < 2;
+                });
         }
     }
 }
