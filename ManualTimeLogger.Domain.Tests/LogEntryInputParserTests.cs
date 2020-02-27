@@ -95,7 +95,7 @@ namespace ManualTimeLogger.Domain.Tests
         /// </summary>
         /// <param name="input"></param>
         [Test]
-        [TestCase("!anders #1234 *4.5 ")]
+        [TestCase("#1234 *4.5 ")]
         [TestCase("!anders #1234 *4.5 $")]
         [TestCase("!anders #1234 *4.5 $$")]
         public void wrong_description_inputs(string input)
@@ -104,8 +104,8 @@ namespace ManualTimeLogger.Domain.Tests
         }
 
         [Test]
-        [TestCase("!Anders#1234 *4.5 $some text 4 and more 3.5", "some text 4 and more 3.5")]
-        [TestCase("!Mailen#1234 $some text 4 and more 3.5 *4.5 more text", "some text 4 and more 3.5")]
+        [TestCase("#1234 *4.5 $some text 4 and more 3.5", "some text 4 and more 3.5")]
+        [TestCase("#1234 $some text 4 and more 3.5 *4.5 more text", "some text 4 and more 3.5")]
         [TestCase("!Telefoneren $some text 4 and more 3.5 *4.5 more text", "some text 4 and more 3.5")]
         [TestCase("!Meeting #1234*4.5$some text 4 and more 3.5", "some text 4 and more 3.5")]
         [TestCase("!Meeting #1234$some text 4 and more 3.5*4.5 more text", "some text 4 and more 3.5")]
@@ -129,7 +129,7 @@ namespace ManualTimeLogger.Domain.Tests
 
         [Test]
         [TestCase("!anders #1234 *4.5 $required description @some text 4 and more 3.5", "some text 4 and more 3.5")]
-        [TestCase("!anders #1234 @some text 4 and more 3.5 *4.5 $required description more text", "some text 4 and more 3.5")]
+        [TestCase("#1234 @some text 4 and more 3.5 *4.5 $required description more text", "some text 4 and more 3.5")]
         [TestCase("!anders @some text 4 and more 3.5 *4.5 $required description more text", "some text 4 and more 3.5")]
         public void correct_label_inputs(string input, string expectedResult)
         {
@@ -137,6 +137,25 @@ namespace ManualTimeLogger.Domain.Tests
             Assert.AreEqual(expectedResult, logEntry.Label);
         }
 
-        // TODO, add explicit tests for correct and incorrect activity entries.
+        /// <summary>
+        /// Activity (!) is optional, so cannot do much wrong
+        /// </summary>
+        /// <param name="input"></param>
+        [Test]
+        [TestCase("#1234 $required description *4.5 !!")]
+        public void wrong_activity_inputs(string input)
+        {
+            Assert.IsFalse(_logEntryInputParser.TryParse(input, out _));
+        }
+
+        [Test]
+        [TestCase("!mailen #1234 *4.5 $required description @some text 4 and more 3.5", "some text 4 and more 3.5")]
+        [TestCase("#1234 @some text 4 and more 3.5 *4.5 $required description more text", "some text 4 and more 3.5")]
+        [TestCase("@some text 4 and more 3.5 !testen *4.5 $required description more text", "some text 4 and more 3.5")]
+        public void correct_activity_inputs(string input, string expectedResult)
+        {
+            Assert.IsTrue(_logEntryInputParser.TryParse(input, out var logEntry));
+            Assert.AreEqual(expectedResult, logEntry.Label);
+        }
     }
 }

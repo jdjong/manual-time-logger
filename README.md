@@ -18,9 +18,11 @@ Providing an extremely easy and accessible way to keep track of your spend time 
 * (required) "$" followed by the description of what you did
 * (optional) "\#" followed by issue number
 * (optional) "@" followed by label
+* (optional) "!" followed by activity
 
 ### Examples
 
-* @development 2.0 $csv file repository \#123 \*2
-* $UX testing \*1,5 @test
-* \*.5 $writing read me
+* @newfunctionality !development $csv file repository \#123 \*2
+* \*2 $csv file repository \#123 @newfunctionality !development
+* $Preference screen testing \*1,5 @uximprovements
+* $writing read me\*.5

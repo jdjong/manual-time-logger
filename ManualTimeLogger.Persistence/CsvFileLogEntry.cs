@@ -18,7 +18,7 @@ namespace ManualTimeLogger.Persistence
         {
             _separator = separator;
             AsDomainObject = domainObject;
-            AsCsvLine = $"\"{domainObject.IssueNumber}\"{separator}\"{domainObject.Duration}\"{separator}\"{domainObject.Description}\"{separator}\"{domainObject.Label}\"{separator}\"{domainObject.Activity.ToString()}\"{separator}\"{domainObject.CreateDate:yyyyMMdd}\"";
+            AsCsvLine = $"\"{domainObject.IssueNumber}\"{separator}\"{domainObject.Duration}\"{separator}\"{domainObject.Description}\"{separator}\"{domainObject.Label}\"{separator}\"{domainObject.Activity}\"{separator}\"{domainObject.CreateDate:yyyyMMdd}\"";
         }
 
         public CsvFileLogEntry(string csvLine, char separator)
@@ -39,7 +39,7 @@ namespace ManualTimeLogger.Persistence
             var duration = float.Parse(durationString);
             var description = descriptionString;
             var label = labelString;
-            Enum.TryParse<Activity>(activityString?.ToLower(), out var activity);
+            var activity = activityString;
             var createDate = new DateTime(int.Parse(createDateString.Substring(0,4)), int.Parse(createDateString.Substring(4,2)), int.Parse(createDateString.Substring(6,2)));
 
             AsDomainObject = new LogEntry(issueNumber, duration, description, label, activity, createDate);

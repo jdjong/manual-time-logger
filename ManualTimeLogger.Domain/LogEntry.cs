@@ -11,7 +11,7 @@ namespace ManualTimeLogger.Domain
         public float Duration { get; }
         public string Description { get; }
         public string Label { get; }
-        public Activity Activity { get; }
+        public string Activity { get; }
         public DateTime CreateDate { get; }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace ManualTimeLogger.Domain
         /// <param name="label"></param>
         /// <param name="activity"></param>
         /// <param name="createDate"></param>
-        public LogEntry(int issueNumber, float duration, string description, string label, Activity activity, DateTime createDate)
+        public LogEntry(int issueNumber, float duration, string description, string label, string activity, DateTime createDate)
         {
             if (issueNumber < 0)
             {
@@ -55,7 +55,7 @@ namespace ManualTimeLogger.Domain
 
         protected bool Equals(LogEntry other)
         {
-            return IssueNumber == other.IssueNumber && Duration.Equals(other.Duration) && string.Equals(Description, other.Description) && string.Equals(Label, other.Label) && CreateDate.Equals(other.CreateDate);
+            return IssueNumber == other.IssueNumber && Duration.Equals(other.Duration) && string.Equals(Description, other.Description) && string.Equals(Label, other.Label) && string.Equals(Activity, other.Activity) && CreateDate.Equals(other.CreateDate);
         }
 
         public override bool Equals(object obj)

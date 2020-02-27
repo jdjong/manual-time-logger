@@ -11,12 +11,10 @@ namespace ManualTimeLogger.Domain
             _selector = selector;
         }
 
-        public ParseResult<Activity> Parse(string input)
+        public ParseResult<string> Parse(string input)
         {
-            var activityInputPart = _selector.Get(input).InputPart?.ToLower();
-            var parseResult = Enum.TryParse<Activity>(activityInputPart, out var activity);
-
-            return new ParseResult<Activity>(parseResult, activity);
+            var label = _selector.Get(input).InputPart;
+            return new ParseResult<string>(true, label);
         }
     }
 }
