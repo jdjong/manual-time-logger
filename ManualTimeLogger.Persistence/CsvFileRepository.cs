@@ -9,14 +9,21 @@ namespace ManualTimeLogger.Persistence
     public class CsvFileRepository : IRepository
     {
         private const char CsvSeparator = ';';
-        private const string FileBasePath = @"C:/temp/timelogs/";
-        private string FullFilePath => FileBasePath + $"timelog_{DateTime.Today:yyyyMM}.csv";
+        private readonly string _basePath;
+        private readonly string _fileName;
+        private string FullFilePath => Path.Combine(_basePath, _fileName);
 
-        public CsvFileRepository()
+        public CsvFileRepository(string basePath, string fileName)
         {
-            if (!Directory.Exists(FileBasePath))
+            if (string.IsNullOrEmpty(basePath)) throw new ArgumentNullException(basePath);
+            if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException(fileName);
+
+            _basePath = basePath;
+            _fileName = fileName;
+
+            if (!Directory.Exists(_basePath))
             {
-                Directory.CreateDirectory(FileBasePath);
+                Directory.CreateDirectory(_basePath);
             }
 
             if (!File.Exists(FullFilePath))
@@ -48,6 +55,21 @@ namespace ManualTimeLogger.Persistence
                 .Select(csvLine => new CsvFileLogEntry(csvLine, CsvSeparator))
                 .Where(csvFileLogEntry => csvFileLogEntry.AsDomainObject.CreateDate == date)
                 .Sum(csvFileLogEntry => csvFileLogEntry.AsDomainObject.Duration);
+        }
+
+        public IEnumerable<LogEntry> GetAllLogEntries()
+        {
+            var csvLines = File.ReadAllLines(FullFilePath);
+
+            return csvLines
+                .Skip(1) // skip header
+                .Select(csvLine => new CsvFileLogEntry(csvLine, CsvSeparator).AsDomainObject);
+        }
+
+        // TODO, improve code, test code and to interface
+        public string GetEngineerName()
+        {
+            return _fileName.Split('_')[0];
         }
 
         public IEnumerable<string> GetExistingLabels()

@@ -15,7 +15,9 @@ namespace ManualTimeLogger.App
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LogEntryInputForm(new LogEntryInputParser(), new CsvFileRepository()));
+
+            // TODO, make basepath and name for timelog configurable
+            Application.Run(new LogEntryInputForm(new LogEntryInputParser(), new CsvFileRepository(@"C:\temp\timelogs", $"joost_timelog_{DateTime.Today:yyyyMM}.csv")));
         }
     }
 }
