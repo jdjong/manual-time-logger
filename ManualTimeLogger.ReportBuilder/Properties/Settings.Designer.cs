@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ManualTimeLogger.App.Properties {
+namespace ManualTimeLogger.ReportBuilder.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -34,10 +34,10 @@ namespace ManualTimeLogger.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("joost")]
-        public string Engineer {
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\temp\\timelogs\\reports")]
+        public string ReportsBasePaths {
             get {
-                return ((string)(this["Engineer"]));
+                return ((string)(this["ReportsBasePaths"]));
             }
         }
     }

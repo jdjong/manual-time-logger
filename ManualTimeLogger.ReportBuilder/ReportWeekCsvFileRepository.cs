@@ -11,10 +11,10 @@ namespace ManualTimeLogger.ReportBuilder
         private const char CsvSeparator = ';';
         private readonly string _basePath;
         private readonly string _fileName;
-        private readonly DateTime _dateOfMondayForRequestedWeek;
+        private readonly DateTime _dateOfMondayOfRequestedWeek;
         private string FullFilePath => Path.Combine(_basePath, _fileName);
 
-        public ReportWeekCsvFileRepository(string basePath, string fileName, DateTime aDateForTheRequestedWeek)
+        public ReportWeekCsvFileRepository(string basePath, string fileName, DateTime dateOfMondayOfRequestedWeek)
         {
             if (string.IsNullOrEmpty(basePath)) throw new ArgumentNullException(basePath);
             if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException(fileName);
@@ -22,7 +22,12 @@ namespace ManualTimeLogger.ReportBuilder
             _basePath = basePath;
             _fileName = fileName;
 
-            _dateOfMondayForRequestedWeek = GetMondayDateForRequestedWeek(aDateForTheRequestedWeek);
+            if (dateOfMondayOfRequestedWeek.DayOfWeek != DayOfWeek.Monday)
+            {
+                throw new ArgumentException("Date needs to be a monday", nameof(dateOfMondayOfRequestedWeek));
+            }
+
+            _dateOfMondayOfRequestedWeek = dateOfMondayOfRequestedWeek;
 
             if (!Directory.Exists(_basePath))
             {
@@ -40,23 +45,11 @@ namespace ManualTimeLogger.ReportBuilder
             }
         }
 
-        // TODO, remove duplication in report week entry class
-        private DateTime GetMondayDateForRequestedWeek(DateTime aDateForTheRequestedWeek)
-        {
-            var dateIterator = aDateForTheRequestedWeek;
-            while (dateIterator.DayOfWeek != DayOfWeek.Monday)
-            {
-                dateIterator = dateIterator.AddDays(-1);
-            }
-
-            return dateIterator;
-        }
-
         private void CreateFileWithHeaderLine()
         {
             File.AppendAllLines(
                 FullFilePath,
-                new[] {$"\"Wie\"{CsvSeparator}\"Omschrijving\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), Enumerable.Range(0, 7).Select(nr => $"\"{_dateOfMondayForRequestedWeek.AddDays(nr):yyyyMMdd}\""))}"});
+                new[] {$"\"Wie\"{CsvSeparator}\"Omschrijving\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), Enumerable.Range(0, 7).Select(nr => $"\"{_dateOfMondayOfRequestedWeek.AddDays(nr):yyyyMMdd}\""))}"});
         }
 
         public void SaveReportEntry(ReportWeekEntry reportEntry)
