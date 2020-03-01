@@ -9,7 +9,6 @@ namespace ManualTimeLogger.ReportBuilder
         public string Description;
         public Dictionary<DateTime, float> NrOfHoursPerWeekDay;
 
-        // TODO, unit test
         public ReportWeekEntry(string engineer, string description, DateTime dateOfMondayOfRequestedWeek, Dictionary<DateTime, float> nrOfHoursForAllDaysPerDay)
         {
             if (dateOfMondayOfRequestedWeek.DayOfWeek != DayOfWeek.Monday)

@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BuildReportsCommandsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportWeekEntryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
