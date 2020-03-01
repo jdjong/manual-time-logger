@@ -2,7 +2,7 @@
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    public class BuildMonthReportsCommand
+    public class BuildMonthReportsCommand : ICommand
     {
         /// <summary>
         /// When period is month, then the first day is the first of the month.

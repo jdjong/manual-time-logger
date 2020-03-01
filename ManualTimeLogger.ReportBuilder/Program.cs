@@ -15,7 +15,7 @@ namespace ManualTimeLogger.ReportBuilder
         private static ReportWeekCsvFileRepository _reportIssueNumberRepository;
         private static string _reportsBasePath;
 
-        private static BuildWeekReportsCommand _buildReportCommand;
+        private static ICommand _buildReportCommand;
 
         static void Main(string[] args)
         {
@@ -37,8 +37,7 @@ namespace ManualTimeLogger.ReportBuilder
             GenerateCumulativeOverallReport(null, logEntriesPerDay);
         }
 
-        private static void GenerateCumulativePerEngineerReport(
-            Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
+        private static void GenerateCumulativePerEngineerReport(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
         {
             _reportActivityRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"engineer_activity_week_report_{_buildReportCommand.FirstDayOfPeriod:yyyyMMdd}.csv", _buildReportCommand.FirstDayOfPeriod);
             _reportLabelRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"engineer_label_week_report_{_buildReportCommand.FirstDayOfPeriod:yyyyMMdd}.csv", _buildReportCommand.FirstDayOfPeriod);
@@ -51,8 +50,7 @@ namespace ManualTimeLogger.ReportBuilder
             });
         }
 
-        private static void GenerateCumulativeOverallReport(string engineer,
-            IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
+        private static void GenerateCumulativeOverallReport(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
             _reportActivityRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"cumulative_activity_week_report_{_buildReportCommand.FirstDayOfPeriod:yyyyMMdd}.csv", _buildReportCommand.FirstDayOfPeriod);
             _reportLabelRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"cumulative_label_week_report_{_buildReportCommand.FirstDayOfPeriod:yyyyMMdd}.csv", _buildReportCommand.FirstDayOfPeriod);

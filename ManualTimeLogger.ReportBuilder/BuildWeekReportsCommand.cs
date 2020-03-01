@@ -2,7 +2,7 @@
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    public class BuildWeekReportsCommand
+    public class BuildWeekReportsCommand : ICommand
     {
         /// <summary>
         /// When period is week, then the first day is the monday of the period.
