@@ -1,9 +1,10 @@
 ﻿using System;
 using ManualTimeLogger.ReportBuilder.Commands;
 using NUnit.Framework;
+
 // ReSharper disable ObjectCreationAsStatement
 
-namespace ManualTimeLogger.ReportBuilder.Tests
+namespace ManualTimeLogger.ReportBuilder.Tests.Commands
 {
     [TestFixture]
     public class BuildReportsCommandsTests

@@ -2,7 +2,7 @@
 using ManualTimeLogger.ReportBuilder.Commands;
 using NUnit.Framework;
 
-namespace ManualTimeLogger.ReportBuilder.Tests
+namespace ManualTimeLogger.ReportBuilder.Tests.Commands
 {
     [TestFixture]
     public class CommandProviderTests

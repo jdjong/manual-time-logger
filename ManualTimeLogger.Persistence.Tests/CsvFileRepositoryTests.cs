@@ -6,10 +6,11 @@ namespace ManualTimeLogger.Persistence.Tests
     [TestFixture]
     public class CsvFileRepositoryTests
     {
+        // TODO
         [Test]
         public void Todo()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
