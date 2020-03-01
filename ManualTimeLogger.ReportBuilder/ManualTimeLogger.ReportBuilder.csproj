@@ -46,6 +46,7 @@
     <Compile Include="Commands\BuildMonthReportsCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="MonthReportsBuilder.cs" />
+    <Compile Include="CumulativeWeekReportsBuilder.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -53,7 +54,10 @@
     </Compile>
     <Compile Include="Commands\BuildWeekReportsCommand.cs" />
     <Compile Include="Commands\CommandProvider.cs" />
-    <Compile Include="WeekReportsBuilder.cs" />
+    <Compile Include="ReportBuilders\ActivityReportBuilder.cs" />
+    <Compile Include="ReportBuilders\IssueNumberReportBuilder.cs" />
+    <Compile Include="ReportBuilders\LabelReportBuilder.cs" />
+    <Compile Include="PerEngineerWeekReportsBuilder.cs" />
     <Compile Include="WeekReportCsvFileRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
