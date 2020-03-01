@@ -8,14 +8,17 @@ using ManualTimeLogger.Persistence;
 
 namespace ManualTimeLogger.ReportBuilder
 {
+    // TODO, refactor, rename, test, polish
     public class WeekReportsBuilder
     {
         private readonly string _timeLogsBasePath;
-        private readonly string _reportsBasePath;
         private readonly DateTime _firstDayOfWeek;
-        private ReportWeekCsvFileRepository _reportActivityRepository;
-        private ReportWeekCsvFileRepository _reportLabelRepository;
-        private ReportWeekCsvFileRepository _reportIssueNumberRepository;
+        private readonly WeekReportCsvFileRepository _activityPerEngineerReportRepository;
+        private readonly WeekReportCsvFileRepository _labelPerEngineerReportRepository;
+        private readonly WeekReportCsvFileRepository _issueNumberPerEngineerReportRepository;
+        private readonly WeekReportCsvFileRepository _activityCumulativeReportRepository;
+        private readonly WeekReportCsvFileRepository _labelCumulativeReportRepository;
+        private readonly WeekReportCsvFileRepository _issueNumberCumulativeReportRepository;
 
         public WeekReportsBuilder(string timeLogsBasePath, string reportsBasePath, DateTime firstDayOfWeek)
         {
@@ -25,8 +28,15 @@ namespace ManualTimeLogger.ReportBuilder
             }
 
             _timeLogsBasePath = timeLogsBasePath;
-            _reportsBasePath = reportsBasePath;
             _firstDayOfWeek = firstDayOfWeek;
+
+            _activityPerEngineerReportRepository = new WeekReportCsvFileRepository(reportsBasePath, $"engineer_activity_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
+            _labelPerEngineerReportRepository = new WeekReportCsvFileRepository(reportsBasePath, $"engineer_label_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
+            _issueNumberPerEngineerReportRepository = new WeekReportCsvFileRepository(reportsBasePath, $"engineer_issue_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
+
+            _activityCumulativeReportRepository = new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_activity_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
+            _labelCumulativeReportRepository = new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_label_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
+            _issueNumberCumulativeReportRepository = new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_issue_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
         }
 
         public void Build()
@@ -37,34 +47,20 @@ namespace ManualTimeLogger.ReportBuilder
             var logEntriesPerEngineer = allTimeLogRepositories.ToDictionary(repository => repository.GetEngineerName(), repository => repository.GetAllLogEntries());
             var logEntriesPerDay = logEntriesPerEngineer.SelectMany(x => x.Value).GroupBy(x => x.CreateDate);
 
-            // TODO, refactor, rename, test, polish
             GenerateCumulativePerEngineerReport(logEntriesPerEngineer);
             GenerateCumulativeOverallReport(null, logEntriesPerDay);
         }
 
         private void GenerateCumulativePerEngineerReport(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
         {
-            _reportActivityRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"engineer_activity_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
-            _reportLabelRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"engineer_label_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
-            _reportIssueNumberRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"engineer_issue_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
-
             logEntriesPerEngineer.Keys.ToList().ForEach(engineer =>
             {
                 var logEntriesPerEngineerPerDay = logEntriesPerEngineer[engineer].GroupBy(x => x.CreateDate);
-                GenerateReport(engineer, logEntriesPerEngineerPerDay);
+                GenerateEngineerReport(engineer, logEntriesPerEngineerPerDay);
             });
         }
 
-        private void GenerateCumulativeOverallReport(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
-        {
-            _reportActivityRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"cumulative_activity_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
-            _reportLabelRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"cumulative_label_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
-            _reportIssueNumberRepository = new ReportWeekCsvFileRepository(_reportsBasePath, $"cumulative_issue_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek);
-
-            GenerateReport(engineer, logEntriesPerDay);
-        }
-
-        private void GenerateReport(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
+        private void GenerateEngineerReport(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
             var differentActivities = logEntriesPerDay.SelectMany(x => x).Select(x => x.Activity).Distinct();
             var differentLabels = logEntriesPerDay.SelectMany(x => x).Select(x => x.Label).Distinct();
@@ -73,35 +69,50 @@ namespace ManualTimeLogger.ReportBuilder
             differentActivities.ToList().ForEach(activity =>
             {
                 var timeForActivityPerDay = logEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Activity == activity).Sum(y => y.Duration));
-                WriteReportActivityEntry(engineer, activity, timeForActivityPerDay);
+                _activityPerEngineerReportRepository.SaveReportEntry(new WeekReportEntry(engineer, activity, _firstDayOfWeek, timeForActivityPerDay));
             });
 
             differentLabels.ToList().ForEach(label =>
             {
                 var timeForLabelPerDay = logEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Label == label).Sum(y => y.Duration));
-                WriteReportLabelEntry(engineer, label, timeForLabelPerDay);
+                _labelPerEngineerReportRepository.SaveReportEntry(new WeekReportEntry(engineer, label, _firstDayOfWeek, timeForLabelPerDay));
             });
 
             differentIssueNumbers.ToList().ForEach(issueNumber =>
             {
                 var timeForIssueNumberPerDay = logEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.IssueNumber == issueNumber).Sum(y => y.Duration));
-                WriteReportIssueNumberEntry(engineer, issueNumber, timeForIssueNumberPerDay);
+                _issueNumberPerEngineerReportRepository.SaveReportEntry(new WeekReportEntry(engineer, issueNumber.ToString(), _firstDayOfWeek, timeForIssueNumberPerDay));
             });
         }
 
-        private void WriteReportIssueNumberEntry(string engineer, int issueNumber, Dictionary<DateTime, float> timeForIssueNumberPerDay)
+        private void GenerateCumulativeOverallReport(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
-            _reportIssueNumberRepository.SaveReportEntry(new ReportWeekEntry(engineer, issueNumber.ToString(), _firstDayOfWeek, timeForIssueNumberPerDay));
+            GenerateCumulativeReport(engineer, logEntriesPerDay);
         }
 
-        private void WriteReportLabelEntry(string engineer, string label, Dictionary<DateTime, float> timeForLabelPerDay)
+        private void GenerateCumulativeReport(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
-            _reportLabelRepository.SaveReportEntry(new ReportWeekEntry(engineer, label, _firstDayOfWeek, timeForLabelPerDay));
-        }
+            var differentActivities = logEntriesPerDay.SelectMany(x => x).Select(x => x.Activity).Distinct();
+            var differentLabels = logEntriesPerDay.SelectMany(x => x).Select(x => x.Label).Distinct();
+            var differentIssueNumbers = logEntriesPerDay.SelectMany(x => x).Select(x => x.IssueNumber).Distinct();
 
-        private void WriteReportActivityEntry(string engineer, string activity, Dictionary<DateTime, float> timeForActivityPerDay)
-        {
-            _reportActivityRepository.SaveReportEntry(new ReportWeekEntry(engineer, activity, _firstDayOfWeek, timeForActivityPerDay));
+            differentActivities.ToList().ForEach(activity =>
+            {
+                var timeForActivityPerDay = logEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Activity == activity).Sum(y => y.Duration));
+                _activityCumulativeReportRepository.SaveReportEntry(new WeekReportEntry(engineer, activity, _firstDayOfWeek, timeForActivityPerDay));
+            });
+
+            differentLabels.ToList().ForEach(label =>
+            {
+                var timeForLabelPerDay = logEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Label == label).Sum(y => y.Duration));
+                _labelCumulativeReportRepository.SaveReportEntry(new WeekReportEntry(engineer, label, _firstDayOfWeek, timeForLabelPerDay));
+            });
+
+            differentIssueNumbers.ToList().ForEach(issueNumber =>
+            {
+                var timeForIssueNumberPerDay = logEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.IssueNumber == issueNumber).Sum(y => y.Duration));
+                _issueNumberCumulativeReportRepository.SaveReportEntry(new WeekReportEntry(engineer, issueNumber.ToString(), _firstDayOfWeek, timeForIssueNumberPerDay));
+            });
         }
     }
 }

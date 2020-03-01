@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    public class ReportWeekCsvFileRepository
+    public class WeekReportCsvFileRepository
     {
         // TODO, unit test
         
@@ -14,7 +14,7 @@ namespace ManualTimeLogger.ReportBuilder
         private readonly DateTime _dateOfMondayOfRequestedWeek;
         private string FullFilePath => Path.Combine(_basePath, _fileName);
 
-        public ReportWeekCsvFileRepository(string basePath, string fileName, DateTime dateOfMondayOfRequestedWeek)
+        public WeekReportCsvFileRepository(string basePath, string fileName, DateTime dateOfMondayOfRequestedWeek)
         {
             if (string.IsNullOrEmpty(basePath)) throw new ArgumentNullException(basePath);
             if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException(fileName);
@@ -52,7 +52,7 @@ namespace ManualTimeLogger.ReportBuilder
                 new[] {$"\"Wie\"{CsvSeparator}\"Omschrijving\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), Enumerable.Range(0, 7).Select(nr => $"\"{_dateOfMondayOfRequestedWeek.AddDays(nr):yyyyMMdd}\""))}"});
         }
 
-        public void SaveReportEntry(ReportWeekEntry reportEntry)
+        public void SaveReportEntry(WeekReportEntry reportEntry)
         {
             File.AppendAllLines(
                 FullFilePath, 

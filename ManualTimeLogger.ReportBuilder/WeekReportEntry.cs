@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    public class ReportWeekEntry
+    public class WeekReportEntry
     {
         public string Engineer;
         public string Description;
         public Dictionary<DateTime, float> NrOfHoursPerWeekDay;
 
-        public ReportWeekEntry(string engineer, string description, DateTime dateOfMondayOfRequestedWeek, Dictionary<DateTime, float> nrOfHoursForAllDaysPerDay)
+        public WeekReportEntry(string engineer, string description, DateTime dateOfMondayOfRequestedWeek, Dictionary<DateTime, float> nrOfHoursForAllDaysPerDay)
         {
             if (dateOfMondayOfRequestedWeek.DayOfWeek != DayOfWeek.Monday)
             {

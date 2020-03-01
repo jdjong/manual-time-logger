@@ -54,10 +54,10 @@
     <Compile Include="Commands\BuildWeekReportsCommand.cs" />
     <Compile Include="Commands\CommandProvider.cs" />
     <Compile Include="WeekReportsBuilder.cs" />
-    <Compile Include="ReportWeekCsvFileRepository.cs" />
+    <Compile Include="WeekReportCsvFileRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportWeekEntry.cs" />
+    <Compile Include="WeekReportEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
