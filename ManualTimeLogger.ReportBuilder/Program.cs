@@ -15,7 +15,7 @@ namespace ManualTimeLogger.ReportBuilder
         private static ReportWeekCsvFileRepository _reportIssueNumberRepository;
         private static string _reportsBasePath;
 
-        private static ReportBuilderCommand _buildReportCommand;
+        private static BuildWeekReportsCommand _buildReportCommand;
 
         static void Main(string[] args)
         {

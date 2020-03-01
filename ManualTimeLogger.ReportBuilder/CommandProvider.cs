@@ -7,11 +7,11 @@ namespace ManualTimeLogger.ReportBuilder
 {
     public class CommandProvider
     {
-        public ReportBuilderCommand GetCommand(string[] args)
+        public BuildWeekReportsCommand GetCommand(string[] args)
         {
             if (!args.Any())
             {
-                return new ReportBuilderCommand(ReportPeriod.Week, GetMondayDateFromDateInRequestedWeek(DateTime.Today));
+                return new BuildWeekReportsCommand(GetMondayDateFromDateInRequestedWeek(DateTime.Today));
             }
 
             if (args.Length != 2)
@@ -34,7 +34,7 @@ namespace ManualTimeLogger.ReportBuilder
             }
 
             var providedDate = new DateTime(Convert.ToInt32(argumentValueForDate.Substring(0, 4)), Convert.ToInt32(argumentValueForDate.Substring(4, 2)), Convert.ToInt32(argumentValueForDate.Substring(6, 2)));
-            return new ReportBuilderCommand(argumentKeyForReportingPeriod == "-m" ? ReportPeriod.Month : ReportPeriod.Week, GetMondayDateFromDateInRequestedWeek(providedDate));
+            return new BuildWeekReportsCommand(GetMondayDateFromDateInRequestedWeek(providedDate));
 
         }
 
