@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ManualTimeLogger.ReportBuilder
 {
+    // TODO, to random number of days report entry
     public class WeekReportEntry
     {
         public string Engineer;

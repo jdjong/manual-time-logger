@@ -8,10 +8,8 @@ using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    // TODO, refactor, rename, test, polish
     public class PerEngineerWeekReportsBuilder
     {
-        private readonly DateTime _firstDayOfWeek;
         private readonly Dictionary<string, IEnumerable<LogEntry>> _logEntriesPerEngineer;
 
         private readonly ActivityReportBuilder _activityPerEngineerReportBuilder;
@@ -25,12 +23,11 @@ namespace ManualTimeLogger.ReportBuilder
                 throw new ArgumentException("First day of week should be a monday", nameof(firstDayOfWeek));
             }
 
-            _firstDayOfWeek = firstDayOfWeek;
             _logEntriesPerEngineer = logEntriesPerEngineer;
 
-            _activityPerEngineerReportBuilder = new ActivityReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"engineer_activity_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek), _firstDayOfWeek);
-            _labelPerEngineerReportBuilder = new LabelReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"engineer_label_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek), _firstDayOfWeek);
-            _issueNumberPerEngineerReportBuilder = new IssueNumberReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"engineer_issue_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek), _firstDayOfWeek);
+            _activityPerEngineerReportBuilder = new ActivityReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"engineer_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek), firstDayOfWeek);
+            _labelPerEngineerReportBuilder = new LabelReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"engineer_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek), firstDayOfWeek);
+            _issueNumberPerEngineerReportBuilder = new IssueNumberReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"engineer_issue_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek), firstDayOfWeek);
         }
 
         public void Build()

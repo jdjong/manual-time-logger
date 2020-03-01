@@ -8,10 +8,8 @@ using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    // TODO, refactor, rename, test, polish
     public class CumulativeWeekReportsBuilder
     {
-        private readonly DateTime _firstDayOfWeek;
         private readonly IEnumerable<IGrouping<DateTime, LogEntry>> _logEntriesPerDay;
 
         private readonly ActivityReportBuilder _activityCumulativeReportBuilder;
@@ -25,12 +23,11 @@ namespace ManualTimeLogger.ReportBuilder
                 throw new ArgumentException("First day of week should be a monday", nameof(firstDayOfWeek));
             }
 
-            _firstDayOfWeek = firstDayOfWeek;
             _logEntriesPerDay = logEntriesPerDay;
 
-            _activityCumulativeReportBuilder = new ActivityReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_activity_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek), _firstDayOfWeek);
-            _labelCumulativeReportBuilder = new LabelReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_label_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek), _firstDayOfWeek);
-            _issueNumberCumulativeReportBuilder = new IssueNumberReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_issue_week_report_{_firstDayOfWeek:yyyyMMdd}.csv", _firstDayOfWeek), _firstDayOfWeek);
+            _activityCumulativeReportBuilder = new ActivityReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek), firstDayOfWeek);
+            _labelCumulativeReportBuilder = new LabelReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek), firstDayOfWeek);
+            _issueNumberCumulativeReportBuilder = new IssueNumberReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_issue_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek), firstDayOfWeek);
         }
 
         public void Build()

@@ -11,6 +11,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
         private readonly DateTime _firstDayOfReport;
         private readonly WeekReportCsvFileRepository _repository;
 
+        // TODO, still week specific. Should this class work for week and month builds? If so, refactor. Also label and issue number report builders.
         public ActivityReportBuilder(WeekReportCsvFileRepository repository, DateTime firstDayOfReport)
         {
             _firstDayOfReport = firstDayOfReport;

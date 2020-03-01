@@ -7,14 +7,10 @@ namespace ManualTimeLogger.ReportBuilder
 {
     class Program
     {
-        private static ICommand _buildReportCommand;
-
         static void Main(string[] args)
         {
             var reportingCommandProvider = new CommandProvider();
-            _buildReportCommand = reportingCommandProvider.GetCommand(args);
-
-            Handle((dynamic)_buildReportCommand);
+            Handle((dynamic)reportingCommandProvider.GetCommand(args));
         }
 
         private static void Handle(BuildWeekReportsCommand command)
