@@ -1,4 +1,5 @@
 ﻿using System;
+using ManualTimeLogger.ReportBuilder.Commands;
 using NUnit.Framework;
 
 namespace ManualTimeLogger.ReportBuilder.Tests

@@ -1,4 +1,5 @@
 ﻿using System;
+using ManualTimeLogger.ReportBuilder.Commands;
 using NUnit.Framework;
 // ReSharper disable ObjectCreationAsStatement
 

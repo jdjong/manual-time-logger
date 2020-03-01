@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManualTimeLogger.ReportBuilder
+namespace ManualTimeLogger.ReportBuilder.Commands
 {
     public interface ICommand
     {

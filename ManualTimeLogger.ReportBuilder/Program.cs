@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using ManualTimeLogger.Domain;
 using ManualTimeLogger.Persistence;
+using ManualTimeLogger.ReportBuilder.Commands;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace ManualTimeLogger.ReportBuilder
