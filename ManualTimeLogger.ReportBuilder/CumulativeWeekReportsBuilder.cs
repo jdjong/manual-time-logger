@@ -25,9 +25,10 @@ namespace ManualTimeLogger.ReportBuilder
 
             _logEntriesPerDay = logEntriesPerDay;
 
-            _activityCumulativeReportBuilder = new ActivityReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek), firstDayOfWeek);
-            _labelCumulativeReportBuilder = new LabelReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek), firstDayOfWeek);
-            _issueNumberCumulativeReportBuilder = new IssueNumberReportBuilder(new WeekReportCsvFileRepository(reportsBasePath, $"cumulative_issue_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek), firstDayOfWeek);
+            var nrOfDaysInWeek = 7;
+            _activityCumulativeReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"cumulative_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
+            _labelCumulativeReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"cumulative_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
+            _issueNumberCumulativeReportBuilder = new IssueNumberReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"cumulative_issue_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
         }
 
         public void Build()

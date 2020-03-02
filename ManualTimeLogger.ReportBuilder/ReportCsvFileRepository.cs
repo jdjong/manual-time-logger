@@ -4,18 +4,18 @@ using System.Linq;
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    // TODO, to random number of days report csv file repository
-    public class WeekReportCsvFileRepository
+    public class ReportCsvFileRepository
     {
         // TODO, unit test
         
         private const char CsvSeparator = ';';
         private readonly string _basePath;
         private readonly string _fileName;
-        private readonly DateTime _dateOfMondayOfRequestedWeek;
+        private readonly DateTime _firstDateOfReportPeriod;
+        private readonly int _periodNrOfDays;
         private string FullFilePath => Path.Combine(_basePath, _fileName);
 
-        public WeekReportCsvFileRepository(string basePath, string fileName, DateTime dateOfMondayOfRequestedWeek)
+        public ReportCsvFileRepository(string basePath, string fileName, DateTime firstFirstDateOfReportPeriod, int periodNrOfDays)
         {
             if (string.IsNullOrEmpty(basePath)) throw new ArgumentNullException(basePath);
             if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException(fileName);
@@ -23,12 +23,8 @@ namespace ManualTimeLogger.ReportBuilder
             _basePath = basePath;
             _fileName = fileName;
 
-            if (dateOfMondayOfRequestedWeek.DayOfWeek != DayOfWeek.Monday)
-            {
-                throw new ArgumentException("Date needs to be a monday", nameof(dateOfMondayOfRequestedWeek));
-            }
-
-            _dateOfMondayOfRequestedWeek = dateOfMondayOfRequestedWeek;
+            _firstDateOfReportPeriod = firstFirstDateOfReportPeriod;
+            _periodNrOfDays = periodNrOfDays;
 
             if (!Directory.Exists(_basePath))
             {
@@ -50,11 +46,16 @@ namespace ManualTimeLogger.ReportBuilder
         {
             File.AppendAllLines(
                 FullFilePath,
-                new[] {$"\"Wie\"{CsvSeparator}\"Omschrijving\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), Enumerable.Range(0, 7).Select(nr => $"\"{_dateOfMondayOfRequestedWeek.AddDays(nr):yyyyMMdd}\""))}"});
+                new[] {$"\"Wie\"{CsvSeparator}\"Omschrijving\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDateOfReportPeriod.AddDays(nr):yyyyMMdd}\""))}"});
         }
 
-        public void SaveReportEntry(WeekReportEntry reportEntry)
+        public void SaveReportEntry(ReportEntry reportEntry)
         {
+            if (_periodNrOfDays != reportEntry.PeriodNrOfDays)
+            {
+                throw new Exception($"report entry spans {reportEntry.PeriodNrOfDays} nr. of days while this repository is for {_periodNrOfDays} nr. of days");
+            }
+            
             File.AppendAllLines(
                 FullFilePath, 
                 new[] { $"\"{reportEntry.Engineer}\"{CsvSeparator}\"{reportEntry.Description}\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), reportEntry.NrOfHoursPerWeekDay.Select(x => $"\"{x.Value}\""))}" });

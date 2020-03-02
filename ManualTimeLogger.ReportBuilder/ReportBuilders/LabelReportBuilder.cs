@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using ManualTimeLogger.Domain;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace ManualTimeLogger.ReportBuilder.ReportBuilders
 {
     class LabelReportBuilder
     {
-        private readonly WeekReportCsvFileRepository _repository;
+        private readonly ReportCsvFileRepository _repository;
         private readonly DateTime _firstDayOfReport;
+        private readonly int _periodNrOfDays;
 
-        public LabelReportBuilder(WeekReportCsvFileRepository repository, DateTime firstDayOfReport)
+        public LabelReportBuilder(ReportCsvFileRepository repository, DateTime firstDayOfReport, int periodNrOfDays)
         {
             _repository = repository;
             _firstDayOfReport = firstDayOfReport;
+            _periodNrOfDays = periodNrOfDays;
         }
 
         public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
@@ -24,7 +27,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             differentLabels.ToList().ForEach(label =>
             {
                 var timeForLabelPerDay = logEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Label == label).Sum(y => y.Duration));
-                _repository.SaveReportEntry(new WeekReportEntry(engineer, label, _firstDayOfReport, timeForLabelPerDay));
+                _repository.SaveReportEntry(new ReportEntry(engineer, label, _firstDayOfReport, _periodNrOfDays, timeForLabelPerDay));
             });
         }
 

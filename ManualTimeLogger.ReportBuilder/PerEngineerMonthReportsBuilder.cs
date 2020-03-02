@@ -8,7 +8,7 @@ using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    public class PerEngineerWeekReportsBuilder
+    public class PerEngineerMonthReportsBuilder
     {
         private readonly Dictionary<string, IEnumerable<LogEntry>> _logEntriesPerEngineer;
 
@@ -16,19 +16,19 @@ namespace ManualTimeLogger.ReportBuilder
         private readonly LabelReportBuilder _labelPerEngineerReportBuilder;
         private readonly IssueNumberReportBuilder _issueNumberPerEngineerReportBuilder;
 
-        public PerEngineerWeekReportsBuilder(string reportsBasePath, DateTime firstDayOfWeek, Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
+        public PerEngineerMonthReportsBuilder(string reportsBasePath, DateTime firstDayOfMonth, Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
         {
-            if (firstDayOfWeek.DayOfWeek != DayOfWeek.Monday)
+            if (firstDayOfMonth.Day != 1)
             {
-                throw new ArgumentException("First day of week should be a monday", nameof(firstDayOfWeek));
+                throw new ArgumentException("First day of month should be 1", nameof(firstDayOfMonth));
             }
 
             _logEntriesPerEngineer = logEntriesPerEngineer;
 
-            var nrOfDaysInWeek = 7;
-            _activityPerEngineerReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"engineer_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
-            _labelPerEngineerReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"engineer_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
-            _issueNumberPerEngineerReportBuilder = new IssueNumberReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"engineer_issue_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
+            var nrOfDaysInMonth = DateTime.DaysInMonth(firstDayOfMonth.Year, firstDayOfMonth.Month);
+            _activityPerEngineerReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"engineer_activity_month_report_{firstDayOfMonth:yyyyMMdd}.csv", firstDayOfMonth, nrOfDaysInMonth), firstDayOfMonth, nrOfDaysInMonth);
+            _labelPerEngineerReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"engineer_label_month_report_{firstDayOfMonth:yyyyMMdd}.csv", firstDayOfMonth, nrOfDaysInMonth), firstDayOfMonth, nrOfDaysInMonth);
+            _issueNumberPerEngineerReportBuilder = new IssueNumberReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"engineer_issue_month_report_{firstDayOfMonth:yyyyMMdd}.csv", firstDayOfMonth, nrOfDaysInMonth), firstDayOfMonth, nrOfDaysInMonth);
         }
 
         public void Build()

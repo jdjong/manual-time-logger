@@ -9,12 +9,13 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
     public class ActivityReportBuilder
     {
         private readonly DateTime _firstDayOfReport;
-        private readonly WeekReportCsvFileRepository _repository;
+        private readonly int _periodNrOfDays;
+        private readonly ReportCsvFileRepository _repository;
 
-        // TODO, still week specific. Should this class work for week and month builds? If so, refactor. Also label and issue number report builders.
-        public ActivityReportBuilder(WeekReportCsvFileRepository repository, DateTime firstDayOfReport)
+        public ActivityReportBuilder(ReportCsvFileRepository repository, DateTime firstDayOfReport, int periodNrOfDays)
         {
             _firstDayOfReport = firstDayOfReport;
+            _periodNrOfDays = periodNrOfDays;
             _repository = repository;
         }
 
@@ -25,7 +26,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             differentActivities.ToList().ForEach(activity =>
             {
                 var timeForActivityPerDay = logEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Activity == activity).Sum(y => y.Duration));
-                _repository.SaveReportEntry(new WeekReportEntry(engineer, activity, _firstDayOfReport, timeForActivityPerDay));
+                _repository.SaveReportEntry(new ReportEntry(engineer, activity, _firstDayOfReport, _periodNrOfDays, timeForActivityPerDay));
             });
         }
 

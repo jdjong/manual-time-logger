@@ -17,17 +17,11 @@ namespace ManualTimeLogger.ReportBuilder.Tests
             _engineer = "TestEngineer";
             _description = "Description";
         }
-        
-        [Test]
-        public void given_a_non_monday_date_when_creating_report_week_entry_then_an_argument_exception_is_thrown()
-        {
-            Assert.Throws<ArgumentException>(() => new WeekReportEntry(_engineer, _description, new DateTime(2020, 2, 29), new Dictionary<DateTime, float>())); // a saturday
-        }
 
         [Test]
         public void given_no_data_when_creating_report_week_entry_then_all_week_entries_have_zero_hours()
         {
-            var entry = new WeekReportEntry(_engineer, _description, new DateTime(2020, 3, 2), new Dictionary<DateTime, float>());
+            var entry = new ReportEntry(_engineer, _description, new DateTime(2020, 3, 2), 7, new Dictionary<DateTime, float>());
             Assert.AreEqual(7, entry.NrOfHoursPerWeekDay.Count, "entries for nr of days");
             Assert.True(entry.NrOfHoursPerWeekDay.Select(x => x.Value).All(nrOfHours => Math.Abs(nrOfHours) < 0.01f), "nr of hours value");
         }
@@ -42,7 +36,7 @@ namespace ManualTimeLogger.ReportBuilder.Tests
             var hoursOnTuesday = 2f;
             var hoursOnThursday = 3f;
             var nrOfHoursPerDayInputData = new Dictionary<DateTime, float>{{ tuesday, hoursOnTuesday }, { thursday, hoursOnThursday } };
-            var entry = new WeekReportEntry(_engineer, _description, monday, nrOfHoursPerDayInputData);
+            var entry = new ReportEntry(_engineer, _description, monday, 7, nrOfHoursPerDayInputData);
 
             Assert.AreEqual(7, entry.NrOfHoursPerWeekDay.Count, "entries for nr of days");
             Assert.True(Math.Abs(entry.NrOfHoursPerWeekDay[monday]) < 0.01f, "nr of hours value on monday");
