@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using ManualTimeLogger.Domain;
+
 // ReSharper disable PossibleMultipleEnumeration
 
+// TODO, unit test along with label and activity builders
 namespace ManualTimeLogger.ReportBuilder.ReportBuilders
 {
     class IssueNumberReportBuilder
@@ -17,6 +19,8 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             _repository = repository;
             _firstDayOfReport = firstDayOfReport;
             _periodNrOfDays = periodNrOfDays;
+
+            _repository.CreateHeader(new[] { $"\"Wie\"{ReportCsvFileRepository.CsvSeparator}\"Issue\"{ReportCsvFileRepository.CsvSeparator}{string.Join(ReportCsvFileRepository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
         public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)

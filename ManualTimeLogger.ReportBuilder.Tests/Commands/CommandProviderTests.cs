@@ -14,7 +14,7 @@ namespace ManualTimeLogger.ReportBuilder.Tests.Commands
             var command = commandProvider.GetCommand(null);
 
             Assert.IsInstanceOf(typeof(BuildWeekReportsCommand), command, "Type of command");
-            Assert.IsTrue(DateTime.Today - command.FirstDayOfPeriod < TimeSpan.FromDays(7), "Default command is for the current week");
+            Assert.IsTrue(DateTime.Today - command.FromDay < TimeSpan.FromDays(7), "Default command is for the current week");
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace ManualTimeLogger.ReportBuilder.Tests.Commands
             var command = commandProvider.GetCommand(new[] { "-w", "20200229" }); // saturday
 
             Assert.IsInstanceOf(typeof(BuildWeekReportsCommand), command, "Type of command");
-            Assert.AreEqual(new DateTime(2020, 2, 24), command.FirstDayOfPeriod, "Command first date of period");
+            Assert.AreEqual(new DateTime(2020, 2, 24), command.FromDay, "Command first date of period");
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace ManualTimeLogger.ReportBuilder.Tests.Commands
             var command = commandProvider.GetCommand(new[] { "-m", "20200229" }); // saturday
 
             Assert.IsInstanceOf(typeof(BuildMonthReportsCommand), command, "Type of command");
-            Assert.AreEqual(new DateTime(2020, 2, 1), command.FirstDayOfPeriod, "Command first date of period");
+            Assert.AreEqual(new DateTime(2020, 2, 1), command.FromDay, "Command first date of period");
         }
     }
 }

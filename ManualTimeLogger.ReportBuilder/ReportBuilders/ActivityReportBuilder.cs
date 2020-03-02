@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ManualTimeLogger.Domain;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace ManualTimeLogger.ReportBuilder.ReportBuilders
@@ -17,6 +18,8 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             _firstDayOfReport = firstDayOfReport;
             _periodNrOfDays = periodNrOfDays;
             _repository = repository;
+
+            _repository.CreateHeader(new[] { $"\"Wie\"{ReportCsvFileRepository.CsvSeparator}\"Activiteit\"{ReportCsvFileRepository.CsvSeparator}{string.Join(ReportCsvFileRepository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
         public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)

@@ -7,6 +7,6 @@ namespace ManualTimeLogger.ReportBuilder.Commands
         /// <summary>
         /// When period is week, then the first day is the monday of the period.
         /// </summary>
-        DateTime FirstDayOfPeriod { get; }
+        DateTime FromDay { get; }
     }
 }

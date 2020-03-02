@@ -7,7 +7,7 @@ namespace ManualTimeLogger.ReportBuilder.Commands
         /// <summary>
         /// When period is month, then the first day is the first of the month.
         /// </summary>
-        public DateTime FirstDayOfPeriod { get; }
+        public DateTime FromDay { get; }
 
         public BuildMonthReportsCommand(DateTime firstDayOfPeriod)
         {
@@ -16,7 +16,7 @@ namespace ManualTimeLogger.ReportBuilder.Commands
                 throw new ArgumentException("Period is month, so first date of period should be on the first of the month", nameof(firstDayOfPeriod));
             }
 
-            FirstDayOfPeriod = firstDayOfPeriod;
+            FromDay = firstDayOfPeriod;
         }
     }
 }

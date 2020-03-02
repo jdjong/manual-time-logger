@@ -18,6 +18,8 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             _repository = repository;
             _firstDayOfReport = firstDayOfReport;
             _periodNrOfDays = periodNrOfDays;
+
+            _repository.CreateHeader(new[] { $"\"Wie\"{ReportCsvFileRepository.CsvSeparator}\"Thema\"{ReportCsvFileRepository.CsvSeparator}{string.Join(ReportCsvFileRepository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
         public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)

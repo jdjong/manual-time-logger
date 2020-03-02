@@ -8,19 +8,20 @@ namespace ManualTimeLogger.ReportBuilder
         public int PeriodNrOfDays { get; }
         public string Engineer;
         public string Description;
-        public Dictionary<DateTime, float> NrOfHoursPerWeekDay;
+        public Dictionary<DateTime, float> NrOfHoursPerDay;
 
+        // TODO, add tests for arbitrary period nr of days
         public ReportEntry(string engineer, string description, DateTime firstDateOfReportPeriod, int periodNrOfDays, Dictionary<DateTime, float> nrOfHoursForAllDaysPerDay)
         {
             PeriodNrOfDays = periodNrOfDays;
             Engineer = engineer;
             Description = description;
-            NrOfHoursPerWeekDay = new Dictionary<DateTime, float>();
+            NrOfHoursPerDay = new Dictionary<DateTime, float>();
 
             for (var numberOfDays = 0; numberOfDays < periodNrOfDays; numberOfDays++)
             {
                 var currentDay = firstDateOfReportPeriod.AddDays(numberOfDays);
-                NrOfHoursPerWeekDay.Add(currentDay,
+                NrOfHoursPerDay.Add(currentDay,
                     nrOfHoursForAllDaysPerDay?.ContainsKey(currentDay) ?? false
                         ? nrOfHoursForAllDaysPerDay[currentDay]
                         : 0f);

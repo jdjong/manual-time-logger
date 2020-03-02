@@ -13,6 +13,7 @@ namespace ManualTimeLogger.ReportBuilder
             Handle((dynamic)reportingCommandProvider.GetCommand(args));
         }
 
+        // TODO, remove duplication
         private static void Handle(BuildWeekReportsCommand command)
         {
             var timeLogsBasePath = Properties.Settings.Default.TimeLogsBasePath;
@@ -22,8 +23,8 @@ namespace ManualTimeLogger.ReportBuilder
             var logEntriesPerEngineer = allTimeLogRepositories.ToDictionary(repository => repository.GetEngineerName(), repository => repository.GetAllLogEntries());
             var logEntriesPerDay = logEntriesPerEngineer.SelectMany(x => x.Value).GroupBy(x => x.CreateDate);
 
-            var perEngineerReportsBuilder = new PerEngineerWeekReportsBuilder(Properties.Settings.Default.ReportsBasePaths, command.FirstDayOfPeriod, logEntriesPerEngineer);
-            var cumulativeReportsBuilder = new CumulativeWeekReportsBuilder(Properties.Settings.Default.ReportsBasePaths, command.FirstDayOfPeriod, logEntriesPerDay);
+            var perEngineerReportsBuilder = new PerEngineerWeekReportsBuilder(Properties.Settings.Default.ReportsBasePaths, command.FromDay, logEntriesPerEngineer);
+            var cumulativeReportsBuilder = new CumulativeWeekReportsBuilder(Properties.Settings.Default.ReportsBasePaths, command.FromDay, logEntriesPerDay);
             
             perEngineerReportsBuilder.Build();
             cumulativeReportsBuilder.Build();
@@ -38,8 +39,8 @@ namespace ManualTimeLogger.ReportBuilder
             var logEntriesPerEngineer = allTimeLogRepositories.ToDictionary(repository => repository.GetEngineerName(), repository => repository.GetAllLogEntries());
             var logEntriesPerDay = logEntriesPerEngineer.SelectMany(x => x.Value).GroupBy(x => x.CreateDate);
 
-            var perEngineerReportsBuilder = new PerEngineerMonthReportsBuilder(Properties.Settings.Default.ReportsBasePaths, command.FirstDayOfPeriod, logEntriesPerEngineer);
-            var cumulativeReportsBuilder = new CumulativeMonthReportsBuilder(Properties.Settings.Default.ReportsBasePaths, command.FirstDayOfPeriod, logEntriesPerDay);
+            var perEngineerReportsBuilder = new PerEngineerMonthReportsBuilder(Properties.Settings.Default.ReportsBasePaths, command.FromDay, logEntriesPerEngineer);
+            var cumulativeReportsBuilder = new CumulativeMonthReportsBuilder(Properties.Settings.Default.ReportsBasePaths, command.FromDay, logEntriesPerDay);
 
             perEngineerReportsBuilder.Build();
             cumulativeReportsBuilder.Build();

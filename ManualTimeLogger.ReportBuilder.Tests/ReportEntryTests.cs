@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace ManualTimeLogger.ReportBuilder.Tests
 {
     [TestFixture]
-    public class ReportWeekEntryTests
+    public class ReportEntryTests
     {
         private string _engineer;
         private string _description;
@@ -22,8 +22,8 @@ namespace ManualTimeLogger.ReportBuilder.Tests
         public void given_no_data_when_creating_report_week_entry_then_all_week_entries_have_zero_hours()
         {
             var entry = new ReportEntry(_engineer, _description, new DateTime(2020, 3, 2), 7, new Dictionary<DateTime, float>());
-            Assert.AreEqual(7, entry.NrOfHoursPerWeekDay.Count, "entries for nr of days");
-            Assert.True(entry.NrOfHoursPerWeekDay.Select(x => x.Value).All(nrOfHours => Math.Abs(nrOfHours) < 0.01f), "nr of hours value");
+            Assert.AreEqual(7, entry.NrOfHoursPerDay.Count, "entries for nr of days");
+            Assert.True(entry.NrOfHoursPerDay.Select(x => x.Value).All(nrOfHours => Math.Abs(nrOfHours) < 0.01f), "nr of hours value");
         }
 
         [Test]
@@ -38,11 +38,11 @@ namespace ManualTimeLogger.ReportBuilder.Tests
             var nrOfHoursPerDayInputData = new Dictionary<DateTime, float>{{ tuesday, hoursOnTuesday }, { thursday, hoursOnThursday } };
             var entry = new ReportEntry(_engineer, _description, monday, 7, nrOfHoursPerDayInputData);
 
-            Assert.AreEqual(7, entry.NrOfHoursPerWeekDay.Count, "entries for nr of days");
-            Assert.True(Math.Abs(entry.NrOfHoursPerWeekDay[monday]) < 0.01f, "nr of hours value on monday");
-            Assert.True(Math.Abs(entry.NrOfHoursPerWeekDay[tuesday] - nrOfHoursPerDayInputData[tuesday]) < 0.01f, "nr of hours value on tuesday");
-            Assert.True(Math.Abs(entry.NrOfHoursPerWeekDay[wednesday]) < 0.01f, "nr of hours value on wednesday");
-            Assert.True(Math.Abs(entry.NrOfHoursPerWeekDay[thursday] - nrOfHoursPerDayInputData[thursday]) < 0.01f, "nr of hours value on thursday");
+            Assert.AreEqual(7, entry.NrOfHoursPerDay.Count, "entries for nr of days");
+            Assert.True(Math.Abs(entry.NrOfHoursPerDay[monday]) < 0.01f, "nr of hours value on monday");
+            Assert.True(Math.Abs(entry.NrOfHoursPerDay[tuesday] - nrOfHoursPerDayInputData[tuesday]) < 0.01f, "nr of hours value on tuesday");
+            Assert.True(Math.Abs(entry.NrOfHoursPerDay[wednesday]) < 0.01f, "nr of hours value on wednesday");
+            Assert.True(Math.Abs(entry.NrOfHoursPerDay[thursday] - nrOfHoursPerDayInputData[thursday]) < 0.01f, "nr of hours value on thursday");
         }
     }
 }
