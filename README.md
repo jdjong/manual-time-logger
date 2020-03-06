@@ -1,4 +1,4 @@
-# manual-time-logger
+# Time Logger App
 
 ## Purpose
 
@@ -6,11 +6,22 @@ Providing an extremely easy and accessible way to keep track of your spend time 
 
 ## How
 
-* Input form is always visible at the bottom right corner of the screen; you are automatically reminded to administrate some spend time.
-* Use of intuitive markers to denote the purpose of the text entered after the marker for quick administration.
-* Input is stored in a simple .csv file (C:\temp\timelogs) which allows for easy reporting and manual manipulations.
+* Input form is always visible at the bottom right corner of the screen; you are automatically reminded to administrate some spend time
+* Use of intuitive markers to denote the purpose of the text entered after the marker for quick administration
+* Input is stored in a simple .csv file (C:\temp\timelogs) which allows for easy reporting and manual manipulations
 
 ## Use
+
+### Run
+
+Run the program by building it in Visual Studio for example.
+
+### Configure
+
+* Base path for the time logs
+* Use auto fill for label and activity yes/no
+* The label and activity presets
+* Your name which will be included in the time log's file name
 
 ### Markers
 
@@ -26,3 +37,34 @@ Providing an extremely easy and accessible way to keep track of your spend time 
 * \*2 $csv file repository \#123 @newfunctionality !development
 * $Preference screen testing \*1,5 @uximprovements
 * $writing read me\*.5
+
+# Report Builder App
+
+## Purpose
+
+Automatically create reports for spend time aggregated by:
+
+* engineer, issue, day
+* engineer, label, day
+* engineer, activity, day
+* issue, day
+* label, day
+* activity, day
+
+## How
+
+Reading all the time logs from a folder and producing the desired report files (.csv).
+
+## Use
+
+### Run
+
+Run the program by building it in Visual Studio for example. The following parameters can be passed in:
+
+* -w yyyyMMdd (generates the reports for 1 week starting at monday of the week for the passed in date)
+* -m yyyyMMdd (generates the reports for 1 month starting at the first day of the month for the passed in date)
+
+### Configure
+
+* Base path for the time logs
+* Base path for the reports

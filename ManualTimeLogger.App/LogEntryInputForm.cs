@@ -39,14 +39,16 @@ namespace ManualTimeLogger.App
 
         private void TextBoxKeyDown(object sender, KeyEventArgs e)
         {
-            // TODO, is @. Duplicate knowledge, because @ is also hardcoded in LogEntryInputParser as special char for label
+            // Key @ is pressed. REMINDER! Duplicate knowledge, because @ is also hardcoded in LogEntryInputParser as special char for label.
+            // An alternative is unknown to me how to make the below key configuration configurable.
             if (e.Shift && e.KeyCode == Keys.D2)
             {
                 _autoFillListBoxController.DoAutoFillLabels();
                 return;
             }
 
-            // TODO, is !. Duplicate knowledge, because ! is also hardcoded in LogEntryInputParser as special char for activity
+            // Key ! is pressed. REMINDER! Duplicate knowledge, because ! is also hardcoded in LogEntryInputParser as special char for activity.
+            // An alternative is unknown to me how to make the below key configuration configurable.
             if (e.Shift && e.KeyCode == Keys.D1)
             {
                 _autoFillListBoxController.DoAutoFillActivities();

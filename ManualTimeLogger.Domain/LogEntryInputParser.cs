@@ -11,10 +11,10 @@ namespace ManualTimeLogger.Domain
     /// Optionally provide:
     ///  * issue number (prepend with #)
     ///  * label (prepend with @)
+    ///  * activity (prepend with !)
     /// </summary>
     public class LogEntryInputParser
     {
-        // TODO, do something with logging and parse results/validation results
         private string IssueNumberSpecialChar => "#";
         private string DurationSpecialChar => "*";
         private string DescriptionSpecialChar => "$";
