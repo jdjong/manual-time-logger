@@ -34,10 +34,38 @@ namespace ManualTimeLogger.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("joost")]
+        [global::System.Configuration.DefaultSettingValueAttribute("FillYourName")]
         public string Engineer {
             get {
                 return ((string)(this["Engineer"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ontwikkelen;reviewen;mailen;telefoneren;overleggen;plannen;voorbereiden")]
+        public string ActivityPresets {
+            get {
+                return ((string)(this["ActivityPresets"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsAutoFillFeatureEnabled {
+            get {
+                return ((bool)(this["IsAutoFillFeatureEnabled"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("schade;avg;automatischindienen;stagingdb;architectuur;voortbrengingsproces;gripco" +
+            "ntinuiteit;hygiene;incident;internationalisatie")]
+        public string LabelPresets {
+            get {
+                return ((string)(this["LabelPresets"]));
             }
         }
     }

@@ -1,33 +1,32 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using ManualTimeLogger.Domain;
 using ManualTimeLogger.Persistence;
 
 namespace ManualTimeLogger.App
 {
-    public partial class LogEntryInputForm : Form
+    public partial class LogEntryInputForm : Form, IHandleAutoFill
     {
-        private readonly bool _isExistingLabelListBoxDisplayFeatureEnabled = false;
-        
         private readonly LogEntryInputParser _inputParser;
         private readonly IRepository _repository;
+        private readonly AutoFillListBoxController _autoFillListBoxController;
 
-        public LogEntryInputForm(LogEntryInputParser inputParser, IRepository repository)
+        public LogEntryInputForm(LogEntryInputParser inputParser, IRepository repository, AutoFillListBoxController autoFillListBoxController)
         {
             _inputParser = inputParser;
             _repository = repository;
-
+            
             InitializeComponent();
+
+            _autoFillListBoxController = autoFillListBoxController;
+            _autoFillListBoxController.Init(this, autoFillListBox);
 
             // Working area is area without the task-bar. Correct layout is guaranteed for bottom task-bars only.
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - ClientSize.Width, Screen.PrimaryScreen.WorkingArea.Height - ClientSize.Height - GetTitleBarHeight());
 
             logEntryTextBox.KeyDown += TextBoxKeyDown;
             logEntryTextBox.KeyUp += TextBoxKeyUp;
-
-            labelsListBox.KeyUp += ListBoxKeyUp;
 
             DisplayHoursToday();
         }
@@ -41,23 +40,19 @@ namespace ManualTimeLogger.App
         private void TextBoxKeyDown(object sender, KeyEventArgs e)
         {
             // TODO, is @. Duplicate knowledge, because @ is also hardcoded in LogEntryInputParser as special char for label
-            if (_isExistingLabelListBoxDisplayFeatureEnabled && e.Shift && e.KeyCode == Keys.D2)
+            if (e.Shift && e.KeyCode == Keys.D2)
             {
-                labelsListBox.Visible = true;
-                labelsListBox.Items.Clear();
-                _repository
-                    .GetExistingLabels()
-                    .ToList()
-                    .ForEach(label => labelsListBox.Items.Add(label));
-
-                labelsListBox.MultiColumn = false;
-                labelsListBox.Sorted = true;
-                labelsListBox.SetSelected(0, true);
-                labelsListBox.Focus();
-
+                _autoFillListBoxController.DoAutoFillLabels();
                 return;
             }
-            
+
+            // TODO, is !. Duplicate knowledge, because ! is also hardcoded in LogEntryInputParser as special char for activity
+            if (e.Shift && e.KeyCode == Keys.D1)
+            {
+                _autoFillListBoxController.DoAutoFillActivities();
+                return;
+            }
+
             if (e.KeyCode != Keys.Enter) return;
 
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Tab))
@@ -66,40 +61,15 @@ namespace ManualTimeLogger.App
             }
         }
 
-        private void ListBoxKeyUp(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Escape:
-                    HideLabelsListBox();
-                    SetTextBoxCursorToEndOfText();
-                    break;
-                case Keys.Enter:
-                    // Add selected label
-                    logEntryTextBox.Text += labelsListBox.SelectedItem as string;
-
-                    HideLabelsListBox();
-                    SetTextBoxCursorToEndOfText();
-                    break;
-            }
-
-            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Tab))
-            {
-                e.Handled = e.SuppressKeyPress = true;
-            }
-        }
-
         // Cursor to end of the text in the text box
-        private void SetTextBoxCursorToEndOfText()
+        public void HandleAutoFillFinished(string autoFilledText = null)
         {
+            if (!string.IsNullOrEmpty(autoFilledText))
+            {
+                logEntryTextBox.Text += autoFilledText;
+            }
             logEntryTextBox.SelectionStart = logEntryTextBox.Text.Length;
             logEntryTextBox.SelectionLength = 0;
-        }
-
-        // Hide labels list box and bring focus to text box again
-        private void HideLabelsListBox()
-        {
-            labelsListBox.Visible = false;
             logEntryTextBox.Focus();
         }
 

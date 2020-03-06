@@ -32,7 +32,7 @@ namespace ManualTimeLogger.App
         private void InitializeComponent()
         {
             this.logEntryTextBox = new System.Windows.Forms.TextBox();
-            this.labelsListBox = new System.Windows.Forms.ListBox();
+            this.autoFillListBox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // logEntryTextBox
@@ -48,23 +48,23 @@ namespace ManualTimeLogger.App
             // 
             // labelsListBox
             // 
-            this.labelsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelsListBox.FormattingEnabled = true;
-            this.labelsListBox.ItemHeight = 16;
-            this.labelsListBox.Location = new System.Drawing.Point(182, 6);
-            this.labelsListBox.Name = "labelsListBox";
-            this.labelsListBox.Size = new System.Drawing.Size(104, 36);
-            this.labelsListBox.Sorted = true;
-            this.labelsListBox.TabIndex = 1;
-            this.labelsListBox.TabStop = false;
-            this.labelsListBox.Visible = false;
+            this.autoFillListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.autoFillListBox.FormattingEnabled = true;
+            this.autoFillListBox.ItemHeight = 16;
+            this.autoFillListBox.Location = new System.Drawing.Point(182, 6);
+            this.autoFillListBox.Name = "autoFillListBox";
+            this.autoFillListBox.Size = new System.Drawing.Size(104, 36);
+            this.autoFillListBox.Sorted = true;
+            this.autoFillListBox.TabIndex = 1;
+            this.autoFillListBox.TabStop = false;
+            this.autoFillListBox.Visible = false;
             // 
             // LogEntryInputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(352, 54);
-            this.Controls.Add(this.labelsListBox);
+            this.Controls.Add(this.autoFillListBox);
             this.Controls.Add(this.logEntryTextBox);
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "LogEntryInputForm";
@@ -79,7 +79,7 @@ namespace ManualTimeLogger.App
         #endregion
 
         private System.Windows.Forms.TextBox logEntryTextBox;
-        private ListBox labelsListBox;
+        private ListBox autoFillListBox;
     }
 }
 

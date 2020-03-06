@@ -71,16 +71,5 @@ namespace ManualTimeLogger.Persistence
         {
             return _fileName.Split('_')[0];
         }
-
-        public IEnumerable<string> GetExistingLabels()
-        {
-            var csvLines = File.ReadAllLines(FullFilePath);
-
-            return csvLines
-                .Skip(1) // skip header
-                .Select(csvLine => new CsvFileLogEntry(csvLine, CsvSeparator).AsDomainObject.Label)
-                .Where(label => !string.IsNullOrEmpty(label))
-                .Distinct();
-        }
     }
 }

@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoFillListBoxController.cs" />
+    <Compile Include="IHandleAutoFill.cs" />
     <Compile Include="LogEntryInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
