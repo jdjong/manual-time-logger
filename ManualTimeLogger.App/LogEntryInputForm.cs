@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using ManualTimeLogger.Domain;
 using ManualTimeLogger.Persistence;
@@ -28,7 +29,7 @@ namespace ManualTimeLogger.App
             logEntryTextBox.KeyDown += TextBoxKeyDown;
             logEntryTextBox.KeyUp += TextBoxKeyUp;
 
-            DisplayHoursToday();
+            DisplayHoursTodaySoFar();
         }
 
         private int GetTitleBarHeight()
@@ -90,10 +91,10 @@ namespace ManualTimeLogger.App
                 logEntryTextBox.ForeColor = Color.Red;
             }
             
-            DisplayHoursToday();
+            DisplayHoursTodaySoFar();
         }
 
-        private void DisplayHoursToday()
+        private void DisplayHoursTodaySoFar()
         {
             Text = $"Log time ({_repository.GetTotalLoggedHoursForDate(DateTime.Today).ToString("0.00")})";
         }

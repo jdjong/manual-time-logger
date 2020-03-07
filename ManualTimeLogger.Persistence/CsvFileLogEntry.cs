@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Globalization;
 using ManualTimeLogger.Domain;
+using NLog;
 
 namespace ManualTimeLogger.Persistence
 {
     public class CsvFileLogEntry
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private readonly char _separator;
         public LogEntry AsDomainObject { get; }
         public string AsCsvLine { get; }
@@ -18,31 +22,48 @@ namespace ManualTimeLogger.Persistence
         {
             _separator = separator;
             AsDomainObject = domainObject;
-            AsCsvLine = $"\"{domainObject.IssueNumber}\"{separator}\"{domainObject.Duration}\"{separator}\"{domainObject.Description}\"{separator}\"{domainObject.Label}\"{separator}\"{domainObject.Activity}\"{separator}\"{domainObject.CreateDate:yyyyMMdd}\"";
+            AsCsvLine = ToCsvLine(domainObject, separator);
         }
 
         public CsvFileLogEntry(string csvLine, char separator)
         {
             _separator = separator;
-            AsCsvLine = csvLine;
-            
-            var logEntryPropertyStrings = csvLine.Split(separator);
-            var issueNumberString = logEntryPropertyStrings[0].Trim('"');
-            var durationString = logEntryPropertyStrings[1].Trim('"');
-            var descriptionString = logEntryPropertyStrings[2].Trim('"');
-            var labelString = logEntryPropertyStrings[3].Trim('"');
-            var activityString = logEntryPropertyStrings[4].Trim('"');
-            var createDateString = logEntryPropertyStrings[5].Trim('"');
 
-            // TODO, do I need to do some validation since it is intended and possible to change the csv manually? Probably...
-            var issueNumber = string.IsNullOrEmpty(issueNumberString) ? 0 : int.Parse(issueNumberString);
-            var duration = float.Parse(durationString);
-            var description = descriptionString;
-            var label = labelString;
-            var activity = activityString;
-            var createDate = new DateTime(int.Parse(createDateString.Substring(0,4)), int.Parse(createDateString.Substring(4,2)), int.Parse(createDateString.Substring(6,2)));
+            try
+            {
+                var logEntryPropertyStrings = csvLine.Split(separator);
+                var issueNumberString = logEntryPropertyStrings[0].Trim('"');
+                var durationString = logEntryPropertyStrings[1].Trim('"');
+                var descriptionString = logEntryPropertyStrings[2].Trim('"');
+                var labelString = logEntryPropertyStrings[3].Trim('"');
+                var activityString = logEntryPropertyStrings[4].Trim('"');
+                var createDateString = logEntryPropertyStrings[5].Trim('"');
 
-            AsDomainObject = new LogEntry(issueNumber, duration, description, label, activity, createDate);
+                var issueNumber = string.IsNullOrEmpty(issueNumberString) ? 0 : int.Parse(issueNumberString);
+                var duration = float.Parse(GetCultureInvariantDurationString(durationString), CultureInfo.InvariantCulture.NumberFormat);
+                var description = descriptionString;
+                var label = labelString;
+                var activity = activityString;
+                var createDate = new DateTime(int.Parse(createDateString.Substring(0,4)), int.Parse(createDateString.Substring(4,2)), int.Parse(createDateString.Substring(6,2)));
+
+                AsDomainObject = new LogEntry(issueNumber, duration, description, label, activity, createDate);
+                AsCsvLine = ToCsvLine(AsDomainObject, separator);
+            }
+            catch (Exception e)
+            {
+                Log.Info($"Input csv line is {csvLine} and separator is {separator}");
+                throw;
+            }
+        }
+
+        private static string GetCultureInvariantDurationString(string durationString)
+        {
+            return durationString.Replace(",", CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator).Replace(".", CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator);
+        }
+
+        private string ToCsvLine(LogEntry domainObject, char separator)
+        {
+            return $"\"{domainObject.IssueNumber}\"{separator}\"{domainObject.Duration.ToString(CultureInfo.InvariantCulture.NumberFormat)}\"{separator}\"{domainObject.Description}\"{separator}\"{domainObject.Label}\"{separator}\"{domainObject.Activity}\"{separator}\"{domainObject.CreateDate:yyyyMMdd}\"";
         }
     }
 }

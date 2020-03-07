@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NLog;
 
 namespace ManualTimeLogger.Domain
 {
@@ -15,6 +16,8 @@ namespace ManualTimeLogger.Domain
     /// </summary>
     public class LogEntryInputParser
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private string IssueNumberSpecialChar => "#";
         private string DurationSpecialChar => "*";
         private string DescriptionSpecialChar => "$";
@@ -65,8 +68,9 @@ namespace ManualTimeLogger.Domain
                     : null;
                 return isOverallSuccess;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Log.Error(e, $"Unexpected exception while creating LogEntry. IssueNumber: {issueNumberParseResult.Value} - Duration: {durationParseResult.Value} - Description: {descriptionParseResult.Value} - Label: {labelParseResult.Value} - Activity: {activityParseResult.Value}");
                 logEntry = null;
                 return false;
             }
