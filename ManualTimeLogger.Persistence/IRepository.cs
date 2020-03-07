@@ -8,5 +8,7 @@ namespace ManualTimeLogger.Persistence
     {
         void SaveLogEntry(LogEntry logEntry);
         float GetTotalLoggedHoursForDate(DateTime date);
+        IEnumerable<LogEntry> GetAllLogEntries();
+        string GetEngineerName();
     }
 }

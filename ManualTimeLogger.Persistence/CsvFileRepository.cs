@@ -66,7 +66,6 @@ namespace ManualTimeLogger.Persistence
                 .Select(csvLine => new CsvFileLogEntry(csvLine, CsvSeparator).AsDomainObject);
         }
 
-        // TODO, improve code, test code and to interface
         public string GetEngineerName()
         {
             return _fileName.Split('_')[0];
