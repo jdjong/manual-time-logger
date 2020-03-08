@@ -49,9 +49,9 @@ namespace ManualTimeLogger.ReportBuilder
         {
             var allTimeLogRepositories = GetAllTimeLogRepositories();
 
-            // TODO, this will break when multiple files for the same engineer
-            var logEntriesPerEngineer = allTimeLogRepositories.ToDictionary(repository => repository.GetEngineerName(), repository => repository.GetAllLogEntries());
-            return logEntriesPerEngineer;
+            return allTimeLogRepositories
+                .GroupBy(repo => repo.GetEngineerName())
+                .ToDictionary(grouping => grouping.Key, grouping => grouping.SelectMany(repo => repo.GetAllLogEntries()));
         }
 
         private static List<CsvFileRepository> GetAllTimeLogRepositories()
