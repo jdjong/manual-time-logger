@@ -10,7 +10,6 @@ namespace ManualTimeLogger.ReportBuilder
         public string Description;
         public Dictionary<DateTime, float> NrOfHoursPerDay;
 
-        // TODO, add tests for arbitrary period nr of days
         public ReportEntry(string engineer, string description, DateTime firstDateOfReportPeriod, int periodNrOfDays, Dictionary<DateTime, float> nrOfHoursForAllDaysPerDay)
         {
             PeriodNrOfDays = periodNrOfDays;

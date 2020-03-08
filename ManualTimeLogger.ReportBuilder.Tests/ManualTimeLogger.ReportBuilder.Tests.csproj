@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Commands\BuildReportsCommandsTests.cs" />
     <Compile Include="Commands\CommandProviderTests.cs" />
+    <Compile Include="ReportCsvFileRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportEntryTests.cs" />
   </ItemGroup>
