@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ManualTimeLogger.ReportBuilder
 {
@@ -24,6 +25,31 @@ namespace ManualTimeLogger.ReportBuilder
                     nrOfHoursForAllDaysPerDay?.ContainsKey(currentDay) ?? false
                         ? nrOfHoursForAllDaysPerDay[currentDay]
                         : 0f);
+            }
+        }
+
+        protected bool Equals(ReportEntry other)
+        {
+            return string.Equals(Engineer, other.Engineer) && string.Equals(Description, other.Description) && NrOfHoursPerDay.SequenceEqual(other.NrOfHoursPerDay) && PeriodNrOfDays == other.PeriodNrOfDays;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ReportEntry) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Engineer != null ? Engineer.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Description != null ? Description.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (NrOfHoursPerDay != null ? NrOfHoursPerDay.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ PeriodNrOfDays;
+                return hashCode;
             }
         }
     }

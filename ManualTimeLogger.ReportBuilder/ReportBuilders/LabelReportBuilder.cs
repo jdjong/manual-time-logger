@@ -7,19 +7,19 @@ using ManualTimeLogger.Domain;
 
 namespace ManualTimeLogger.ReportBuilder.ReportBuilders
 {
-    class LabelReportBuilder
+    public class LabelReportBuilder
     {
-        private readonly ReportCsvFileRepository _repository;
+        private readonly IReportCsvFileRepository _repository;
         private readonly DateTime _firstDayOfReport;
         private readonly int _periodNrOfDays;
 
-        public LabelReportBuilder(ReportCsvFileRepository repository, DateTime firstDayOfReport, int periodNrOfDays)
+        public LabelReportBuilder(IReportCsvFileRepository repository, DateTime firstDayOfReport, int periodNrOfDays)
         {
             _repository = repository;
             _firstDayOfReport = firstDayOfReport;
             _periodNrOfDays = periodNrOfDays;
 
-            _repository.CreateHeader(new[] { $"\"Wie\"{ReportCsvFileRepository.CsvSeparator}\"Thema\"{ReportCsvFileRepository.CsvSeparator}{string.Join(ReportCsvFileRepository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
+            _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Thema\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
         public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)

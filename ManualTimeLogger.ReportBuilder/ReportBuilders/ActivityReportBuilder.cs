@@ -11,15 +11,15 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
     {
         private readonly DateTime _firstDayOfReport;
         private readonly int _periodNrOfDays;
-        private readonly ReportCsvFileRepository _repository;
+        private readonly IReportCsvFileRepository _repository;
 
-        public ActivityReportBuilder(ReportCsvFileRepository repository, DateTime firstDayOfReport, int periodNrOfDays)
+        public ActivityReportBuilder(IReportCsvFileRepository repository, DateTime firstDayOfReport, int periodNrOfDays)
         {
             _firstDayOfReport = firstDayOfReport;
             _periodNrOfDays = periodNrOfDays;
             _repository = repository;
 
-            _repository.CreateHeader(new[] { $"\"Wie\"{ReportCsvFileRepository.CsvSeparator}\"Activiteit\"{ReportCsvFileRepository.CsvSeparator}{string.Join(ReportCsvFileRepository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
+            _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Activiteit\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
         public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)

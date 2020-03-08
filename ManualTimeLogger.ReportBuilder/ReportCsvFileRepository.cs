@@ -4,10 +4,9 @@ using System.Linq;
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    public class ReportCsvFileRepository
-
+    public class ReportCsvFileRepository : IReportCsvFileRepository
     {
-    public const char CsvSeparator = ';';
+    public char CsvSeparator => ';';
     private readonly string _basePath;
     private readonly string _fileName;
     private string FullFilePath => Path.Combine(_basePath, _fileName);
