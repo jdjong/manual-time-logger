@@ -25,7 +25,7 @@ Run the program by building it in Visual Studio for example.
 
 ### Markers
 
-* (required) "\*" followed by the number of hours. Decimal separator can be either "." or ","
+* (required) "\*" followed by the number of hours. Decimal separator can be either "." or ",". You can also enter a time span in the format "hh:mm"
 * (required) "$" followed by the description of what you did
 * (optional) "\#" followed by issue number
 * (optional) "@" followed by label

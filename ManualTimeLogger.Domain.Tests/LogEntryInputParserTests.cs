@@ -85,6 +85,8 @@ namespace ManualTimeLogger.Domain.Tests
         [TestCase("#1234!Anders*4 $some text and more", 4)]
         [TestCase("#1234!Anders*0.1$some text and more", 0.1f)]
         [TestCase("#1234!Anders*0:30$some text and more", 0.5f)]
+        [TestCase("#1234!Anders*0:03$some text and more", 0.05f)]
+        [TestCase("#1234!Anders*0:3$some text and more", 0.05f)]
         public void correct_duration_inputs(string input, float expectedResult)
         {
             Assert.IsTrue(_logEntryInputParser.TryParse(input, out var logEntry));
