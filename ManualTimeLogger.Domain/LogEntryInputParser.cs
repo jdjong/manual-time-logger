@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 
@@ -30,6 +31,7 @@ namespace ManualTimeLogger.Domain
         private readonly DescriptionParser _descriptionParser;
         private readonly LabelParser _labelParser;
         private readonly ActivityParser _activityParser;
+        private readonly AccountParser _accountParser;
 
         public LogEntryInputParser()
         {
@@ -38,6 +40,15 @@ namespace ManualTimeLogger.Domain
             _descriptionParser = new DescriptionParser(new InputPartSelector(DescriptionSpecialChar, AllSectionMarkers, allowSpaces: true));
             _labelParser = new LabelParser(new InputPartSelector(LabelSpecialChar, AllSectionMarkers, allowSpaces: true));
             _activityParser = new ActivityParser(new InputPartSelector(ActivitySpecialChar, AllSectionMarkers, allowSpaces: true));
+            _accountParser = new AccountParser(new List<string>
+            {
+                "roi",
+                "nb",
+                "nwb",
+                "sogyo",
+                "norma",
+                "liniebreed",
+            });
         }
 
         public bool TryParse(string input, out LogEntry logEntry)
@@ -47,9 +58,11 @@ namespace ManualTimeLogger.Domain
             var descriptionParseResult = _descriptionParser.Parse(input);
             var labelParseResult = _labelParser.Parse(input);
             var activityParseResult = _activityParser.Parse(input);
+            var accountParseResult = _accountParser.Parse(input);
 
             var isOverallSuccess = !string.IsNullOrEmpty(input) &&
                                    IsSpecialCharacterCountMaxOne(input) &&
+                                   accountParseResult.IsSuccess &&
                                    issueNumberParseResult.IsSuccess &&
                                    durationParseResult.IsSuccess &&
                                    descriptionParseResult.IsSuccess &&
@@ -64,6 +77,7 @@ namespace ManualTimeLogger.Domain
                         descriptionParseResult.Value,
                         labelParseResult.Value,
                         activityParseResult.Value,
+                        accountParseResult.Value,
                         DateTime.Today)
                     : null;
                 return isOverallSuccess;

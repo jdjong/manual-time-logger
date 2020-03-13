@@ -30,12 +30,12 @@ namespace ManualTimeLogger.ReportBuilder.Tests.ReportBuilders
 
             var logEntries = new List<LogEntry>
             {
-                new LogEntry(firstIssueNumber, 1f, "description", "label", "activity", firstDate),
-                new LogEntry(firstIssueNumber, 2f, "description", "label", "activity", secondDate),
-                new LogEntry(secondIssueNumber, 3.25f, "description", "label", "activity", secondDate),
-                new LogEntry(firstIssueNumber, 4f, "description", "label", "activity", thirdDate),
-                new LogEntry(thirdIssueNumber, 5.25f, "description", "label", "activity", thirdDate),
-                new LogEntry(thirdIssueNumber, 6f, "description", "label", "activity", thirdDate),
+                new LogEntry(firstIssueNumber, 1f, "description", "label", "activity", "nb", firstDate),
+                new LogEntry(firstIssueNumber, 2f, "description", "label", "activity", "nb", secondDate),
+                new LogEntry(secondIssueNumber, 3.25f, "description", "label", "activity", "nb", secondDate),
+                new LogEntry(firstIssueNumber, 4f, "description", "label", "activity", "nb", thirdDate),
+                new LogEntry(thirdIssueNumber, 5.25f, "description", "label", "activity", "nb", thirdDate),
+                new LogEntry(thirdIssueNumber, 6f, "description", "label", "activity", "nb", thirdDate),
             };
             var timeForActivity1PerDay = new Dictionary<DateTime, float>
             {

@@ -42,7 +42,7 @@ namespace ManualTimeLogger.Persistence.Tests
         [Test]
         public void given_a_log_entry_when_saved_then_it_is_persisted_in_the_file()
         {
-            var logEntry = new LogEntry(12345, 1.25f, "description", "label", "activity", new DateTime(2020,3,1));
+            var logEntry = new LogEntry(12345, 1.25f, "description", "label", "activity", "nb", new DateTime(2020,3,1));
             _repository.SaveLogEntry(logEntry);
 
             var linesInFile = File.ReadAllLines(_absoluteFilePath);
@@ -58,9 +58,9 @@ namespace ManualTimeLogger.Persistence.Tests
         public void given_a_few_saved_log_entries_for_the_same_day_then_the_total_number_of_hours_logged_for_that_day_equals_the_sum_of_the_duration_of_the_entries()
         {
             var logDate = new DateTime(2020, 3, 1);
-            var logEntry1 = new LogEntry(12345, 1.25f, "description", "label", "activity", logDate);
-            var logEntry2 = new LogEntry(12345, 2.25f, "description", "label", "activity", logDate);
-            var logEntry3 = new LogEntry(12345, 1f, "description", "label", "activity", logDate);
+            var logEntry1 = new LogEntry(12345, 1.25f, "description", "label", "activity", "nb", logDate);
+            var logEntry2 = new LogEntry(12345, 2.25f, "description", "label", "activity", "nb", logDate);
+            var logEntry3 = new LogEntry(12345, 1f, "description", "label", "activity", "nb", logDate);
 
             _repository.SaveLogEntry(logEntry1);
             _repository.SaveLogEntry(logEntry2);
