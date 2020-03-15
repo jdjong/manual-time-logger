@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 using ManualTimeLogger.Domain;
 using ManualTimeLogger.Persistence;
@@ -12,6 +11,8 @@ namespace ManualTimeLogger.App
         private readonly LogEntryInputParser _inputParser;
         private readonly IRepository _repository;
         private readonly AutoFillListBoxController _autoFillListBoxController;
+
+        // TODO, introduce log entry text box controller
 
         public LogEntryInputForm(LogEntryInputParser inputParser, IRepository repository, AutoFillListBoxController autoFillListBoxController)
         {
@@ -40,11 +41,59 @@ namespace ManualTimeLogger.App
 
         private void TextBoxKeyDown(object sender, KeyEventArgs e)
         {
+            #region hotkeyfunctionality
+
+            // TODO, how to fix all this hardcoded duplication knowledge below
+            // Key 1 is pressed. REMINDER! Duplicate knowledge, because nb is also hardcoded in LogEntryInputParser as special char for label.
+            // An alternative is unknown to me how to make the below key configuration configurable.
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift &&(e.KeyCode == Keys.D1 || e.KeyCode == Keys.NumPad1))
+            {
+                logEntryTextBox.Text = "nb";
+                MoveTextBoxCursorToEndOfText();
+                e.Handled = e.SuppressKeyPress = true;
+                return;
+            }
+
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D2 || e.KeyCode == Keys.NumPad2))
+            {
+                logEntryTextBox.Text = "norma";
+                MoveTextBoxCursorToEndOfText();
+                e.Handled = e.SuppressKeyPress = true;
+                return;
+            }
+
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D3 || e.KeyCode == Keys.NumPad3))
+            {
+                logEntryTextBox.Text = "nwb";
+                MoveTextBoxCursorToEndOfText();
+                e.Handled = e.SuppressKeyPress = true;
+                return;
+            }
+
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D4 || e.KeyCode == Keys.NumPad4))
+            {
+                logEntryTextBox.Text = "roi";
+                MoveTextBoxCursorToEndOfText();
+                e.Handled = e.SuppressKeyPress = true;
+                return;
+            }
+
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D5 || e.KeyCode == Keys.NumPad5))
+            {
+                logEntryTextBox.Text = "sogyo";
+                MoveTextBoxCursorToEndOfText();
+                e.Handled = e.SuppressKeyPress = true;
+                return;
+            }
+
+            #endregion
+
             // Key @ is pressed. REMINDER! Duplicate knowledge, because @ is also hardcoded in LogEntryInputParser as special char for label.
             // An alternative is unknown to me how to make the below key configuration configurable.
             if (e.Shift && e.KeyCode == Keys.D2)
             {
                 _autoFillListBoxController.DoAutoFillLabels();
+                DetermineTextColor();
                 return;
             }
 
@@ -53,6 +102,7 @@ namespace ManualTimeLogger.App
             if (e.Shift && e.KeyCode == Keys.D1)
             {
                 _autoFillListBoxController.DoAutoFillActivities();
+                DetermineTextColor();
                 return;
             }
 
@@ -71,9 +121,16 @@ namespace ManualTimeLogger.App
             {
                 logEntryTextBox.Text += autoFilledText;
             }
+
+            MoveTextBoxCursorToEndOfText();
+            DetermineTextColor();
+            logEntryTextBox.Focus();
+        }
+
+        private void MoveTextBoxCursorToEndOfText()
+        {
             logEntryTextBox.SelectionStart = logEntryTextBox.Text.Length;
             logEntryTextBox.SelectionLength = 0;
-            logEntryTextBox.Focus();
         }
 
         private void TextBoxKeyUp(object sender, KeyEventArgs e)
