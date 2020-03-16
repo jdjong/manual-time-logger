@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace ManualTimeLogger.Domain.Tests
@@ -10,7 +11,7 @@ namespace ManualTimeLogger.Domain.Tests
         [SetUp]
         public void Setup()
         {
-            _logEntryInputParser = new LogEntryInputParser();
+            _logEntryInputParser = new LogEntryInputParser(new List<string>{"roi", "nb", "nwb", "norma", "sogyo", "liniebreed"});
         }
 
         [Test]

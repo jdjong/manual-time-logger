@@ -33,22 +33,14 @@ namespace ManualTimeLogger.Domain
         private readonly ActivityParser _activityParser;
         private readonly AccountParser _accountParser;
 
-        public LogEntryInputParser()
+        public LogEntryInputParser(List<string> accounts)
         {
             _issueNumberParser = new IssueNumberParser(new InputPartSelector(IssueNumberSpecialChar, AllSectionMarkers, allowSpaces: false));
             _durationParser = new DurationParser(new InputPartSelector(DurationSpecialChar, AllSectionMarkers, allowSpaces:false));
             _descriptionParser = new DescriptionParser(new InputPartSelector(DescriptionSpecialChar, AllSectionMarkers, allowSpaces: true));
             _labelParser = new LabelParser(new InputPartSelector(LabelSpecialChar, AllSectionMarkers, allowSpaces: true));
             _activityParser = new ActivityParser(new InputPartSelector(ActivitySpecialChar, AllSectionMarkers, allowSpaces: true));
-            _accountParser = new AccountParser(new List<string>
-            {
-                "roi",
-                "nb",
-                "nwb",
-                "sogyo",
-                "norma",
-                "liniebreed",
-            });
+            _accountParser = new AccountParser(accounts, AllSectionMarkers);
         }
 
         public bool TryParse(string input, out LogEntry logEntry)

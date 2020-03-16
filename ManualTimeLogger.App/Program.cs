@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using ManualTimeLogger.App.Properties;
 using ManualTimeLogger.Domain;
@@ -23,7 +24,7 @@ namespace ManualTimeLogger.App
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(
                     new LogEntryInputForm(
-                        new LogEntryInputParser(), 
+                        new LogEntryInputParser(Settings.Default.AccountPresets.Split(';').ToList()), 
                         new CsvFileRepository(Settings.Default.TimeLogsBasePath, $"{Settings.Default.Engineer}_timelog_{DateTime.Today:yyyyMM}.csv"),
                         new AutoFillListBoxController(Settings.Default.IsAutoFillFeatureEnabled, Settings.Default.LabelPresets.Split(';'), Settings.Default.ActivityPresets.Split(';'))));
             }

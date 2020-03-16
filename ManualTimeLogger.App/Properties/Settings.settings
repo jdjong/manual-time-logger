@@ -8,14 +8,17 @@
     <Setting Name="Engineer" Type="System.String" Scope="Application">
       <Value Profile="(Default)">FillYourName</Value>
     </Setting>
-    <Setting Name="ActivityPresets" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ontwikkelen;reviewen;mailen;telefoneren;overleggen;plannen;voorbereiden</Value>
-    </Setting>
     <Setting Name="IsAutoFillFeatureEnabled" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="AccountPresets" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">nb;nwb;roi;norma;sogyo;liniebreed</Value>
+    </Setting>
+    <Setting Name="ActivityPresets" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ontwikkelen;reviewen;mailen;telefoneren;overleggen;plannen;voorbereiden;administreren;nadenken</Value>
+    </Setting>
     <Setting Name="LabelPresets" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">schade;avg;automatischindienen;stagingdb;architectuur;voortbrengingsproces;gripcontinuiteit;hygiene;incident;internationalisatie</Value>
+      <Value Profile="(Default)">schade;avg;automatischindienen;stagingdb;architectuur;voortbrengingsproces;gripcontinuiteit;hygiene;incident;internationalisatie;qbr;redmine</Value>
     </Setting>
   </Settings>
 </SettingsFile>

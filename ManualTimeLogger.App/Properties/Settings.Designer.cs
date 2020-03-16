@@ -12,7 +12,7 @@ namespace ManualTimeLogger.App.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.2.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -43,15 +43,6 @@ namespace ManualTimeLogger.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ontwikkelen;reviewen;mailen;telefoneren;overleggen;plannen;voorbereiden")]
-        public string ActivityPresets {
-            get {
-                return ((string)(this["ActivityPresets"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IsAutoFillFeatureEnabled {
             get {
@@ -61,8 +52,27 @@ namespace ManualTimeLogger.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("nb;nwb;roi;norma;sogyo;liniebreed")]
+        public string AccountPresets {
+            get {
+                return ((string)(this["AccountPresets"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ontwikkelen;reviewen;mailen;telefoneren;overleggen;plannen;voorbereiden;administr" +
+            "eren;nadenken")]
+        public string ActivityPresets {
+            get {
+                return ((string)(this["ActivityPresets"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("schade;avg;automatischindienen;stagingdb;architectuur;voortbrengingsproces;gripco" +
-            "ntinuiteit;hygiene;incident;internationalisatie")]
+            "ntinuiteit;hygiene;incident;internationalisatie;qbr;redmine")]
         public string LabelPresets {
             get {
                 return ((string)(this["LabelPresets"]));
