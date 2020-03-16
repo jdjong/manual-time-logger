@@ -26,7 +26,9 @@ namespace ManualTimeLogger.App
                     new LogEntryInputForm(
                         new LogEntryInputParser(Settings.Default.AccountPresets.Split(';').ToList()), 
                         new CsvFileRepository(Settings.Default.TimeLogsBasePath, $"{Settings.Default.Engineer}_timelog_{DateTime.Today:yyyyMM}.csv"),
-                        new AutoFillListBoxController(Settings.Default.IsAutoFillFeatureEnabled, Settings.Default.LabelPresets.Split(';'), Settings.Default.ActivityPresets.Split(';'))));
+                        // TODO, add interface and do nothing controller. Inject proper one depending on feature IsAutoFillFeatureEnabled.
+                        new AutoFillListBoxController(Settings.Default.IsAutoFillFeatureEnabled, Settings.Default.LabelPresets.Split(';'), Settings.Default.ActivityPresets.Split(';')),
+                        Settings.Default.AccountPresets.Split(';').ToList()));
             }
             catch (Exception e)
             {

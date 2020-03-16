@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using ManualTimeLogger.Domain;
@@ -11,10 +12,11 @@ namespace ManualTimeLogger.App
         private readonly LogEntryInputParser _inputParser;
         private readonly IRepository _repository;
         private readonly AutoFillListBoxController _autoFillListBoxController;
+        private readonly List<string> _accounts;
 
         // TODO, introduce log entry text box controller
 
-        public LogEntryInputForm(LogEntryInputParser inputParser, IRepository repository, AutoFillListBoxController autoFillListBoxController)
+        public LogEntryInputForm(LogEntryInputParser inputParser, IRepository repository, AutoFillListBoxController autoFillListBoxController, List<string> accounts)
         {
             _inputParser = inputParser;
             _repository = repository;
@@ -22,6 +24,7 @@ namespace ManualTimeLogger.App
             InitializeComponent();
 
             _autoFillListBoxController = autoFillListBoxController;
+            _accounts = accounts;
             _autoFillListBoxController.Init(this, autoFillListBox);
 
             // Working area is area without the task-bar. Correct layout is guaranteed for bottom task-bars only.
@@ -46,41 +49,41 @@ namespace ManualTimeLogger.App
             // TODO, how to fix all this hardcoded duplication knowledge below
             // Key 1 is pressed. REMINDER! Duplicate knowledge, because nb is also hardcoded in LogEntryInputParser as special char for label.
             // An alternative is unknown to me how to make the below key configuration configurable.
-            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift &&(e.KeyCode == Keys.D1 || e.KeyCode == Keys.NumPad1))
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift &&(e.KeyCode == Keys.D1 || e.KeyCode == Keys.NumPad1) && _accounts.Count >= 1)
             {
-                logEntryTextBox.Text = "nb";
+                logEntryTextBox.Text = _accounts[0];
                 MoveTextBoxCursorToEndOfText();
                 e.Handled = e.SuppressKeyPress = true;
                 return;
             }
 
-            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D2 || e.KeyCode == Keys.NumPad2))
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D2 || e.KeyCode == Keys.NumPad2) && _accounts.Count >= 2)
             {
-                logEntryTextBox.Text = "norma";
+                logEntryTextBox.Text = _accounts[1];
                 MoveTextBoxCursorToEndOfText();
                 e.Handled = e.SuppressKeyPress = true;
                 return;
             }
 
-            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D3 || e.KeyCode == Keys.NumPad3))
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D3 || e.KeyCode == Keys.NumPad3) && _accounts.Count >= 3)
             {
-                logEntryTextBox.Text = "nwb";
+                logEntryTextBox.Text = _accounts[2];
                 MoveTextBoxCursorToEndOfText();
                 e.Handled = e.SuppressKeyPress = true;
                 return;
             }
 
-            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D4 || e.KeyCode == Keys.NumPad4))
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D4 || e.KeyCode == Keys.NumPad4) && _accounts.Count >= 4)
             {
-                logEntryTextBox.Text = "roi";
+                logEntryTextBox.Text = _accounts[3];
                 MoveTextBoxCursorToEndOfText();
                 e.Handled = e.SuppressKeyPress = true;
                 return;
             }
 
-            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D5 || e.KeyCode == Keys.NumPad5))
+            if (string.IsNullOrEmpty(logEntryTextBox.Text) && !e.Shift && (e.KeyCode == Keys.D5 || e.KeyCode == Keys.NumPad5) && _accounts.Count >= 5)
             {
-                logEntryTextBox.Text = "sogyo";
+                logEntryTextBox.Text = _accounts[4];
                 MoveTextBoxCursorToEndOfText();
                 e.Handled = e.SuppressKeyPress = true;
                 return;
