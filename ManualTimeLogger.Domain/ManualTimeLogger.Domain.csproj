@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountParser.cs" />
     <Compile Include="DescriptionParser.cs" />
     <Compile Include="DurationParser.cs" />
     <Compile Include="IssueNumberParser.cs" />

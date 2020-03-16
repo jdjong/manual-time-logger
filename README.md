@@ -22,9 +22,11 @@ Run the program by building it in Visual Studio for example.
 * Use auto fill for label and activity yes/no
 * The label and activity presets
 * Your name which will be included in the time log's file name
+* The possible account/customer you are logging for
 
 ### Markers
 
+* (required) start of the input needs to be one of the configured accounts/customers (when input is empty, use 1 to 5 as hotkeys to enter the first five configured values)
 * (required) "\*" followed by the number of hours. Decimal separator can be either "." or ",". You can also enter a time span in the format "hh:mm"
 * (required) "$" followed by the description of what you did
 * (optional) "\#" followed by issue number
@@ -33,10 +35,10 @@ Run the program by building it in Visual Studio for example.
 
 ### Examples
 
-* @newfunctionality !development $csv file repository \#123 \*2
-* \*2 $csv file repository \#123 @newfunctionality !development
-* $Preference screen testing \*1,5 @uximprovements
-* $writing read me\*.5
+* testaccount @newfunctionality !development $csv file repository \#123 \*2
+* customer1 \*2 $csv file repository \#123 @newfunctionality !development
+* customer1 $Preference screen testing \*1,5 @uximprovements
+* testaccount2 $writing read me\*.5
 
 # Report Builder App
 

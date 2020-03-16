@@ -12,6 +12,7 @@ namespace ManualTimeLogger.Domain
         public string Description { get; }
         public string Label { get; }
         public string Activity { get; }
+        public string Account { get; }
         public DateTime CreateDate { get; }
 
         /// <summary>
@@ -23,7 +24,7 @@ namespace ManualTimeLogger.Domain
         /// <param name="label"></param>
         /// <param name="activity"></param>
         /// <param name="createDate"></param>
-        public LogEntry(int issueNumber, float duration, string description, string label, string activity, DateTime createDate)
+        public LogEntry(int issueNumber, float duration, string description, string label, string activity, string account, DateTime createDate)
         {
             if (issueNumber < 0)
             {
@@ -50,12 +51,19 @@ namespace ManualTimeLogger.Domain
             Description = description;
             Label = label;
             Activity = activity;
+            Account = account;
             CreateDate = createDate;
         }
 
         protected bool Equals(LogEntry other)
         {
-            return IssueNumber == other.IssueNumber && Duration.Equals(other.Duration) && string.Equals(Description, other.Description) && string.Equals(Label, other.Label) && string.Equals(Activity, other.Activity) && CreateDate.Equals(other.CreateDate);
+            return IssueNumber == other.IssueNumber && 
+                   Duration.Equals(other.Duration) && 
+                   string.Equals(Description, other.Description) && 
+                   string.Equals(Label, other.Label) &&
+                   string.Equals(Activity, other.Activity) &&
+                   string.Equals(Account, other.Account) &&
+                   CreateDate.Equals(other.CreateDate);
         }
 
         public override bool Equals(object obj)
@@ -72,9 +80,10 @@ namespace ManualTimeLogger.Domain
             {
                 var hashCode = IssueNumber;
                 hashCode = (hashCode * 397) ^ Duration.GetHashCode();
-                hashCode = (hashCode * 397) ^ (Description != null ? Description.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Description.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Label != null ? Label.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ Activity.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Activity != null ? Activity.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Account.GetHashCode();
                 hashCode = (hashCode * 397) ^ CreateDate.GetHashCode();
                 return hashCode;
             }

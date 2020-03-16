@@ -15,7 +15,7 @@ namespace ManualTimeLogger.Persistence
 
         public static string GetHeader(char separator)
         {
-            return $"\"Issue\"{separator}\"Duration (hours)\"{separator}\"Description\"{separator}\"Label\"{separator}\"Activity\"{separator}\"Create date\"";
+            return $"\"Account\"{separator}\"Issue\"{separator}\"Duration (hours)\"{separator}\"Description\"{separator}\"Label\"{separator}\"Activity\"{separator}\"Create date\"";
         }
 
         public CsvFileLogEntry(LogEntry domainObject, char separator)
@@ -32,21 +32,23 @@ namespace ManualTimeLogger.Persistence
             try
             {
                 var logEntryPropertyStrings = csvLine.Split(separator);
-                var issueNumberString = logEntryPropertyStrings[0].Trim('"');
-                var durationString = logEntryPropertyStrings[1].Trim('"');
-                var descriptionString = logEntryPropertyStrings[2].Trim('"');
-                var labelString = logEntryPropertyStrings[3].Trim('"');
-                var activityString = logEntryPropertyStrings[4].Trim('"');
-                var createDateString = logEntryPropertyStrings[5].Trim('"');
+                var accountString = logEntryPropertyStrings[0].Trim('"');
+                var issueNumberString = logEntryPropertyStrings[1].Trim('"');
+                var durationString = logEntryPropertyStrings[2].Trim('"');
+                var descriptionString = logEntryPropertyStrings[3].Trim('"');
+                var labelString = logEntryPropertyStrings[4].Trim('"');
+                var activityString = logEntryPropertyStrings[5].Trim('"');
+                var createDateString = logEntryPropertyStrings[6].Trim('"');
 
                 var issueNumber = string.IsNullOrEmpty(issueNumberString) ? 0 : int.Parse(issueNumberString);
                 var duration = float.Parse(GetCultureInvariantDurationString(durationString), CultureInfo.InvariantCulture.NumberFormat);
                 var description = descriptionString;
                 var label = labelString;
                 var activity = activityString;
+                var account = accountString;
                 var createDate = new DateTime(int.Parse(createDateString.Substring(0,4)), int.Parse(createDateString.Substring(4,2)), int.Parse(createDateString.Substring(6,2)));
 
-                AsDomainObject = new LogEntry(issueNumber, duration, description, label, activity, createDate);
+                AsDomainObject = new LogEntry(issueNumber, duration, description, label, activity, account, createDate);
                 AsCsvLine = ToCsvLine(AsDomainObject, separator);
             }
             catch (Exception e)
@@ -63,7 +65,7 @@ namespace ManualTimeLogger.Persistence
 
         private string ToCsvLine(LogEntry domainObject, char separator)
         {
-            return $"\"{domainObject.IssueNumber}\"{separator}\"{domainObject.Duration.ToString(CultureInfo.InvariantCulture.NumberFormat)}\"{separator}\"{domainObject.Description}\"{separator}\"{domainObject.Label}\"{separator}\"{domainObject.Activity}\"{separator}\"{domainObject.CreateDate:yyyyMMdd}\"";
+            return $"\"{domainObject.Account}\"{separator}\"{domainObject.IssueNumber}\"{separator}\"{domainObject.Duration.ToString(CultureInfo.InvariantCulture.NumberFormat)}\"{separator}\"{domainObject.Description}\"{separator}\"{domainObject.Label}\"{separator}\"{domainObject.Activity}\"{separator}\"{domainObject.CreateDate:yyyyMMdd}\"";
         }
     }
 }
