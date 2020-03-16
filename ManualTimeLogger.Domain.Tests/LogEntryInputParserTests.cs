@@ -161,5 +161,31 @@ namespace ManualTimeLogger.Domain.Tests
             Assert.IsTrue(_logEntryInputParser.TryParse(input, out var logEntry));
             Assert.AreEqual(expectedResult, logEntry.Label);
         }
+
+        /// <summary>
+        /// Account is required and should be one of the configured accounts
+        /// </summary>
+        /// <param name="input"></param>
+        [Test]
+        [TestCase("nwb*.5$test")]
+        [TestCase("nwb *.5$test")]
+        [TestCase("nb *1,5 $test")]
+        public void correct_account_inputs(string input)
+        {
+            Assert.IsTrue(_logEntryInputParser.TryParse(input, out _));
+        }
+
+        /// <summary>
+        /// Account is required and should be one of the configured accounts
+        /// </summary>
+        /// <param name="input"></param>
+        [Test]
+        [TestCase("nwb2*.5$test")]
+        [TestCase("nwbb *.5$test")]
+        [TestCase("nba *1,5 $test")]
+        public void wrong_account_inputs(string input)
+        {
+            Assert.IsFalse(_logEntryInputParser.TryParse(input, out _));
+        }
     }
 }
