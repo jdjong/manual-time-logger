@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ManualTimeLogger.App
@@ -23,7 +24,9 @@ namespace ManualTimeLogger.App
             _parentForm = parentForm;
             _autoFillListBox = autoFillListBox;
 
+            autoFillListBox.PreviewKeyDown += AutoFillListBoxPreviewKeyHandler;
             autoFillListBox.KeyUp += AutoFillListBoxKeyUpHandler;
+            autoFillListBox.LostFocus += LostFocusHandler;
         }
 
         public void DoAutoFillLabels()
@@ -57,6 +60,12 @@ namespace ManualTimeLogger.App
             _autoFillListBox.Focus();
         }
 
+        private void AutoFillListBoxPreviewKeyHandler(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Tab)
+                e.IsInputKey = true;
+        }
+
         private void AutoFillListBoxKeyUpHandler(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -69,6 +78,10 @@ namespace ManualTimeLogger.App
                     HideAutoFillListBox();
                     _parentForm.HandleAutoFillFinished(_autoFillListBox.SelectedItem as string);
                     break;
+                case Keys.Tab:
+                    HideAutoFillListBox();
+                    _parentForm.HandleAutoFillFinished(_autoFillListBox.SelectedItem as string);
+                    break;
             }
 
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Tab))
@@ -77,7 +90,11 @@ namespace ManualTimeLogger.App
             }
         }
 
-        // Hide labels list box and bring focus to text box again
+        private void LostFocusHandler(object sender, EventArgs e)
+        {
+            HideAutoFillListBox();
+        }
+
         private void HideAutoFillListBox()
         {
             _autoFillListBox.Visible = false;
