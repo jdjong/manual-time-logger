@@ -21,8 +21,8 @@ namespace ManualTimeLogger.ReportBuilder
             var logEntriesPerEngineer = GetLogEntriesPerEngineer();
             var logEntriesPerDay = GetLogEntriesPerDay(logEntriesPerEngineer);
 
-            var perEngineerWeekReportsBuilder = new PerEngineerWeekReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, logEntriesPerEngineer);
-            var cumulativeWeekReportsBuilder = new CumulativeWeekReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, logEntriesPerDay);
+            var perEngineerWeekReportsBuilder = new PerEngineerWeekReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerEngineer);
+            var cumulativeWeekReportsBuilder = new CumulativeWeekReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerDay);
             
             perEngineerWeekReportsBuilder.Build();
             cumulativeWeekReportsBuilder.Build();
@@ -33,8 +33,8 @@ namespace ManualTimeLogger.ReportBuilder
             var logEntriesPerEngineer = GetLogEntriesPerEngineer();
             var logEntriesPerDay = GetLogEntriesPerDay(logEntriesPerEngineer);
 
-            var perEngineerMonthReportsBuilder = new PerEngineerMonthReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, logEntriesPerEngineer);
-            var cumulativeMonthReportsBuilder = new CumulativeMonthReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, logEntriesPerDay);
+            var perEngineerMonthReportsBuilder = new PerEngineerMonthReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerEngineer);
+            var cumulativeMonthReportsBuilder = new CumulativeMonthReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerDay);
 
             perEngineerMonthReportsBuilder.Build();
             cumulativeMonthReportsBuilder.Build();

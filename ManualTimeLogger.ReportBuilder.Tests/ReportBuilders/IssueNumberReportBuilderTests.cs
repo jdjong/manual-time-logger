@@ -17,12 +17,13 @@ namespace ManualTimeLogger.ReportBuilder.Tests.ReportBuilders
             var repository = Substitute.For<IReportCsvFileRepository>();
             var firstDateOfReportPeriod = new DateTime(2020, 2, 14);
             var periodNrOfDays = 6;
+            var accountFilter = "nwb";
 
-            var builder = new IssueNumberReportBuilder(repository, firstDateOfReportPeriod, periodNrOfDays);
+            var builder = new IssueNumberReportBuilder(repository, firstDateOfReportPeriod, periodNrOfDays, accountFilter);
 
             var firstDate = new DateTime(2020, 2, 15);
             var secondDate = new DateTime(2020, 2, 17);
-            var thirdDate = new DateTime(2020, 2, 20);
+            var thirdDate = new DateTime(2020, 2, 19);
 
             var firstIssueNumber = 12345;
             var secondIssueNumber = 123456;
@@ -30,11 +31,11 @@ namespace ManualTimeLogger.ReportBuilder.Tests.ReportBuilders
 
             var logEntries = new List<LogEntry>
             {
-                new LogEntry(firstIssueNumber, 1f, "description", "label", "activity", "nb", firstDate),
-                new LogEntry(firstIssueNumber, 2f, "description", "label", "activity", "nb", secondDate),
-                new LogEntry(secondIssueNumber, 3.25f, "description", "label", "activity", "nb", secondDate),
-                new LogEntry(firstIssueNumber, 4f, "description", "label", "activity", "nb", thirdDate),
-                new LogEntry(thirdIssueNumber, 5.25f, "description", "label", "activity", "nb", thirdDate),
+                new LogEntry(firstIssueNumber, 1f, "description", "label", "activity", "nwb", firstDate),
+                new LogEntry(firstIssueNumber, 2f, "description", "label", "activity", "nwb", secondDate),
+                new LogEntry(secondIssueNumber, 3.25f, "description", "label", "activity", "nwb", secondDate),
+                new LogEntry(firstIssueNumber, 4f, "description", "label", "activity", "nwb", thirdDate),
+                new LogEntry(thirdIssueNumber, 5.25f, "description", "label", "activity", "nwb", thirdDate),
                 new LogEntry(thirdIssueNumber, 6f, "description", "label", "activity", "nb", thirdDate),
             };
             var timeForActivity1PerDay = new Dictionary<DateTime, float>
@@ -49,7 +50,7 @@ namespace ManualTimeLogger.ReportBuilder.Tests.ReportBuilders
             };
             var timeForActivity3PerDay = new Dictionary<DateTime, float>
             {
-                { thirdDate, 11.25f },
+                { thirdDate, 5.25f },
             };
 
             var engineerName = "TestEngineer";

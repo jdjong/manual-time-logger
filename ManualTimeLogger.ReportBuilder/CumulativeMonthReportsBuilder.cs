@@ -16,7 +16,7 @@ namespace ManualTimeLogger.ReportBuilder
         private readonly LabelReportBuilder _labelCumulativeReportBuilder;
         private readonly IssueNumberReportBuilder _issueNumberCumulativeReportBuilder;
 
-        public CumulativeMonthReportsBuilder(string reportsBasePath, DateTime firstDayOfMonth, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
+        public CumulativeMonthReportsBuilder(string reportsBasePath, DateTime firstDayOfMonth, string accountFilter, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
             if (firstDayOfMonth.Day != 1)
             {
@@ -26,9 +26,9 @@ namespace ManualTimeLogger.ReportBuilder
             _logEntriesPerDay = logEntriesPerDay;
 
             var nrOfDaysInMonth = DateTime.DaysInMonth(firstDayOfMonth.Year, firstDayOfMonth.Month);
-            _activityCumulativeReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"cumulative_activity_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth);
-            _labelCumulativeReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"cumulative_label_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth);
-            _issueNumberCumulativeReportBuilder = new IssueNumberReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"cumulative_issue_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth);
+            _activityCumulativeReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_cumulative_activity_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
+            _labelCumulativeReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_cumulative_label_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
+            _issueNumberCumulativeReportBuilder = new IssueNumberReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_cumulative_issue_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
         }
 
         public void Build()

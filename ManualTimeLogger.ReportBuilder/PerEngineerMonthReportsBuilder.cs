@@ -16,7 +16,8 @@ namespace ManualTimeLogger.ReportBuilder
         private readonly LabelReportBuilder _labelPerEngineerReportBuilder;
         private readonly IssueNumberReportBuilder _issueNumberPerEngineerReportBuilder;
 
-        public PerEngineerMonthReportsBuilder(string reportsBasePath, DateTime firstDayOfMonth, Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
+        public PerEngineerMonthReportsBuilder(string reportsBasePath, DateTime firstDayOfMonth, string accountFilter,
+            Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
         {
             if (firstDayOfMonth.Day != 1)
             {
@@ -26,9 +27,9 @@ namespace ManualTimeLogger.ReportBuilder
             _logEntriesPerEngineer = logEntriesPerEngineer;
 
             var nrOfDaysInMonth = DateTime.DaysInMonth(firstDayOfMonth.Year, firstDayOfMonth.Month);
-            _activityPerEngineerReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"engineer_activity_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth);
-            _labelPerEngineerReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"engineer_label_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth);
-            _issueNumberPerEngineerReportBuilder = new IssueNumberReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"engineer_issue_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth);
+            _activityPerEngineerReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_activity_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
+            _labelPerEngineerReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_label_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
+            _issueNumberPerEngineerReportBuilder = new IssueNumberReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_issue_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
         }
 
         public void Build()

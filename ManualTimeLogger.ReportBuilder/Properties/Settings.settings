@@ -5,7 +5,7 @@
     <Setting Name="TimeLogsBasePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\temp\timelogs</Value>
     </Setting>
-    <Setting Name="ReportsBasePaths" Type="System.String" Scope="Application">
+    <Setting Name="ReportsBasePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\temp\timelogs\reports</Value>
     </Setting>
   </Settings>
