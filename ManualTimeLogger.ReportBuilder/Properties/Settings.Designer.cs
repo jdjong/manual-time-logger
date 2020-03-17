@@ -35,7 +35,7 @@ namespace ManualTimeLogger.ReportBuilder.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C:\\temp\\timelogs\\reports")]
-        public string ReportsBasePaths {
+        public string ReportsBasePath {
             get {
                 return ((string)(this["ReportsBasePaths"]));
             }
