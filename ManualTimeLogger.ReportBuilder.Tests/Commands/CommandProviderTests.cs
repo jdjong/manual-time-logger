@@ -65,5 +65,17 @@ namespace ManualTimeLogger.ReportBuilder.Tests.Commands
             Assert.IsInstanceOf(typeof(BuildMonthReportsCommand), command, "Type of command");
             Assert.AreEqual(new DateTime(2020, 2, 1), command.FromDay, "Command first date of period");
         }
+
+        [Test]
+        [TestCase("-m", "20200229", "-c", "nwb")]
+        [TestCase("-c", "nwb", "-m", "20200229")]
+        public void given_correct_account_filter_command_when_determining_report_command_then_the_account_filter_is_added(params string[] args)
+        {
+            var commandProvider = new CommandProvider();
+            var command = commandProvider.GetCommand(args); // saturday
+
+            Assert.IsInstanceOf(typeof(BuildMonthReportsCommand), command, "Type of command");
+            Assert.AreEqual("nwb", command.AccountFilter, "Command account filter");
+        }
     }
 }

@@ -13,21 +13,50 @@ namespace ManualTimeLogger.ReportBuilder.Commands
                 return GetDefaultCommand();
             }
 
-            if (args.Length != 2)
+            switch (args.Length)
             {
-                throw new ArgumentException("Incorrect arguments. Provide period (-w or -m) to build report for with a date (yyyyMMdd).", nameof(args));
+                // ....exe -m 20200229
+                case 2:
+                {
+                    var argumentKeyForReportingPeriod = args[0];
+                    var argumentValueForDate = args[1];
+
+                    return BuildCommandWithoutAccountFilter(argumentValueForDate, argumentKeyForReportingPeriod);
+                }
+
+                // ....exe -m 20200229 -c nwb
+                // or
+                // ....exe -c nwb -m 20200229
+                case 4:
+                {
+                    var argumentKeyForReportingPeriod = args[0] != "-c" ? args[0] : args[2];
+                    var argumentValueForDate = args[0] != "-c" ? args[1] : args[3];
+                    var accountFilter = args[0] != "-c" ? args[3] : args[1];
+
+                    return BuildCommandWithAccountFilter(argumentValueForDate, argumentKeyForReportingPeriod, accountFilter);
+                }
+                default:
+                    throw new ArgumentException("Incorrect arguments. Provide period (-w or -m) to build report for with a date (yyyyMMdd). Provide customer filter optionally (-c somecustomer)", nameof(args));
             }
+        }
 
-            var argumentKeyForReportingPeriod = args[0];
-            var argumentValueForDate = args[1];
+        private ICommand BuildCommandWithAccountFilter(string argumentValueForDate, string argumentKeyForReportingPeriod, string accountFilter)
+        {
+            var command = BuildCommandWithoutAccountFilter(argumentValueForDate, argumentKeyForReportingPeriod);
+            command.AccountFilter = accountFilter;
+            return command;
+        }
 
+        private ICommand BuildCommandWithoutAccountFilter(string argumentValueForDate, string argumentKeyForReportingPeriod)
+        {
             var regex = new Regex(@"^20\d{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$");
             if (!regex.IsMatch(argumentValueForDate))
             {
-                throw new ArgumentException("Invalid date, should be in format yyyyMMdd", nameof(args));
+                throw new ArgumentException("Invalid date, should be in format yyyyMMdd", nameof(argumentValueForDate));
             }
 
-            var providedDate = new DateTime(Convert.ToInt32(argumentValueForDate.Substring(0, 4)), Convert.ToInt32(argumentValueForDate.Substring(4, 2)), Convert.ToInt32(argumentValueForDate.Substring(6, 2)));
+            var providedDate = new DateTime(Convert.ToInt32(argumentValueForDate.Substring(0, 4)),
+                Convert.ToInt32(argumentValueForDate.Substring(4, 2)), Convert.ToInt32(argumentValueForDate.Substring(6, 2)));
 
             switch (argumentKeyForReportingPeriod)
             {
@@ -36,7 +65,8 @@ namespace ManualTimeLogger.ReportBuilder.Commands
                 case "-m":
                     return new BuildMonthReportsCommand(GetFirstDayOfMonthRequestedMonth(providedDate));
                 default:
-                    throw new ArgumentException($"Unknown command {argumentKeyForReportingPeriod}", nameof(args));
+                    throw new ArgumentException($"Unknown command {argumentKeyForReportingPeriod}",
+                        nameof(argumentKeyForReportingPeriod));
             }
         }
 

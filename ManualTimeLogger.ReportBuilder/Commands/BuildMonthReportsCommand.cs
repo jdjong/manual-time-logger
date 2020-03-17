@@ -9,6 +9,8 @@ namespace ManualTimeLogger.ReportBuilder.Commands
         /// </summary>
         public DateTime FromDay { get; }
 
+        public string AccountFilter { get; set; }
+
         public BuildMonthReportsCommand(DateTime firstDayOfPeriod)
         {
             if (firstDayOfPeriod.Day != 1)
