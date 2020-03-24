@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Timers;
 using System.Windows.Forms;
 using ManualTimeLogger.Domain;
 using ManualTimeLogger.Persistence;
@@ -13,6 +14,7 @@ namespace ManualTimeLogger.App
         private readonly IRepository _repository;
         private readonly AutoFillListBoxController _autoFillListBoxController;
         private readonly List<string> _accounts;
+        private TimeSpan _openTime;
 
         // TODO, introduce log entry text box controller
 
@@ -20,7 +22,8 @@ namespace ManualTimeLogger.App
         {
             _inputParser = inputParser;
             _repository = repository;
-            
+            _openTime = TimeSpan.Zero;
+
             InitializeComponent();
 
             _autoFillListBoxController = autoFillListBoxController;
@@ -33,7 +36,23 @@ namespace ManualTimeLogger.App
             logEntryTextBox.KeyDown += TextBoxKeyDown;
             logEntryTextBox.KeyUp += TextBoxKeyUp;
 
-            DisplayHoursTodaySoFar();
+            // TODO, refactor title and timer set functionality, open and in log, unit test, etc. Just a quick implementation to provide the functionality.
+
+            UpdateTitle();
+            StartTimer();
+        }
+
+        public void StartTimer()
+        {
+            var timer = new System.Timers.Timer(TimeSpan.FromMinutes(1).TotalMilliseconds);
+            timer.Elapsed += OnTimerElapsed;
+            timer.Start();
+        }
+
+        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            _openTime += TimeSpan.FromMinutes(1);
+            UpdateTitle();
         }
 
         private int GetTitleBarHeight()
@@ -146,17 +165,19 @@ namespace ManualTimeLogger.App
             {
                 _repository.SaveLogEntry(logEntry);
 
+                _openTime -= TimeSpan.FromHours(logEntry.Duration);
+
                 // Clear text box
                 logEntryTextBox.Text = string.Empty;
                 logEntryTextBox.ForeColor = Color.Red;
             }
             
-            DisplayHoursTodaySoFar();
+            UpdateTitle();
         }
 
-        private void DisplayHoursTodaySoFar()
+        private void UpdateTitle()
         {
-            Text = $"Log time ({_repository.GetTotalLoggedHoursForDate(DateTime.Today).ToString("0.00")})";
+            Text = $"log {_repository.GetTotalLoggedHoursForDate(DateTime.Today).ToString("0.00")} open {_openTime.TotalHours.ToString("0.00")}";
         }
 
         private void DetermineTextColor()
