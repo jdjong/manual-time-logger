@@ -34,15 +34,6 @@ namespace ManualTimeLogger.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FillYourName")]
-        public string Engineer {
-            get {
-                return ((string)(this["Engineer"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IsAutoFillFeatureEnabled {
             get {
@@ -61,8 +52,7 @@ namespace ManualTimeLogger.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ontwikkelen;reviewen;mailen;telefoneren;overleggen;plannen;voorbereiden;administr" +
-            "eren;nadenken")]
+        [global::System.Configuration.DefaultSettingValueAttribute("voortbrengen;communicerenintern;communicerenextern;organiseren")]
         public string ActivityPresets {
             get {
                 return ((string)(this["ActivityPresets"]));
@@ -71,8 +61,9 @@ namespace ManualTimeLogger.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("schade;avg;automatischindienen;stagingdb;architectuur;voortbrengingsproces;gripco" +
-            "ntinuiteit;hygiene;incident;internationalisatie;qbr;redmine")]
+        [global::System.Configuration.DefaultSettingValueAttribute("qbr;schade;stagingdb;exposeracimatrix;businessline;dvfinancielekoppeling;financie" +
+            "lekoppeling;volgnummer;bolservice;omnext;incident;redmine;buildstraat;monitoring" +
+            ";avg;automatischindienen;ravenupgrade;infrastructuur")]
         public string LabelPresets {
             get {
                 return ((string)(this["LabelPresets"]));

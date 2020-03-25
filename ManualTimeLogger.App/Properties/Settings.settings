@@ -5,9 +5,6 @@
     <Setting Name="TimeLogsBasePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\temp\timelogs</Value>
     </Setting>
-    <Setting Name="Engineer" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">FillYourName</Value>
-    </Setting>
     <Setting Name="IsAutoFillFeatureEnabled" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -15,10 +12,10 @@
       <Value Profile="(Default)">nb;nwb;roi;norma;sogyo;liniebreed</Value>
     </Setting>
     <Setting Name="ActivityPresets" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ontwikkelen;reviewen;mailen;telefoneren;overleggen;plannen;voorbereiden;administreren;nadenken</Value>
+      <Value Profile="(Default)">voortbrengen;communicerenintern;communicerenextern;organiseren</Value>
     </Setting>
     <Setting Name="LabelPresets" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">schade;avg;automatischindienen;stagingdb;architectuur;voortbrengingsproces;gripcontinuiteit;hygiene;incident;internationalisatie;qbr;redmine</Value>
+      <Value Profile="(Default)">qbr;schade;stagingdb;exposeracimatrix;businessline;dvfinancielekoppeling;financielekoppeling;volgnummer;bolservice;omnext;incident;redmine;buildstraat;monitoring;avg;automatischindienen;ravenupgrade;infrastructuur</Value>
     </Setting>
   </Settings>
 </SettingsFile>
