@@ -167,6 +167,11 @@ namespace ManualTimeLogger.App
 
                 _openTime -= TimeSpan.FromHours(logEntry.Duration);
 
+                if (_openTime < TimeSpan.Zero)
+                {
+                    _openTime = TimeSpan.Zero;
+                }
+
                 // Clear text box
                 logEntryTextBox.Text = string.Empty;
                 logEntryTextBox.ForeColor = Color.Red;
