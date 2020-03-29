@@ -48,7 +48,9 @@
     <Compile Include="CumulativeMonthReportsBuilder.cs" />
     <Compile Include="CumulativeWeekReportsBuilder.cs" />
     <Compile Include="IReportCsvFileRepository.cs" />
+    <Compile Include="PerLabelMonthReportsBuilder.cs" />
     <Compile Include="PerEngineerMonthReportsBuilder.cs" />
+    <Compile Include="PerLabelWeekReportsBuilder.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

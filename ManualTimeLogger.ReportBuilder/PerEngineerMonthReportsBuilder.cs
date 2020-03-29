@@ -14,7 +14,6 @@ namespace ManualTimeLogger.ReportBuilder
 
         private readonly ActivityReportBuilder _activityPerEngineerReportBuilder;
         private readonly LabelReportBuilder _labelPerEngineerReportBuilder;
-        private readonly IssueNumberReportBuilder _issueNumberPerEngineerReportBuilder;
 
         public PerEngineerMonthReportsBuilder(string reportsBasePath, DateTime firstDayOfMonth, string accountFilter,
             Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
@@ -29,7 +28,6 @@ namespace ManualTimeLogger.ReportBuilder
             var nrOfDaysInMonth = DateTime.DaysInMonth(firstDayOfMonth.Year, firstDayOfMonth.Month);
             _activityPerEngineerReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_activity_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
             _labelPerEngineerReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_label_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
-            _issueNumberPerEngineerReportBuilder = new IssueNumberReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_issue_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
         }
 
         public void Build()
@@ -40,7 +38,6 @@ namespace ManualTimeLogger.ReportBuilder
 
                 _activityPerEngineerReportBuilder.Build(engineer, logEntriesPerEngineerPerDay);
                 _labelPerEngineerReportBuilder.Build(engineer, logEntriesPerEngineerPerDay);
-                _issueNumberPerEngineerReportBuilder.Build(engineer, logEntriesPerEngineerPerDay);
             });
         }
     }

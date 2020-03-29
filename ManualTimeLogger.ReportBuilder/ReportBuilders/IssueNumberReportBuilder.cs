@@ -5,6 +5,7 @@ using ManualTimeLogger.Domain;
 
 // ReSharper disable PossibleMultipleEnumeration
 
+// TODO, unused in reports, so remove class?
 namespace ManualTimeLogger.ReportBuilder.ReportBuilders
 {
     public class IssueNumberReportBuilder

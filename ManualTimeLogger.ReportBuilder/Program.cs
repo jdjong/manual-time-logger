@@ -19,25 +19,37 @@ namespace ManualTimeLogger.ReportBuilder
         private static void Handle(BuildWeekReportsCommand command)
         {
             var logEntriesPerEngineer = GetLogEntriesPerEngineer();
+            var logEntriesPerLabel = GetLogEntriesPerLabel(logEntriesPerEngineer);
             var logEntriesPerDay = GetLogEntriesPerDay(logEntriesPerEngineer);
 
             var perEngineerWeekReportsBuilder = new PerEngineerWeekReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerEngineer);
+            var perLabelMonthReportsBuilder = new PerLabelWeekReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerLabel);
             var cumulativeWeekReportsBuilder = new CumulativeWeekReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerDay);
             
             perEngineerWeekReportsBuilder.Build();
+            perLabelMonthReportsBuilder.Build();
             cumulativeWeekReportsBuilder.Build();
         }
 
         private static void Handle(BuildMonthReportsCommand command)
         {
             var logEntriesPerEngineer = GetLogEntriesPerEngineer();
+            var logEntriesPerLabel = GetLogEntriesPerLabel(logEntriesPerEngineer);
             var logEntriesPerDay = GetLogEntriesPerDay(logEntriesPerEngineer);
 
             var perEngineerMonthReportsBuilder = new PerEngineerMonthReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerEngineer);
+            var perLabelMonthReportsBuilder = new PerLabelMonthReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerLabel);
             var cumulativeMonthReportsBuilder = new CumulativeMonthReportsBuilder(Properties.Settings.Default.ReportsBasePath, command.FromDay, command.AccountFilter, logEntriesPerDay);
 
             perEngineerMonthReportsBuilder.Build();
+            perLabelMonthReportsBuilder.Build();
             cumulativeMonthReportsBuilder.Build();
+        }
+
+        private static Dictionary<string, IEnumerable<LogEntry>> GetLogEntriesPerLabel(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
+        {
+            var logEntriesPerLabel = logEntriesPerEngineer.SelectMany(x => x.Value).GroupBy(x => x.Label);
+            return logEntriesPerLabel.ToDictionary(grouping => grouping.Key, grouping => grouping.Select(logEntry => logEntry));
         }
 
         private static IEnumerable<IGrouping<DateTime, LogEntry>> GetLogEntriesPerDay(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
