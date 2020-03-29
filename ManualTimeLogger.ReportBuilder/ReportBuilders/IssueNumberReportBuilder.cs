@@ -23,7 +23,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             _accountFilter = string.IsNullOrEmpty(accountFilter)
                 ? (Func<LogEntry, bool>) (x => true)
                 : x => x.Account == accountFilter;
-            _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Issue\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
+            _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Issue\"{repository.CsvSeparator}\"Totaal\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
         public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)

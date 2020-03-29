@@ -30,6 +30,7 @@ namespace ManualTimeLogger.ReportBuilder
         }
     }
 
+    // TODO, it is strange that the calling party should know and create the header with number of columns matching the number of columns created in the save report entry method.
     public void CreateHeader(string[] header)
     {
         File.AppendAllLines(
@@ -43,7 +44,7 @@ namespace ManualTimeLogger.ReportBuilder
             FullFilePath,
             new[]
             {
-                $"\"{reportEntry.Engineer}\"{CsvSeparator}\"{reportEntry.Description}\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), reportEntry.NrOfHoursPerDay.Select(x => $"\"{x.Value}\""))}"
+                $"\"{reportEntry.Engineer}\"{CsvSeparator}\"{reportEntry.Description}\"{CsvSeparator}\"{reportEntry.NrOfHoursPerDay.Sum(x => x.Value)}\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), reportEntry.NrOfHoursPerDay.Select(x => $"\"{x.Value}\""))}"
             });
     }
     }

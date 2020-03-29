@@ -23,7 +23,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
                 : x => x.Account == accountFilter;
             _repository = repository;
 
-            _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Activiteit\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
+            _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Activiteit\"{repository.CsvSeparator}\"Totaal\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
         public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
