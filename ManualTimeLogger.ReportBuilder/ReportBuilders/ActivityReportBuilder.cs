@@ -33,6 +33,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             var differentActivities = logEntriesPerDay
                 .SelectMany(x => x)
                 .Where(_accountFilter)
+                .OrderBy(x => x.Activity)
                 .Select(logEntry => logEntry.Activity)
                 .Distinct();
 

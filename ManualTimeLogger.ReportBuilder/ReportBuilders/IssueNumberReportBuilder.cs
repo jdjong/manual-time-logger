@@ -31,6 +31,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             var differentIssueNumbers = logEntriesPerDay
                 .SelectMany(x => x)
                 .Where(_accountFilter)
+                .OrderBy(x => x.IssueNumber)
                 .Select(x => x.IssueNumber)
                 .Distinct();
 

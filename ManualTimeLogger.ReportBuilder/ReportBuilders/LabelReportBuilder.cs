@@ -30,6 +30,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             var differentLabels = logEntriesPerDay
                 .SelectMany(x => x)
                 .Where(_accountFilter)
+                .OrderBy(x => x.Label)
                 .Select(x => x.Label)
                 .Distinct();
 
