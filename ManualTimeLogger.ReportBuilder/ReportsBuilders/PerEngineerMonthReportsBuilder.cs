@@ -6,7 +6,7 @@ using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 // ReSharper disable PossibleMultipleEnumeration
 
-namespace ManualTimeLogger.ReportBuilder
+namespace ManualTimeLogger.ReportBuilder.ReportsBuilders
 {
     public class PerEngineerMonthReportsBuilder
     {
@@ -14,7 +14,7 @@ namespace ManualTimeLogger.ReportBuilder
 
         private readonly ActivityReportBuilder _activityPerEngineerReportBuilder;
         private readonly LabelReportBuilder _labelPerEngineerReportBuilder;
-        private readonly TwinfieldReportBuilder _twinfieldReportBuilder;
+        private readonly AccountReportBuilder _accountReportBuilder;
 
         public PerEngineerMonthReportsBuilder(string reportsBasePath, DateTime firstDayOfMonth, string accountFilter, Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
         {
@@ -28,21 +28,18 @@ namespace ManualTimeLogger.ReportBuilder
             var nrOfDaysInMonth = DateTime.DaysInMonth(firstDayOfMonth.Year, firstDayOfMonth.Month);
             _activityPerEngineerReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_activity_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
             _labelPerEngineerReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_label_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
-            _twinfieldReportBuilder = new TwinfieldReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"twinfield_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth);
+            _accountReportBuilder = new AccountReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_customer_month_report_{firstDayOfMonth:yyyyMMdd}.csv"), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
         }
 
         public void Build()
         {
-            // TODO, why is this report called differently? I added the Twinfield report builder fast and have some more technical debt now. Fix!!! Rethink design! Refactor! Improve in anyway.
-            // TODO, report builder is started customer specific. But whenever you run it, the Twinfield report gets generated as well.
-            _twinfieldReportBuilder.Build(_logEntriesPerEngineer);
-            
             _logEntriesPerEngineer.Keys.ToList().ForEach(engineer =>
             {
                 var logEntriesPerEngineerPerDay = _logEntriesPerEngineer[engineer].GroupBy(x => x.CreateDate);
 
                 _activityPerEngineerReportBuilder.Build(engineer, logEntriesPerEngineerPerDay);
                 _labelPerEngineerReportBuilder.Build(engineer, logEntriesPerEngineerPerDay);
+                _accountReportBuilder.Build(engineer, logEntriesPerEngineerPerDay);
             });
         }
     }

@@ -6,7 +6,7 @@ using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 // ReSharper disable PossibleMultipleEnumeration
 
-namespace ManualTimeLogger.ReportBuilder
+namespace ManualTimeLogger.ReportBuilder.ReportsBuilders
 {
     public class CumulativeWeekReportsBuilder
     {

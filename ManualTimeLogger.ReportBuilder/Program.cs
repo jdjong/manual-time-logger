@@ -5,6 +5,7 @@ using System.Linq;
 using ManualTimeLogger.Domain;
 using ManualTimeLogger.Persistence;
 using ManualTimeLogger.ReportBuilder.Commands;
+using ManualTimeLogger.ReportBuilder.ReportsBuilders;
 
 namespace ManualTimeLogger.ReportBuilder
 {

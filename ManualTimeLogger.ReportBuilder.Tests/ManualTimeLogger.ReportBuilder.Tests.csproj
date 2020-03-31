@@ -62,6 +62,7 @@
     <Compile Include="Commands\BuildReportsCommandsTests.cs" />
     <Compile Include="Commands\CommandProviderTests.cs" />
     <Compile Include="ReportBuilders\IssueNumberReportBuilderTests.cs" />
+    <Compile Include="ReportBuilders\AccountReportBuilderTests.cs" />
     <Compile Include="ReportBuilders\LabelReportBuilderTests.cs" />
     <Compile Include="ReportBuilders\ActivityReportBuilderTests.cs" />
     <Compile Include="ReportCsvFileRepositoryTests.cs" />
