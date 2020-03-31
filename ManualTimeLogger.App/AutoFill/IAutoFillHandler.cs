@@ -1,6 +1,6 @@
-﻿namespace ManualTimeLogger.App
+﻿namespace ManualTimeLogger.App.AutoFill
 {
-    public interface IHandleAutoFill
+    public interface IAutoFillHandler
     {
         void HandleAutoFillFinished(string autoFilledText = null);
     }

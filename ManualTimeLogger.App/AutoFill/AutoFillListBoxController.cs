@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ManualTimeLogger.App
+namespace ManualTimeLogger.App.AutoFill
 {
     public class AutoFillListBoxController : IAutoFillListBoxController
     {
-        private IHandleAutoFill _parentForm;
+        private IAutoFillHandler _autoFillHandler;
         private ListBox _autoFillListBox;
         private readonly string[] _labelPresetList;
         private readonly string[] _activityPresetList;
@@ -17,9 +17,9 @@ namespace ManualTimeLogger.App
             _activityPresetList = activityPresetList;
         }
 
-        public void Init(IHandleAutoFill parentForm, ListBox autoFillListBox)
+        public void Init(IAutoFillHandler autoFillHandler, ListBox autoFillListBox)
         {
-            _parentForm = parentForm;
+            _autoFillHandler = autoFillHandler;
             _autoFillListBox = autoFillListBox;
 
             autoFillListBox.PreviewKeyDown += AutoFillListBoxPreviewKeyHandler;
@@ -66,15 +66,15 @@ namespace ManualTimeLogger.App
             {
                 case Keys.Escape:
                     HideAutoFillListBox();
-                    _parentForm.HandleAutoFillFinished();
+                    _autoFillHandler.HandleAutoFillFinished();
                     break;
                 case Keys.Enter:
                     HideAutoFillListBox();
-                    _parentForm.HandleAutoFillFinished(_autoFillListBox.SelectedItem as string);
+                    _autoFillHandler.HandleAutoFillFinished(_autoFillListBox.SelectedItem as string);
                     break;
                 case Keys.Tab:
                     HideAutoFillListBox();
-                    _parentForm.HandleAutoFillFinished(_autoFillListBox.SelectedItem as string);
+                    _autoFillHandler.HandleAutoFillFinished(_autoFillListBox.SelectedItem as string);
                     break;
             }
 

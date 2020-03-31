@@ -1,10 +1,10 @@
 ﻿using System.Windows.Forms;
 
-namespace ManualTimeLogger.App
+namespace ManualTimeLogger.App.AutoFill
 {
     public class DoNothingAutoFillListBoxController : IAutoFillListBoxController
     {
-        public void Init(IHandleAutoFill parentForm, ListBox autoFillListBox)
+        public void Init(IAutoFillHandler autoFillHandler, ListBox autoFillListBox)
         {
         }
 

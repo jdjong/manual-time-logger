@@ -56,16 +56,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoFillListBoxController.cs" />
-    <Compile Include="DoNothingAutoFillListBoxController.cs" />
-    <Compile Include="IAutoFillListBoxController.cs" />
-    <Compile Include="IHandleAutoFill.cs" />
+    <Compile Include="AutoFill\AutoFillListBoxController.cs" />
+    <Compile Include="AutoFill\DoNothingAutoFillListBoxController.cs" />
+    <Compile Include="AutoFill\IAutoFillListBoxController.cs" />
+    <Compile Include="AutoFill\IAutoFillHandler.cs" />
+    <Compile Include="HotKeyHelper.cs" />
+    <Compile Include="ITimeLoggedHandler.cs" />
     <Compile Include="LogEntryInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LogEntryInputForm.Designer.cs">
       <DependentUpon>LogEntryInputForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="LogEntryTextBoxController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="LogEntryInputForm.resx">

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using ManualTimeLogger.App.AutoFill;
 using ManualTimeLogger.App.Properties;
 using ManualTimeLogger.Domain;
 using ManualTimeLogger.Persistence;
@@ -20,21 +21,21 @@ namespace ManualTimeLogger.App
         {
             try
             {
+                var accounts = Settings.Default.AccountPresets.Split(';').ToList();
                 IAutoFillListBoxController autoFillListBoxController = new DoNothingAutoFillListBoxController();
 
                 if (Settings.Default.IsAutoFillFeatureEnabled)
                 {
                     autoFillListBoxController = new AutoFillListBoxController(Settings.Default.LabelPresets.Split(';'), Settings.Default.ActivityPresets.Split(';'));
                 }
-                
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(
                     new LogEntryInputForm(
-                        new LogEntryInputParser(Settings.Default.AccountPresets.Split(';').ToList()), 
                         new CsvFileRepository(Settings.Default.TimeLogsBasePath, $"{Environment.UserName}_timelog_{DateTime.Today:yyyyMM}.csv"),
-                        autoFillListBoxController,
-                        Settings.Default.AccountPresets.Split(';').ToList()));
+                        new LogEntryTextBoxController(new LogEntryInputParser(accounts), autoFillListBoxController, new HotKeyHelper(accounts))
+                ));
             }
             catch (Exception e)
             {
