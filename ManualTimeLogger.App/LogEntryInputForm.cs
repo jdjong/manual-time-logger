@@ -12,13 +12,13 @@ namespace ManualTimeLogger.App
     {
         private readonly LogEntryInputParser _inputParser;
         private readonly IRepository _repository;
-        private readonly AutoFillListBoxController _autoFillListBoxController;
+        private readonly IAutoFillListBoxController _autoFillListBoxController;
         private readonly List<string> _accounts;
         private TimeSpan _openTime;
 
         // TODO, introduce log entry text box controller
 
-        public LogEntryInputForm(LogEntryInputParser inputParser, IRepository repository, AutoFillListBoxController autoFillListBoxController, List<string> accounts)
+        public LogEntryInputForm(LogEntryInputParser inputParser, IRepository repository, IAutoFillListBoxController autoFillListBoxController, List<string> accounts)
         {
             _inputParser = inputParser;
             _repository = repository;
@@ -182,7 +182,8 @@ namespace ManualTimeLogger.App
 
         private void UpdateTitle()
         {
-            Text = $"log {_repository.GetTotalLoggedHoursForDate(DateTime.Today).ToString("0.00")} open {_openTime.TotalHours.ToString("0.00")}";
+            // ReSharper disable once LocalizableElement
+            Text = $"log {_repository.GetTotalLoggedHoursForDate(DateTime.Today):0.00} open {_openTime.TotalHours:0.00}";
         }
 
         private void DetermineTextColor()

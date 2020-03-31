@@ -20,14 +20,20 @@ namespace ManualTimeLogger.App
         {
             try
             {
+                IAutoFillListBoxController autoFillListBoxController = new DoNothingAutoFillListBoxController();
+
+                if (Settings.Default.IsAutoFillFeatureEnabled)
+                {
+                    autoFillListBoxController = new AutoFillListBoxController(Settings.Default.LabelPresets.Split(';'), Settings.Default.ActivityPresets.Split(';'));
+                }
+                
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(
                     new LogEntryInputForm(
                         new LogEntryInputParser(Settings.Default.AccountPresets.Split(';').ToList()), 
                         new CsvFileRepository(Settings.Default.TimeLogsBasePath, $"{Environment.UserName}_timelog_{DateTime.Today:yyyyMM}.csv"),
-                        // TODO, add interface and do nothing controller. Inject proper one depending on feature IsAutoFillFeatureEnabled.
-                        new AutoFillListBoxController(Settings.Default.IsAutoFillFeatureEnabled, Settings.Default.LabelPresets.Split(';'), Settings.Default.ActivityPresets.Split(';')),
+                        autoFillListBoxController,
                         Settings.Default.AccountPresets.Split(';').ToList()));
             }
             catch (Exception e)

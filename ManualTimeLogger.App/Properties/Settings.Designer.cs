@@ -43,7 +43,7 @@ namespace ManualTimeLogger.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("nb;nwb;roi;norma;sogyo;liniebreed")]
+        [global::System.Configuration.DefaultSettingValueAttribute("nb;nwb;roi;norma;sogyo;")]
         public string AccountPresets {
             get {
                 return ((string)(this["AccountPresets"]));
@@ -63,7 +63,7 @@ namespace ManualTimeLogger.App.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("qbr;schade;stagingdb;exposeracimatrix;businessline;dvfinancielekoppeling;financie" +
             "lekoppeling;volgnummer;bolservice;omnext;incident;redmine;buildstraat;monitoring" +
-            ";avg;automatischindienen;ravenupgrade;infrastructuur")]
+            ";avg;automatischindienen;ravenupgrade;infrastructuur;studie")]
         public string LabelPresets {
             get {
                 return ((string)(this["LabelPresets"]));

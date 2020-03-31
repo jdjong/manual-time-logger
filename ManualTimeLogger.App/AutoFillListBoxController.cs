@@ -4,17 +4,15 @@ using System.Windows.Forms;
 
 namespace ManualTimeLogger.App
 {
-    public class AutoFillListBoxController
+    public class AutoFillListBoxController : IAutoFillListBoxController
     {
         private IHandleAutoFill _parentForm;
         private ListBox _autoFillListBox;
-        private readonly bool _isAutoFillFeatureEnabled;
         private readonly string[] _labelPresetList;
         private readonly string[] _activityPresetList;
 
-        public AutoFillListBoxController(bool isAutoFillFeatureEnabled, string[] labelPresetList, string[] activityPresetList)
+        public AutoFillListBoxController(string[] labelPresetList, string[] activityPresetList)
         {
-            _isAutoFillFeatureEnabled = isAutoFillFeatureEnabled;
             _labelPresetList = labelPresetList;
             _activityPresetList = activityPresetList;
         }
@@ -31,16 +29,12 @@ namespace ManualTimeLogger.App
 
         public void DoAutoFillLabels()
         {
-            if (!_isAutoFillFeatureEnabled) return;
-
             FillAutoFillListBoxWith(_labelPresetList);
             ShowAutoFillListBox();
         }
 
         public void DoAutoFillActivities()
         {
-            if (!_isAutoFillFeatureEnabled) return;
-            
             FillAutoFillListBoxWith(_activityPresetList);
             ShowAutoFillListBox();
         }

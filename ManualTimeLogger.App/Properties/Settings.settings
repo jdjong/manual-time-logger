@@ -9,13 +9,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="AccountPresets" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">nb;nwb;roi;norma;sogyo;liniebreed</Value>
+      <Value Profile="(Default)">nb;nwb;roi;norma;sogyo;</Value>
     </Setting>
     <Setting Name="ActivityPresets" Type="System.String" Scope="Application">
       <Value Profile="(Default)">voortbrengen;communicerenintern;communicerenextern;organiseren</Value>
     </Setting>
     <Setting Name="LabelPresets" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">qbr;schade;stagingdb;exposeracimatrix;businessline;dvfinancielekoppeling;financielekoppeling;volgnummer;bolservice;omnext;incident;redmine;buildstraat;monitoring;avg;automatischindienen;ravenupgrade;infrastructuur</Value>
+      <Value Profile="(Default)">qbr;schade;stagingdb;exposeracimatrix;businessline;dvfinancielekoppeling;financielekoppeling;volgnummer;bolservice;omnext;incident;redmine;buildstraat;monitoring;avg;automatischindienen;ravenupgrade;infrastructuur;studie</Value>
     </Setting>
   </Settings>
 </SettingsFile>
