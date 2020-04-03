@@ -45,7 +45,7 @@ namespace ManualTimeLogger.ReportBuilder
                 FullFilePath,
                 new[]
                 {
-                    $"\"{reportEntry.Engineer}\"{CsvSeparator}\"{reportEntry.Description}\"{CsvSeparator}\"{reportEntry.NrOfHoursPerDay.Sum(x => x.Value)}\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), reportEntry.NrOfHoursPerDay.Select(hoursForDay => $"\"{GetHoursForDayString(hoursForDay)}\""))}"
+                    $"\"{reportEntry.GroupedBy}\"{CsvSeparator}\"{reportEntry.ThenGroupedBy}\"{CsvSeparator}\"{reportEntry.NrOfHoursPerDay.Sum(x => x.Value)}\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), reportEntry.NrOfHoursPerDay.Select(hoursForDay => $"\"{GetHoursForDayString(hoursForDay)}\""))}"
                 });
         }
 

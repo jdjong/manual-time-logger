@@ -7,15 +7,15 @@ namespace ManualTimeLogger.ReportBuilder
     public class ReportEntry
     {
         public int PeriodNrOfDays { get; }
-        public string Engineer;
-        public string Description;
-        public Dictionary<DateTime, float> NrOfHoursPerDay;
+        public string GroupedBy { get; }
+        public string ThenGroupedBy { get; }
+        public Dictionary<DateTime, float> NrOfHoursPerDay { get; }
 
-        public ReportEntry(string engineer, string description, DateTime firstDateOfReportPeriod, int periodNrOfDays, Dictionary<DateTime, float> nrOfHoursForAllDaysPerDay)
+        public ReportEntry(string groupedBy, string thenGroupedBy, DateTime firstDateOfReportPeriod, int periodNrOfDays, Dictionary<DateTime, float> nrOfHoursForAllDaysPerDay)
         {
             PeriodNrOfDays = periodNrOfDays;
-            Engineer = engineer;
-            Description = description;
+            GroupedBy = groupedBy;
+            ThenGroupedBy = thenGroupedBy;
             NrOfHoursPerDay = new Dictionary<DateTime, float>();
 
             for (var numberOfDays = 0; numberOfDays < periodNrOfDays; numberOfDays++)
@@ -30,7 +30,7 @@ namespace ManualTimeLogger.ReportBuilder
 
         protected bool Equals(ReportEntry other)
         {
-            return string.Equals(Engineer, other.Engineer) && string.Equals(Description, other.Description) && NrOfHoursPerDay.SequenceEqual(other.NrOfHoursPerDay) && PeriodNrOfDays == other.PeriodNrOfDays;
+            return string.Equals(GroupedBy, other.GroupedBy) && string.Equals(ThenGroupedBy, other.ThenGroupedBy) && NrOfHoursPerDay.SequenceEqual(other.NrOfHoursPerDay) && PeriodNrOfDays == other.PeriodNrOfDays;
         }
 
         public override bool Equals(object obj)
@@ -45,8 +45,8 @@ namespace ManualTimeLogger.ReportBuilder
         {
             unchecked
             {
-                var hashCode = (Engineer != null ? Engineer.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Description != null ? Description.GetHashCode() : 0);
+                var hashCode = (GroupedBy != null ? GroupedBy.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ThenGroupedBy != null ? ThenGroupedBy.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (NrOfHoursPerDay != null ? NrOfHoursPerDay.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ PeriodNrOfDays;
                 return hashCode;

@@ -26,22 +26,24 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Issue\"{repository.CsvSeparator}\"Totaal\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
-        public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
+        public void Build(string groupedBy, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
-            var differentIssueNumbers = logEntriesPerDay
+            var accountLogEntriesPerDay = logEntriesPerDay
                 .SelectMany(x => x)
                 .Where(_accountFilter)
-                .OrderBy(x => x.IssueNumber)
-                .Select(x => x.IssueNumber)
-                .Distinct();
+                .GroupBy(x => x.CreateDate)
+                .ToList();
 
-            differentIssueNumbers.ToList().ForEach(issueNumber =>
+            var differentIssueNumbers = accountLogEntriesPerDay
+                .SelectMany(x => x)
+                .Select(logEntry => logEntry.IssueNumber)
+                .Distinct()
+                .OrderBy(activity => activity);
+
+            differentIssueNumbers.ToList().ForEach(thenGroupedByIssueNumber =>
             {
-                var timeForIssueNumberPerDay = logEntriesPerDay
-                    .ToDictionary(x => x.Key, x => x.Where(y => y.IssueNumber == issueNumber)
-                                                    .Where(_accountFilter)
-                                                    .Sum(y => y.Duration));
-                _repository.SaveReportEntry(new ReportEntry(engineer, issueNumber.ToString(), _firstDayOfReport, _periodNrOfDays, timeForIssueNumberPerDay));
+                var timeForIssueNumberPerDay = accountLogEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.IssueNumber == thenGroupedByIssueNumber).Sum(y => y.Duration));
+                _repository.SaveReportEntry(new ReportEntry(groupedBy, thenGroupedByIssueNumber.ToString(), _firstDayOfReport, _periodNrOfDays, timeForIssueNumberPerDay));
             });
         }
 

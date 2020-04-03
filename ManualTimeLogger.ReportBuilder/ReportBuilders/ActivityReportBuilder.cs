@@ -26,24 +26,24 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Activiteit\"{repository.CsvSeparator}\"Totaal\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
-        public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
+        public void Build(string groupBy, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
-            // TODO, why twice _accountFilter necessary? Should the filter be applied earlier, so your input is already ok and you just have to aggregate? Same for label and issue number builders
-            
-            var differentActivities = logEntriesPerDay
+            var accountLogEntriesPerDay = logEntriesPerDay
                 .SelectMany(x => x)
                 .Where(_accountFilter)
-                .OrderBy(x => x.Activity)
-                .Select(logEntry => logEntry.Activity)
-                .Distinct();
+                .GroupBy(x => x.CreateDate)
+                .ToList();
 
-            differentActivities.ToList().ForEach(activity =>
+            var differentActivities = accountLogEntriesPerDay
+                .SelectMany(x => x)
+                .Select(logEntry => logEntry.Activity)
+                .Distinct()
+                .OrderBy(activity => activity);
+
+            differentActivities.ToList().ForEach(thenGroupedByActivity =>
             {
-                var timeForActivityPerDay = logEntriesPerDay
-                    .ToDictionary(x => x.Key, x => x.Where(y => y.Activity == activity)
-                                                    .Where(_accountFilter)
-                                                    .Sum(y => y.Duration));
-                _repository.SaveReportEntry(new ReportEntry(engineer, activity, _firstDayOfReport, _periodNrOfDays, timeForActivityPerDay));
+                var timeForActivityPerDay = accountLogEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Activity == thenGroupedByActivity).Sum(y => y.Duration));
+                _repository.SaveReportEntry(new ReportEntry(groupBy, thenGroupedByActivity, _firstDayOfReport, _periodNrOfDays, timeForActivityPerDay));
             });
         }
 

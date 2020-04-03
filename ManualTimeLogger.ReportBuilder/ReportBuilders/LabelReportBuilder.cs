@@ -25,22 +25,24 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Thema\"{repository.CsvSeparator}\"Totaal\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
-        public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
+        public void Build(string groupedBy, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
-            var differentLabels = logEntriesPerDay
+            var accountLogEntriesPerDay = logEntriesPerDay
                 .SelectMany(x => x)
                 .Where(_accountFilter)
-                .OrderBy(x => x.Label)
-                .Select(x => x.Label)
-                .Distinct();
+                .GroupBy(x => x.CreateDate)
+                .ToList();
+            
+            var differentLabels = accountLogEntriesPerDay
+                .SelectMany(x => x)
+                .Select(logEntry => logEntry.Label)
+                .Distinct()
+                .OrderBy(activity => activity);
 
-            differentLabels.ToList().ForEach(label =>
+            differentLabels.ToList().ForEach(thenGroupedByLabel =>
             {
-                var timeForLabelPerDay = logEntriesPerDay
-                    .ToDictionary(x => x.Key, x => x.Where(y => y.Label == label)
-                                                    .Where(_accountFilter)
-                                                    .Sum(y => y.Duration));
-                _repository.SaveReportEntry(new ReportEntry(engineer, label, _firstDayOfReport, _periodNrOfDays, timeForLabelPerDay));
+                var timeForLabelPerDay = accountLogEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Label == thenGroupedByLabel).Sum(y => y.Duration));
+                _repository.SaveReportEntry(new ReportEntry(groupedBy, thenGroupedByLabel, _firstDayOfReport, _periodNrOfDays, timeForLabelPerDay));
             });
         }
 

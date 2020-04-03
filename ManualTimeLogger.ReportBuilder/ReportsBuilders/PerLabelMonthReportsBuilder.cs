@@ -33,8 +33,6 @@ namespace ManualTimeLogger.ReportBuilder.ReportsBuilders
             _logEntriesPerLabel.Keys.ToList().ForEach(label =>
             {
                 var logEntriesPerActivityPerDay = _logEntriesPerLabel[label].GroupBy(x => x.CreateDate);
-
-                // TODO, needs some refactoring, because the builder parameter name is engineer, but we pass in label. However both are strings, so therefore we abuse, but needs fixing badly!!!!!
                 _labelPerActivityReportBuilder.Build(label, logEntriesPerActivityPerDay);
             });
         }

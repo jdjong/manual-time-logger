@@ -26,22 +26,24 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
             _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Klant\"{repository.CsvSeparator}\"Totaal\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
-        public void Build(string engineer, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
+        public void Build(string groupedBy, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
-            var accounts = logEntriesPerDay
+            var accountLogEntriesPerDay = logEntriesPerDay
                 .SelectMany(x => x)
                 .Where(_accountFilter)
-                .OrderBy(x => x.Account)
-                .Select(x => x.Account)
-                .Distinct();
+                .GroupBy(x => x.CreateDate)
+                .ToList();
+            
+            var differentAccounts = accountLogEntriesPerDay
+                .SelectMany(x => x)
+                .Select(logEntry => logEntry.Account)
+                .Distinct()
+                .OrderBy(activity => activity);
 
-            accounts.ToList().ForEach(account =>
+            differentAccounts.ToList().ForEach(thenGroupedByAccount =>
             {
-                var timeForLabelPerDay = logEntriesPerDay
-                    .ToDictionary(x => x.Key, x => x.Where(y => y.Account == account)
-                        .Where(_accountFilter)
-                        .Sum(y => y.Duration));
-                _repository.SaveReportEntry(new ReportEntry(engineer, account, _firstDayOfReport, _periodNrOfDays, timeForLabelPerDay));
+                var timeForLabelPerDay = accountLogEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Account == thenGroupedByAccount).Sum(y => y.Duration));
+                _repository.SaveReportEntry(new ReportEntry(groupedBy, thenGroupedByAccount, _firstDayOfReport, _periodNrOfDays, timeForLabelPerDay));
             });
         }
     }
