@@ -59,7 +59,6 @@
     <Compile Include="Commands\BuildWeekReportsCommand.cs" />
     <Compile Include="Commands\CommandProvider.cs" />
     <Compile Include="ReportBuilders\ActivityReportBuilder.cs" />
-    <Compile Include="ReportBuilders\IssueNumberReportBuilder.cs" />
     <Compile Include="ReportBuilders\LabelReportBuilder.cs" />
     <Compile Include="ReportsBuilders\PerEngineerWeekReportsBuilder.cs" />
     <Compile Include="ReportBuilders\AccountReportBuilder.cs" />

@@ -10,15 +10,20 @@ namespace ManualTimeLogger.ReportBuilder
         public char CsvSeparator => ';';
         private readonly string _basePath;
         private readonly string _fileName;
+        private readonly DateTime _firstDayOfReport;
+        private readonly int _periodNrOfDays;
+        private int _reportColumnCount;
         private string FullFilePath => Path.Combine(_basePath, _fileName);
 
-        public ReportCsvFileRepository(string basePath, string fileName)
+        public ReportCsvFileRepository(string basePath, string fileName, DateTime firstDayOfReport, int periodNrOfDays)
         {
             if (string.IsNullOrEmpty(basePath)) throw new ArgumentNullException(basePath);
             if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException(fileName);
 
             _basePath = basePath;
             _fileName = fileName;
+            _firstDayOfReport = firstDayOfReport;
+            _periodNrOfDays = periodNrOfDays;
 
             if (!Directory.Exists(_basePath))
             {
@@ -29,23 +34,38 @@ namespace ManualTimeLogger.ReportBuilder
             {
                 File.Delete(FullFilePath);
             }
+
+            CreateHeader();
         }
 
-        // TODO, it is strange that the calling party should know and create the header with number of columns matching the number of columns created in the save report entry method.
-        public void CreateHeader(string[] header)
+        private void CreateHeader()
         {
+            var headerString = $"\"GroupedBy\"{CsvSeparator}\"ThenGroupedBy\"{CsvSeparator}\"Totaal\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}";
+            _reportColumnCount = headerString.Split(CsvSeparator).Length;
+
             File.AppendAllLines(
                 FullFilePath,
-                header);
+                new []
+                {
+                    headerString
+                });
         }
 
         public void SaveReportEntry(ReportEntry reportEntry)
         {
+            var reportEntryString = $"\"{reportEntry.GroupedBy}\"{CsvSeparator}\"{reportEntry.ThenGroupedBy}\"{CsvSeparator}\"{reportEntry.NrOfHoursPerDay.Sum(x => x.Value)}\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), reportEntry.NrOfHoursPerDay.Select(hoursForDay => $"\"{GetHoursForDayString(hoursForDay)}\""))}";
+            var reportEntryColumnCount = reportEntryString.Split(CsvSeparator).Length;
+
+            if (reportEntryColumnCount != _reportColumnCount)
+            {
+                throw new ArgumentException($"Report entry column count {reportEntryColumnCount} does not match intended report column count {_reportColumnCount}", nameof(reportEntry));
+            }
+
             File.AppendAllLines(
                 FullFilePath,
                 new[]
                 {
-                    $"\"{reportEntry.GroupedBy}\"{CsvSeparator}\"{reportEntry.ThenGroupedBy}\"{CsvSeparator}\"{reportEntry.NrOfHoursPerDay.Sum(x => x.Value)}\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), reportEntry.NrOfHoursPerDay.Select(hoursForDay => $"\"{GetHoursForDayString(hoursForDay)}\""))}"
+                    reportEntryString
                 });
         }
 

@@ -22,8 +22,6 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
                 ? (Func<LogEntry, bool>) (x => true)
                 : x => x.Account == accountFilter;
             _repository = repository;
-
-            _repository.CreateHeader(new[] { $"\"Wie\"{repository.CsvSeparator}\"Klant\"{repository.CsvSeparator}\"Totaal\"{repository.CsvSeparator}{string.Join(repository.CsvSeparator.ToString(), Enumerable.Range(0, _periodNrOfDays).Select(nr => $"\"{_firstDayOfReport.AddDays(nr):yyyyMMdd}\""))}" });
         }
 
         public void Build(string groupedBy, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
