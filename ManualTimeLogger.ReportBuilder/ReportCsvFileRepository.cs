@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ManualTimeLogger.ReportBuilder
 {
-    public class ReportCsvFileRepository : IReportCsvFileRepository
+    public class ReportCsvFileRepository : IRepository
     {
         public char CsvSeparator => ';';
         private readonly string _basePath;

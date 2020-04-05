@@ -14,12 +14,12 @@ namespace ManualTimeLogger.ReportBuilder.Tests.ReportBuilders
         [Test]
         public void given_an_activity_report_builder_and_some_logged_activities_with_different_scenarios_when_creating_the_report_then_the_expected_report_entries_are_added()
         {
-            var repository = Substitute.For<IReportCsvFileRepository>();
+            var repository = Substitute.For<IRepository>();
             var firstDateOfReportPeriod = new DateTime(2020, 2, 14);
             var periodNrOfDays = 6;
             var accountFilter = "nwb";
 
-            var builder = new ActivityReportBuilder(repository, firstDateOfReportPeriod, periodNrOfDays, accountFilter);
+            var builder = new ActivityReportBuilder(repository, firstDateOfReportPeriod, periodNrOfDays);
 
             var firstDate = new DateTime(2020, 2, 15);
             var secondDate = new DateTime(2020, 2, 17);

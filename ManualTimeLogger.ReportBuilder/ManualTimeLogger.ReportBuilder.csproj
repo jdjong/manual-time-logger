@@ -48,7 +48,7 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="ReportSets\CumulativeMonthReportSet.cs" />
     <Compile Include="ReportSets\CumulativeWeekReportSet.cs" />
-    <Compile Include="IReportCsvFileRepository.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="ReportSets\PerLabelMonthReportSet.cs" />
     <Compile Include="ReportSets\PerEngineerMonthReportSet.cs" />
     <Compile Include="ReportSets\PerLabelWeekReportSet.cs" />

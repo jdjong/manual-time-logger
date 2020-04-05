@@ -14,11 +14,11 @@ namespace ManualTimeLogger.ReportBuilder.Tests.ReportBuilders
         [Test]
         public void given_a_account_report_builder_and_some_log_entries_with_different_scenarios_when_creating_the_report_then_the_expected_report_entries_are_added()
         {
-            var repository = Substitute.For<IReportCsvFileRepository>();
+            var repository = Substitute.For<IRepository>();
             var firstDateOfReportPeriod = new DateTime(2020, 2, 14);
             var periodNrOfDays = 6;
 
-            var builder = new AccountReportBuilder(repository, firstDateOfReportPeriod, periodNrOfDays, accountFilter: null);
+            var builder = new AccountReportBuilder(repository, firstDateOfReportPeriod, periodNrOfDays);
 
             var firstDate = new DateTime(2020, 2, 15);
             var secondDate = new DateTime(2020, 2, 17);
@@ -57,12 +57,12 @@ namespace ManualTimeLogger.ReportBuilder.Tests.ReportBuilders
         [Test]
         public void given_a_account_report_builder_and_some_log_entries_with_different_scenarios_and_account_filter_set_when_creating_the_report_then_the_expected_report_entries_are_added()
         {
-            var repository = Substitute.For<IReportCsvFileRepository>();
+            var repository = Substitute.For<IRepository>();
             var firstDateOfReportPeriod = new DateTime(2020, 2, 14);
             var periodNrOfDays = 6;
             var accountFilter = "nb";
 
-            var builder = new AccountReportBuilder(repository, firstDateOfReportPeriod, periodNrOfDays, accountFilter);
+            var builder = new AccountReportBuilder(repository, firstDateOfReportPeriod, periodNrOfDays);
 
             var firstDate = new DateTime(2020, 2, 15);
             var secondDate = new DateTime(2020, 2, 17);

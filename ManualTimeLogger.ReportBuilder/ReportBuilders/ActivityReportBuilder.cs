@@ -11,28 +11,18 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
     {
         private readonly DateTime _firstDayOfReport;
         private readonly int _periodNrOfDays;
-        private readonly Func<LogEntry, bool> _accountFilter;
-        private readonly IReportCsvFileRepository _repository;
+        private readonly IRepository _repository;
 
-        public ActivityReportBuilder(IReportCsvFileRepository repository, DateTime firstDayOfReport, int periodNrOfDays, string accountFilter)
+        public ActivityReportBuilder(IRepository repository, DateTime firstDayOfReport, int periodNrOfDays)
         {
             _firstDayOfReport = firstDayOfReport;
             _periodNrOfDays = periodNrOfDays;
-            _accountFilter = string.IsNullOrEmpty(accountFilter)
-                ? (Func<LogEntry, bool>) (x => true)
-                : x => x.Account == accountFilter;
             _repository = repository;
         }
 
         public void Build(string groupBy, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
-            var accountLogEntriesPerDay = logEntriesPerDay
-                .SelectMany(x => x)
-                .Where(_accountFilter)
-                .GroupBy(x => x.CreateDate)
-                .ToList();
-
-            var differentActivities = accountLogEntriesPerDay
+            var differentActivities = logEntriesPerDay
                 .SelectMany(x => x)
                 .Select(logEntry => logEntry.Activity)
                 .Distinct()
@@ -40,7 +30,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportBuilders
 
             differentActivities.ToList().ForEach(thenGroupedByActivity =>
             {
-                var timeForActivityPerDay = accountLogEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Activity == thenGroupedByActivity).Sum(y => y.Duration));
+                var timeForActivityPerDay = logEntriesPerDay.ToDictionary(x => x.Key, x => x.Where(y => y.Activity == thenGroupedByActivity).Sum(y => y.Duration));
                 _repository.SaveReportEntry(new ReportEntry(groupBy, thenGroupedByActivity, _firstDayOfReport, _periodNrOfDays, timeForActivityPerDay));
             });
         }

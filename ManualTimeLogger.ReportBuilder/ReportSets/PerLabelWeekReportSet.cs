@@ -20,7 +20,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportSets
             }
 
             var nrOfDaysInWeek = 7;
-            _labelPerActivityReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_label_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek, accountFilter);
+            _labelPerActivityReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_label_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
         }
 
         public void Create(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerLabel)

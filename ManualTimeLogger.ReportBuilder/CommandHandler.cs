@@ -15,7 +15,6 @@ namespace ManualTimeLogger.ReportBuilder
         private readonly string _reportsBasePath;
 
         // TODO, add big integration test based on an example time log and generated reports which are tested ok. Test should check if time log generates expected reports.
-        // TODO, remove account filter logic from report builders (deep down) and move it here.
 
         public CommandHandler(string timeLogsBasePath, string reportsBasePath)
         {
@@ -25,7 +24,9 @@ namespace ManualTimeLogger.ReportBuilder
 
         private void Handle(BuildWeekReportsCommand command)
         {
-            var logEntriesPerEngineer = GetLogEntriesPerEngineer();
+            var logEntriesPerEngineer = string.IsNullOrEmpty(command.AccountFilter)
+                ? GetLogEntriesPerEngineer()
+                : GetAccountFilteredLogEntriesPerEngineer(command.AccountFilter);
             var logEntriesPerLabel = GetLogEntriesPerLabel(logEntriesPerEngineer);
             var logEntriesPerDay = GetLogEntriesPerDay(logEntriesPerEngineer);
 
@@ -40,7 +41,9 @@ namespace ManualTimeLogger.ReportBuilder
 
         public void Handle(BuildMonthReportsCommand command)
         {
-            var logEntriesPerEngineer = GetLogEntriesPerEngineer();
+            var logEntriesPerEngineer = string.IsNullOrEmpty(command.AccountFilter) 
+                ? GetLogEntriesPerEngineer() 
+                : GetAccountFilteredLogEntriesPerEngineer(command.AccountFilter);
             var logEntriesPerLabel = GetLogEntriesPerLabel(logEntriesPerEngineer);
             var logEntriesPerDay = GetLogEntriesPerDay(logEntriesPerEngineer);
 
@@ -71,6 +74,27 @@ namespace ManualTimeLogger.ReportBuilder
             return allTimeLogRepositories
                 .GroupBy(repo => repo.GetEngineerName())
                 .ToDictionary(grouping => grouping.Key, grouping => grouping.SelectMany(repo => repo.GetAllLogEntries()));
+        }
+
+        private Dictionary<string, IEnumerable<LogEntry>> GetAccountFilteredLogEntriesPerEngineer(string accountFilter)
+        {
+            var accountFilterFunc = string.IsNullOrEmpty(accountFilter)
+                ? (Func<LogEntry, bool>)(x => true)
+                : x => x.Account == accountFilter;
+            var allTimeLogRepositories = GetAllTimeLogRepositories();
+
+            var filteredResult = allTimeLogRepositories
+                .GroupBy(repo => repo.GetEngineerName())
+                .ToDictionary(grouping => grouping.Key, grouping => grouping.SelectMany(repo => repo.GetAllLogEntries().Where(accountFilterFunc)));
+            
+            var keysWithoutLogEntries = filteredResult.Where(x => !x.Value.Any()).Select(x => x.Key);
+            
+            foreach (var keyWithoutLogEntries in keysWithoutLogEntries)
+            {
+                filteredResult.Remove(keyWithoutLogEntries);
+            }
+
+            return filteredResult;
         }
 
         private List<CsvFileRepository> GetAllTimeLogRepositories()

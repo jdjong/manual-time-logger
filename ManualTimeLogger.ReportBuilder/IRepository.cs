@@ -1,6 +1,6 @@
 ﻿namespace ManualTimeLogger.ReportBuilder
 {
-    public interface IReportCsvFileRepository
+    public interface IRepository
     {
         void SaveReportEntry(ReportEntry reportEntry);
     }
