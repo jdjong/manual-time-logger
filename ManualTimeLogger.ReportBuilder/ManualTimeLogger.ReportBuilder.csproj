@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHandler.cs" />
     <Compile Include="Commands\BuildMonthReportsCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="ReportSets\CumulativeMonthReportSet.cs" />
