@@ -6,33 +6,29 @@ using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 // ReSharper disable PossibleMultipleEnumeration
 
-namespace ManualTimeLogger.ReportBuilder.ReportsBuilders
+namespace ManualTimeLogger.ReportBuilder.ReportSets
 {
-    public class CumulativeMonthReportsBuilder
+    public class CumulativeMonthReportSet
     {
-        private readonly IEnumerable<IGrouping<DateTime, LogEntry>> _logEntriesPerDay;
-
         private readonly ActivityReportBuilder _activityCumulativeReportBuilder;
         private readonly LabelReportBuilder _labelCumulativeReportBuilder;
 
-        public CumulativeMonthReportsBuilder(string reportsBasePath, DateTime firstDayOfMonth, string accountFilter, IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
+        public CumulativeMonthReportSet(string reportsBasePath, DateTime firstDayOfMonth, string accountFilter)
         {
             if (firstDayOfMonth.Day != 1)
             {
                 throw new ArgumentException("First day of month should be 1", nameof(firstDayOfMonth));
             }
 
-            _logEntriesPerDay = logEntriesPerDay;
-
             var nrOfDaysInMonth = DateTime.DaysInMonth(firstDayOfMonth.Year, firstDayOfMonth.Month);
             _activityCumulativeReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_cumulative_activity_month_report_{firstDayOfMonth:yyyyMMdd}.csv", firstDayOfMonth, nrOfDaysInMonth), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
             _labelCumulativeReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_cumulative_label_month_report_{firstDayOfMonth:yyyyMMdd}.csv", firstDayOfMonth, nrOfDaysInMonth), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
         }
         
-        public void Build()
+        public void Create(IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)
         {
-            _activityCumulativeReportBuilder.Build(_logEntriesPerDay);
-            _labelCumulativeReportBuilder.Build(_logEntriesPerDay);
+            _activityCumulativeReportBuilder.Build(logEntriesPerDay);
+            _labelCumulativeReportBuilder.Build(logEntriesPerDay);
         }
     }
 }

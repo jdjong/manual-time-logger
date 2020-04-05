@@ -6,32 +6,28 @@ using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 // ReSharper disable PossibleMultipleEnumeration
 
-namespace ManualTimeLogger.ReportBuilder.ReportsBuilders
+namespace ManualTimeLogger.ReportBuilder.ReportSets
 {
-    public class PerLabelWeekReportsBuilder
+    public class PerLabelWeekReportSet
     {
-        private readonly Dictionary<string, IEnumerable<LogEntry>> _logEntriesPerLabel;
-
         private readonly ActivityReportBuilder _labelPerActivityReportBuilder;
 
-        public PerLabelWeekReportsBuilder(string reportsBasePath, DateTime firstDayOfWeek, string accountFilter, Dictionary<string, IEnumerable<LogEntry>> logEntriesPerLabel)
+        public PerLabelWeekReportSet(string reportsBasePath, DateTime firstDayOfWeek, string accountFilter)
         {
             if (firstDayOfWeek.DayOfWeek != DayOfWeek.Monday)
             {
                 throw new ArgumentException("First day of week should be a monday", nameof(firstDayOfWeek));
             }
 
-            _logEntriesPerLabel = logEntriesPerLabel;
-
             var nrOfDaysInWeek = 7;
             _labelPerActivityReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_label_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek, accountFilter);
         }
 
-        public void Build()
+        public void Create(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerLabel)
         {
-            _logEntriesPerLabel.Keys.ToList().ForEach(label =>
+            logEntriesPerLabel.Keys.ToList().ForEach(label =>
             {
-                var logEntriesPerLabelPerDay = _logEntriesPerLabel[label].GroupBy(x => x.CreateDate);
+                var logEntriesPerLabelPerDay = logEntriesPerLabel[label].GroupBy(x => x.CreateDate);
 
                 _labelPerActivityReportBuilder.Build(label, logEntriesPerLabelPerDay);
             });

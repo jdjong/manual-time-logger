@@ -6,33 +6,28 @@ using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 // ReSharper disable PossibleMultipleEnumeration
 
-namespace ManualTimeLogger.ReportBuilder.ReportsBuilders
+namespace ManualTimeLogger.ReportBuilder.ReportSets
 {
-    public class PerLabelMonthReportsBuilder
+    public class PerLabelMonthReportSet
     {
-        private readonly Dictionary<string, IEnumerable<LogEntry>> _logEntriesPerLabel;
-
         private readonly ActivityReportBuilder _labelPerActivityReportBuilder;
 
-        public PerLabelMonthReportsBuilder(string reportsBasePath, DateTime firstDayOfMonth, string accountFilter,
-            Dictionary<string, IEnumerable<LogEntry>> logEntriesPerLabel)
+        public PerLabelMonthReportSet(string reportsBasePath, DateTime firstDayOfMonth, string accountFilter)
         {
             if (firstDayOfMonth.Day != 1)
             {
                 throw new ArgumentException("First day of month should be 1", nameof(firstDayOfMonth));
             }
 
-            _logEntriesPerLabel = logEntriesPerLabel;
-
             var nrOfDaysInMonth = DateTime.DaysInMonth(firstDayOfMonth.Year, firstDayOfMonth.Month);
             _labelPerActivityReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_label_activity_month_report_{firstDayOfMonth:yyyyMMdd}.csv", firstDayOfMonth, nrOfDaysInMonth), firstDayOfMonth, nrOfDaysInMonth, accountFilter);
         }
 
-        public void Build()
+        public void Create(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerLabel)
         {
-            _logEntriesPerLabel.Keys.ToList().ForEach(label =>
+            logEntriesPerLabel.Keys.ToList().ForEach(label =>
             {
-                var logEntriesPerActivityPerDay = _logEntriesPerLabel[label].GroupBy(x => x.CreateDate);
+                var logEntriesPerActivityPerDay = logEntriesPerLabel[label].GroupBy(x => x.CreateDate);
                 _labelPerActivityReportBuilder.Build(label, logEntriesPerActivityPerDay);
             });
         }

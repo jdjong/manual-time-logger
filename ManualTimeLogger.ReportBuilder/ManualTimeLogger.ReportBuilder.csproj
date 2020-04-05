@@ -45,12 +45,12 @@
   <ItemGroup>
     <Compile Include="Commands\BuildMonthReportsCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="ReportsBuilders\CumulativeMonthReportsBuilder.cs" />
-    <Compile Include="ReportsBuilders\CumulativeWeekReportsBuilder.cs" />
+    <Compile Include="ReportSets\CumulativeMonthReportSet.cs" />
+    <Compile Include="ReportSets\CumulativeWeekReportSet.cs" />
     <Compile Include="IReportCsvFileRepository.cs" />
-    <Compile Include="ReportsBuilders\PerLabelMonthReportsBuilder.cs" />
-    <Compile Include="ReportsBuilders\PerEngineerMonthReportsBuilder.cs" />
-    <Compile Include="ReportsBuilders\PerLabelWeekReportsBuilder.cs" />
+    <Compile Include="ReportSets\PerLabelMonthReportSet.cs" />
+    <Compile Include="ReportSets\PerEngineerMonthReportSet.cs" />
+    <Compile Include="ReportSets\PerLabelWeekReportSet.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -60,7 +60,7 @@
     <Compile Include="Commands\CommandProvider.cs" />
     <Compile Include="ReportBuilders\ActivityReportBuilder.cs" />
     <Compile Include="ReportBuilders\LabelReportBuilder.cs" />
-    <Compile Include="ReportsBuilders\PerEngineerWeekReportsBuilder.cs" />
+    <Compile Include="ReportSets\PerEngineerWeekReportSet.cs" />
     <Compile Include="ReportBuilders\AccountReportBuilder.cs" />
     <Compile Include="ReportCsvFileRepository.cs" />
     <Compile Include="Program.cs" />

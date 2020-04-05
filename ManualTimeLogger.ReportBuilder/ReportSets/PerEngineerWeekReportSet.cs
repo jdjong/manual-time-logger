@@ -6,34 +6,30 @@ using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 // ReSharper disable PossibleMultipleEnumeration
 
-namespace ManualTimeLogger.ReportBuilder.ReportsBuilders
+namespace ManualTimeLogger.ReportBuilder.ReportSets
 {
-    public class PerEngineerWeekReportsBuilder
+    public class PerEngineerWeekReportSet
     {
-        private readonly Dictionary<string, IEnumerable<LogEntry>> _logEntriesPerEngineer;
-
         private readonly ActivityReportBuilder _activityPerEngineerReportBuilder;
         private readonly LabelReportBuilder _labelPerEngineerReportBuilder;
 
-        public PerEngineerWeekReportsBuilder(string reportsBasePath, DateTime firstDayOfWeek, string accountFilter, Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
+        public PerEngineerWeekReportSet(string reportsBasePath, DateTime firstDayOfWeek, string accountFilter)
         {
             if (firstDayOfWeek.DayOfWeek != DayOfWeek.Monday)
             {
                 throw new ArgumentException("First day of week should be a monday", nameof(firstDayOfWeek));
             }
 
-            _logEntriesPerEngineer = logEntriesPerEngineer;
-
             var nrOfDaysInWeek = 7;
             _activityPerEngineerReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek, accountFilter);
             _labelPerEngineerReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek, accountFilter);
         }
 
-        public void Build()
+        public void Create(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)
         {
-            _logEntriesPerEngineer.Keys.ToList().ForEach(engineer =>
+            logEntriesPerEngineer.Keys.ToList().ForEach(engineer =>
             {
-                var logEntriesPerEngineerPerDay = _logEntriesPerEngineer[engineer].GroupBy(x => x.CreateDate);
+                var logEntriesPerEngineerPerDay = logEntriesPerEngineer[engineer].GroupBy(x => x.CreateDate);
 
                 _activityPerEngineerReportBuilder.Build(engineer, logEntriesPerEngineerPerDay);
                 _labelPerEngineerReportBuilder.Build(engineer, logEntriesPerEngineerPerDay);
