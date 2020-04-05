@@ -11,14 +11,14 @@ namespace ManualTimeLogger.ReportBuilder
 {
     public class CommandHandler
     {
-        private readonly string _timeLogsBasePath;
+        private readonly ManualTimeLogger.Persistence.IRepositoryFactory _timeLogRepositoryFactory;
         private readonly IRepositoryFactory _reportRepositoryFactory;
 
         // TODO, add big integration test based on an example time log and generated reports which are tested ok. Test should check if time log generates expected reports.
 
-        public CommandHandler(string timeLogsBasePath, IRepositoryFactory reportRepositoryFactory)
+        public CommandHandler(ManualTimeLogger.Persistence.IRepositoryFactory timeLogRepositoryFactory, IRepositoryFactory reportRepositoryFactory)
         {
-            _timeLogsBasePath = timeLogsBasePath;
+            _timeLogRepositoryFactory = timeLogRepositoryFactory;
             _reportRepositoryFactory = reportRepositoryFactory;
         }
 
@@ -97,10 +97,10 @@ namespace ManualTimeLogger.ReportBuilder
             return filteredResult;
         }
 
-        private List<ManualTimeLogger.Persistence.CsvFileRepository> GetAllTimeLogRepositories()
+        private List<ManualTimeLogger.Persistence.IRepository> GetAllTimeLogRepositories()
         {
-            var allTimeLogFileNames = Directory.EnumerateFiles(_timeLogsBasePath);
-            var allTimeLogRepositories = allTimeLogFileNames.Select(filePath => new ManualTimeLogger.Persistence.CsvFileRepository(_timeLogsBasePath, Path.GetFileName(filePath))).ToList();
+            var allTimeLogFileNames = Directory.EnumerateFiles(_timeLogRepositoryFactory.GetFilesBasePath());
+            var allTimeLogRepositories = allTimeLogFileNames.Select(filePath => _timeLogRepositoryFactory.Create(Path.GetFileName(filePath))).ToList();
             return allTimeLogRepositories;
         }
     }

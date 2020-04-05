@@ -51,7 +51,9 @@
   <ItemGroup>
     <Compile Include="CsvFileLogEntry.cs" />
     <Compile Include="CsvFileRepository.cs" />
+    <Compile Include="CsvFileRepositoryFactory.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="IRepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
