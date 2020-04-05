@@ -37,7 +37,7 @@ namespace ManualTimeLogger.ReportBuilder.Tests.ReportBuilders
                 new LogEntry(12345, 3.25f, "description", "label", secondActivity, "nwb", secondDate),
                 new LogEntry(12345, 4f, "description", "label", firstActivity, "nwb", thirdDate),
                 new LogEntry(12345, 5.25f, "description", "label", thirdActivity, "nwb", thirdDate),
-                new LogEntry(12345, 6f, "description", "label", thirdActivity, "nb", thirdDate),
+                new LogEntry(12345, 6f, "description", "label", thirdActivity, "nwb", thirdDate),
             };
             var timeForActivity1PerDay = new Dictionary<DateTime, float>
             {
@@ -51,7 +51,7 @@ namespace ManualTimeLogger.ReportBuilder.Tests.ReportBuilders
             };
             var timeForActivity3PerDay = new Dictionary<DateTime, float>
             {
-                { thirdDate, 5.25f },
+                { thirdDate, 11.25f },
             };
 
             var engineerName = "TestEngineer";

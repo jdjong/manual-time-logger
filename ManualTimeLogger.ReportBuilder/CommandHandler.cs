@@ -14,8 +14,6 @@ namespace ManualTimeLogger.ReportBuilder
         private readonly ManualTimeLogger.Persistence.IRepositoryFactory _timeLogRepositoryFactory;
         private readonly IRepositoryFactory _reportRepositoryFactory;
 
-        // TODO, add big integration test based on an example time log and generated reports which are tested ok. Test should check if time log generates expected reports.
-
         public CommandHandler(ManualTimeLogger.Persistence.IRepositoryFactory timeLogRepositoryFactory, IRepositoryFactory reportRepositoryFactory)
         {
             _timeLogRepositoryFactory = timeLogRepositoryFactory;

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ManualTimeLogger.ReportBuilder.Persistence;
 using NUnit.Framework;
 
-namespace ManualTimeLogger.ReportBuilder.Tests
+namespace ManualTimeLogger.ReportBuilder.Persistence.Tests
 {
     [TestFixture]
     public class ReportEntryTests
