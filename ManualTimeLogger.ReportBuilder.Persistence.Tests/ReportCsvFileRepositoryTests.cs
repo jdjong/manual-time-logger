@@ -8,7 +8,7 @@ namespace ManualTimeLogger.ReportBuilder.Persistence.Tests
     [TestFixture]
     public class ReportCsvFileRepositoryTests
     {
-        private readonly string _testFileLocation = Environment.CurrentDirectory;
+        private readonly string _testFileLocation = TestContext.CurrentContext.TestDirectory;
         private string _testFileName = "name_report_testfile.csv";
         private CsvFileRepository _repository;
         private string _absoluteFilePath;

@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InMemoryCsvRepository.cs" />
+    <Compile Include="InMemoryCsvRepositoryFactory.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IRepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

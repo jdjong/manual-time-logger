@@ -11,7 +11,7 @@ namespace ManualTimeLogger.ReportBuilder
 
             var command = (dynamic)reportingCommandProvider.GetCommand(args);
             var timeLogRepositoryFactory = new ManualTimeLogger.Persistence.CsvFileRepositoryFactory(Properties.Settings.Default.TimeLogsBasePath);
-            var reportRepositoryFactory = new CsvFileRepositoryFactory(Properties.Settings.Default.ReportsBasePath, command.AccountFilter);
+            var reportRepositoryFactory = new CsvFileRepositoryFactory(Properties.Settings.Default.ReportsBasePath, $"{command.AccountFilter ?? "all"}");
 
             var commandHandler = new CommandHandler(timeLogRepositoryFactory, reportRepositoryFactory);
 

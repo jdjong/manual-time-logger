@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManualTimeLogger.ReportBuil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManualTimeLogger.ReportBuilder.Persistence.Tests", "ManualTimeLogger.ReportBuilder.Persistence.Tests\ManualTimeLogger.ReportBuilder.Persistence.Tests.csproj", "{AD357943-14A3-4BEA-B2FB-E6DD0B3F809C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManualTimeLogger.ReportBuilder.IntegrationTests", "ManualTimeLogger.ReportBuilder.IntegrationTests\ManualTimeLogger.ReportBuilder.IntegrationTests.csproj", "{3153A126-C9B4-4316-996A-06970705823A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{AD357943-14A3-4BEA-B2FB-E6DD0B3F809C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD357943-14A3-4BEA-B2FB-E6DD0B3F809C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD357943-14A3-4BEA-B2FB-E6DD0B3F809C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3153A126-C9B4-4316-996A-06970705823A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3153A126-C9B4-4316-996A-06970705823A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3153A126-C9B4-4316-996A-06970705823A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3153A126-C9B4-4316-996A-06970705823A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
