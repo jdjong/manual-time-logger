@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ManualTimeLogger.Domain;
+using ManualTimeLogger.ReportBuilder.Persistence;
 using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -13,7 +14,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportSets
         private readonly ActivityReportBuilder _activityCumulativeReportBuilder;
         private readonly LabelReportBuilder _labelCumulativeReportBuilder;
 
-        public CumulativeWeekReportSet(string reportsBasePath, DateTime firstDayOfWeek, string accountFilter)
+        public CumulativeWeekReportSet(IRepositoryFactory repositoryFactory, DateTime firstDayOfWeek)
         {
             if (firstDayOfWeek.DayOfWeek != DayOfWeek.Monday)
             {
@@ -21,8 +22,8 @@ namespace ManualTimeLogger.ReportBuilder.ReportSets
             }
 
             var nrOfDaysInWeek = 7;
-            _activityCumulativeReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_cumulative_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
-            _labelCumulativeReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_cumulative_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
+            _activityCumulativeReportBuilder = new ActivityReportBuilder(repositoryFactory.Create($"cumulative_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
+            _labelCumulativeReportBuilder = new LabelReportBuilder(repositoryFactory.Create($"cumulative_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
         }
 
         public void Create(IEnumerable<IGrouping<DateTime, LogEntry>> logEntriesPerDay)

@@ -48,7 +48,6 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="ReportSets\CumulativeMonthReportSet.cs" />
     <Compile Include="ReportSets\CumulativeWeekReportSet.cs" />
-    <Compile Include="IRepository.cs" />
     <Compile Include="ReportSets\PerLabelMonthReportSet.cs" />
     <Compile Include="ReportSets\PerEngineerMonthReportSet.cs" />
     <Compile Include="ReportSets\PerLabelWeekReportSet.cs" />
@@ -63,10 +62,8 @@
     <Compile Include="ReportBuilders\LabelReportBuilder.cs" />
     <Compile Include="ReportSets\PerEngineerWeekReportSet.cs" />
     <Compile Include="ReportBuilders\AccountReportBuilder.cs" />
-    <Compile Include="ReportCsvFileRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -83,6 +80,10 @@
     <ProjectReference Include="..\ManualTimeLogger.Persistence\ManualTimeLogger.Persistence.csproj">
       <Project>{38D4CCE5-5F79-4D81-AA25-34AD5B46E98D}</Project>
       <Name>ManualTimeLogger.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManualTimeLogger.ReportBuilder.Persistence\ManualTimeLogger.ReportBuilder.Persistence.csproj">
+      <Project>{28d87ebd-1d8d-434a-b1c3-da5633b0f0f1}</Project>
+      <Name>ManualTimeLogger.ReportBuilder.Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

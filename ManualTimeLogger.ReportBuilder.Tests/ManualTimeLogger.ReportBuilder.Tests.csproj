@@ -76,6 +76,10 @@
       <Project>{48368CA5-8710-4BA4-B15A-8D6FA873277D}</Project>
       <Name>ManualTimeLogger.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ManualTimeLogger.ReportBuilder.Persistence\ManualTimeLogger.ReportBuilder.Persistence.csproj">
+      <Project>{28D87EBD-1D8D-434A-B1C3-DA5633B0F0F1}</Project>
+      <Name>ManualTimeLogger.ReportBuilder.Persistence</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ManualTimeLogger.ReportBuilder\ManualTimeLogger.ReportBuilder.csproj">
       <Project>{EE749E8C-F694-4EC1-959F-2D470A57BB3E}</Project>
       <Name>ManualTimeLogger.ReportBuilder</Name>

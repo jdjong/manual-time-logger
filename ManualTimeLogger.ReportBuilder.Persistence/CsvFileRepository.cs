@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace ManualTimeLogger.ReportBuilder
+namespace ManualTimeLogger.ReportBuilder.Persistence
 {
-    public class ReportCsvFileRepository : IRepository
+    public class CsvFileRepository : IRepository
     {
         public char CsvSeparator => ';';
         private readonly string _basePath;
@@ -15,7 +15,7 @@ namespace ManualTimeLogger.ReportBuilder
         private int _reportColumnCount;
         private string FullFilePath => Path.Combine(_basePath, _fileName);
 
-        public ReportCsvFileRepository(string basePath, string fileName, DateTime firstDayOfReport, int periodNrOfDays)
+        public CsvFileRepository(string basePath, string fileName, DateTime firstDayOfReport, int periodNrOfDays)
         {
             if (string.IsNullOrEmpty(basePath)) throw new ArgumentNullException(basePath);
             if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException(fileName);
@@ -53,7 +53,7 @@ namespace ManualTimeLogger.ReportBuilder
 
         public void SaveReportEntry(ReportEntry reportEntry)
         {
-            var reportEntryString = $"\"{reportEntry.GroupedBy}\"{CsvSeparator}\"{reportEntry.ThenGroupedBy}\"{CsvSeparator}\"{reportEntry.NrOfHoursPerDay.Sum(x => x.Value)}\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), reportEntry.NrOfHoursPerDay.Select(hoursForDay => $"\"{GetHoursForDayString(hoursForDay)}\""))}";
+            var reportEntryString = $"\"{reportEntry.GroupedBy}\"{CsvSeparator}\"{reportEntry.ThenGroupedBy}\"{CsvSeparator}\"{Enumerable.Sum<KeyValuePair<DateTime, float>>(reportEntry.NrOfHoursPerDay, x => x.Value)}\"{CsvSeparator}{string.Join(CsvSeparator.ToString(), Enumerable.Select<KeyValuePair<DateTime, float>, string>(reportEntry.NrOfHoursPerDay, hoursForDay => $"\"{GetHoursForDayString(hoursForDay)}\""))}";
             var reportEntryColumnCount = reportEntryString.Split(CsvSeparator).Length;
 
             if (reportEntryColumnCount != _reportColumnCount)

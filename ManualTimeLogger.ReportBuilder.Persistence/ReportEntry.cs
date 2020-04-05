@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ManualTimeLogger.ReportBuilder
+namespace ManualTimeLogger.ReportBuilder.Persistence
 {
     public class ReportEntry
     {

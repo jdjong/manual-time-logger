@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ManualTimeLogger.Domain;
-using ManualTimeLogger.Persistence;
 using ManualTimeLogger.ReportBuilder.Commands;
+using ManualTimeLogger.ReportBuilder.Persistence;
 using ManualTimeLogger.ReportBuilder.ReportSets;
 
 namespace ManualTimeLogger.ReportBuilder
@@ -12,14 +12,14 @@ namespace ManualTimeLogger.ReportBuilder
     public class CommandHandler
     {
         private readonly string _timeLogsBasePath;
-        private readonly string _reportsBasePath;
+        private readonly IRepositoryFactory _reportRepositoryFactory;
 
         // TODO, add big integration test based on an example time log and generated reports which are tested ok. Test should check if time log generates expected reports.
 
-        public CommandHandler(string timeLogsBasePath, string reportsBasePath)
+        public CommandHandler(string timeLogsBasePath, IRepositoryFactory reportRepositoryFactory)
         {
             _timeLogsBasePath = timeLogsBasePath;
-            _reportsBasePath = reportsBasePath;
+            _reportRepositoryFactory = reportRepositoryFactory;
         }
 
         private void Handle(BuildWeekReportsCommand command)
@@ -30,9 +30,9 @@ namespace ManualTimeLogger.ReportBuilder
             var logEntriesPerLabel = GetLogEntriesPerLabel(logEntriesPerEngineer);
             var logEntriesPerDay = GetLogEntriesPerDay(logEntriesPerEngineer);
 
-            var perEngineerWeekReportSet = new PerEngineerWeekReportSet(_reportsBasePath, command.FromDay, command.AccountFilter);
-            var perLabelWeekReportSet = new PerLabelWeekReportSet(_reportsBasePath, command.FromDay, command.AccountFilter);
-            var cumulativeWeekReportSet = new CumulativeWeekReportSet(_reportsBasePath, command.FromDay, command.AccountFilter);
+            var perEngineerWeekReportSet = new PerEngineerWeekReportSet(_reportRepositoryFactory, command.FromDay);
+            var perLabelWeekReportSet = new PerLabelWeekReportSet(_reportRepositoryFactory, command.FromDay);
+            var cumulativeWeekReportSet = new CumulativeWeekReportSet(_reportRepositoryFactory, command.FromDay);
 
             perEngineerWeekReportSet.Create(logEntriesPerEngineer);
             perLabelWeekReportSet.Create(logEntriesPerLabel);
@@ -47,9 +47,9 @@ namespace ManualTimeLogger.ReportBuilder
             var logEntriesPerLabel = GetLogEntriesPerLabel(logEntriesPerEngineer);
             var logEntriesPerDay = GetLogEntriesPerDay(logEntriesPerEngineer);
 
-            var perEngineerMonthReportSet = new PerEngineerMonthReportSet(_reportsBasePath, command.FromDay, command.AccountFilter);
-            var perLabelMonthReportSet = new PerLabelMonthReportSet(_reportsBasePath, command.FromDay, command.AccountFilter);
-            var cumulativeMonthReportSet = new CumulativeMonthReportSet(_reportsBasePath, command.FromDay, command.AccountFilter);
+            var perEngineerMonthReportSet = new PerEngineerMonthReportSet(_reportRepositoryFactory, command.FromDay);
+            var perLabelMonthReportSet = new PerLabelMonthReportSet(_reportRepositoryFactory, command.FromDay);
+            var cumulativeMonthReportSet = new CumulativeMonthReportSet(_reportRepositoryFactory, command.FromDay);
 
             perEngineerMonthReportSet.Create(logEntriesPerEngineer);
             perLabelMonthReportSet.Create(logEntriesPerLabel);
@@ -97,10 +97,10 @@ namespace ManualTimeLogger.ReportBuilder
             return filteredResult;
         }
 
-        private List<CsvFileRepository> GetAllTimeLogRepositories()
+        private List<ManualTimeLogger.Persistence.CsvFileRepository> GetAllTimeLogRepositories()
         {
             var allTimeLogFileNames = Directory.EnumerateFiles(_timeLogsBasePath);
-            var allTimeLogRepositories = allTimeLogFileNames.Select(filePath => new CsvFileRepository(_timeLogsBasePath, Path.GetFileName(filePath))).ToList();
+            var allTimeLogRepositories = allTimeLogFileNames.Select(filePath => new ManualTimeLogger.Persistence.CsvFileRepository(_timeLogsBasePath, Path.GetFileName(filePath))).ToList();
             return allTimeLogRepositories;
         }
     }

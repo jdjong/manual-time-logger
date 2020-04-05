@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ManualTimeLogger.Domain;
+using ManualTimeLogger.ReportBuilder.Persistence;
 using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -13,7 +14,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportSets
         private readonly ActivityReportBuilder _activityPerEngineerReportBuilder;
         private readonly LabelReportBuilder _labelPerEngineerReportBuilder;
 
-        public PerEngineerWeekReportSet(string reportsBasePath, DateTime firstDayOfWeek, string accountFilter)
+        public PerEngineerWeekReportSet(IRepositoryFactory repositoryFactory, DateTime firstDayOfWeek)
         {
             if (firstDayOfWeek.DayOfWeek != DayOfWeek.Monday)
             {
@@ -21,8 +22,8 @@ namespace ManualTimeLogger.ReportBuilder.ReportSets
             }
 
             var nrOfDaysInWeek = 7;
-            _activityPerEngineerReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
-            _labelPerEngineerReportBuilder = new LabelReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_engineer_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
+            _activityPerEngineerReportBuilder = new ActivityReportBuilder(repositoryFactory.Create($"engineer_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
+            _labelPerEngineerReportBuilder = new LabelReportBuilder(repositoryFactory.Create($"engineer_label_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
         }
 
         public void Create(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerEngineer)

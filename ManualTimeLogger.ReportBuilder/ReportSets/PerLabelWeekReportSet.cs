@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ManualTimeLogger.Domain;
+using ManualTimeLogger.ReportBuilder.Persistence;
 using ManualTimeLogger.ReportBuilder.ReportBuilders;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -12,7 +13,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportSets
     {
         private readonly ActivityReportBuilder _labelPerActivityReportBuilder;
 
-        public PerLabelWeekReportSet(string reportsBasePath, DateTime firstDayOfWeek, string accountFilter)
+        public PerLabelWeekReportSet(IRepositoryFactory repositoryFactory, DateTime firstDayOfWeek)
         {
             if (firstDayOfWeek.DayOfWeek != DayOfWeek.Monday)
             {
@@ -20,7 +21,7 @@ namespace ManualTimeLogger.ReportBuilder.ReportSets
             }
 
             var nrOfDaysInWeek = 7;
-            _labelPerActivityReportBuilder = new ActivityReportBuilder(new ReportCsvFileRepository(reportsBasePath, $"{accountFilter ?? "all"}_label_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
+            _labelPerActivityReportBuilder = new ActivityReportBuilder(repositoryFactory.Create($"label_activity_week_report_{firstDayOfWeek:yyyyMMdd}.csv", firstDayOfWeek, nrOfDaysInWeek), firstDayOfWeek, nrOfDaysInWeek);
         }
 
         public void Create(Dictionary<string, IEnumerable<LogEntry>> logEntriesPerLabel)

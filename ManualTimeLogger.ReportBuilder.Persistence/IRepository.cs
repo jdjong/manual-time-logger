@@ -1,4 +1,4 @@
-﻿namespace ManualTimeLogger.ReportBuilder
+﻿namespace ManualTimeLogger.ReportBuilder.Persistence
 {
     public interface IRepository
     {

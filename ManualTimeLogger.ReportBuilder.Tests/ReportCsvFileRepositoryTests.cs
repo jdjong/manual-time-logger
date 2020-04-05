@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ManualTimeLogger.ReportBuilder.Persistence;
 using NUnit.Framework;
 
 namespace ManualTimeLogger.ReportBuilder.Tests
@@ -10,7 +11,7 @@ namespace ManualTimeLogger.ReportBuilder.Tests
     {
         private readonly string _testFileLocation = Environment.CurrentDirectory;
         private string _testFileName = "name_report_testfile.csv";
-        private ReportCsvFileRepository _repository;
+        private CsvFileRepository _repository;
         private string _absoluteFilePath;
         private DateTime _testDefaultReportStartDate;
         public static int TestNrOfReportDays { get; } = 3;
@@ -27,7 +28,7 @@ namespace ManualTimeLogger.ReportBuilder.Tests
         [SetUp]
         public void SetUp()
         {
-            _repository = new ReportCsvFileRepository(_testFileLocation, _testFileName, _testDefaultReportStartDate, TestNrOfReportDays);
+            _repository = new CsvFileRepository(_testFileLocation, _testFileName, _testDefaultReportStartDate, TestNrOfReportDays);
         }
 
         [Test]

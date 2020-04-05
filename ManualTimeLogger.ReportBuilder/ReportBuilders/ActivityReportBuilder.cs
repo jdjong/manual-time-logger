@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ManualTimeLogger.Domain;
+using ManualTimeLogger.ReportBuilder.Persistence;
 
 // ReSharper disable PossibleMultipleEnumeration
 

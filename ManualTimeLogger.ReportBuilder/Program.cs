@@ -1,4 +1,5 @@
 ﻿using ManualTimeLogger.ReportBuilder.Commands;
+using ManualTimeLogger.ReportBuilder.Persistence;
 
 namespace ManualTimeLogger.ReportBuilder
 {
@@ -6,10 +7,15 @@ namespace ManualTimeLogger.ReportBuilder
     {
         static void Main(string[] args)
         {
-            var commandHandler = new CommandHandler(Properties.Settings.Default.TimeLogsBasePath, Properties.Settings.Default.ReportsBasePath);
             var reportingCommandProvider = new CommandProvider();
 
-            commandHandler.Handle((dynamic)reportingCommandProvider.GetCommand(args));
+            var command = (dynamic)reportingCommandProvider.GetCommand(args);
+            var reportRepositoryFactory = new CsvFileRepositoryFactory(Properties.Settings.Default.ReportsBasePath, command.AccountFilter);
+
+            // TODO, introduce time log repository factory as well
+            var commandHandler = new CommandHandler(Properties.Settings.Default.TimeLogsBasePath, reportRepositoryFactory);
+
+            commandHandler.Handle(command);
         }
     }
 }
