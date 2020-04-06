@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FromTimeLogToReportsTests.cs" />
+    <Compile Include="InMemoryCsvRepository.cs" />
+    <Compile Include="InMemoryCsvRepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

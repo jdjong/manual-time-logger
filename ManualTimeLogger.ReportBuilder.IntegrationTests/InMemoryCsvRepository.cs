@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ManualTimeLogger.ReportBuilder.Persistence;
 
-namespace ManualTimeLogger.ReportBuilder.Persistence
+namespace ManualTimeLogger.ReportBuilder.IntegrationTests
 {
     public class InMemoryCsvRepository : IRepository
     {
-        public string FileName { get; private set; }
+        public string FileName { get; }
         public char CsvSeparator => ';';
         public List<string> SavedReportEntries;
 

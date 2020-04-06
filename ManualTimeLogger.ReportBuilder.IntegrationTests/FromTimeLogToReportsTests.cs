@@ -1,5 +1,4 @@
 ﻿using ManualTimeLogger.ReportBuilder.Commands;
-using ManualTimeLogger.ReportBuilder.Persistence;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -45,43 +44,60 @@ namespace ManualTimeLogger.ReportBuilder.IntegrationTests
             }
         }
 
-        // TODO, check if test is complete and clarify what is happening/tested
-        // TODO, add account specific tests
-        // TODO, check the expected files with the input files manually, because I only performed a steekproef
-
         [Test]
         public void given_two_time_logs_and_no_account_filter_when_building_month_reports_then_the_expected_month_reports_are_build()
         {
-            var firstDayOfPeriod = new DateTime(2020, 3, 1);
-            var reportRepositoryFactory = new InMemoryCsvRepositoryFactory("all");
+            AssertExpectedWithActualReportsTestMethod("all", null);
+        }
 
-            var command = new BuildMonthReportsCommand(firstDayOfPeriod);
+        [Test]
+        public void given_two_time_logs_and_amazon_account_filter_when_building_month_reports_then_the_expected_month_reports_are_build()
+        {
+            AssertExpectedWithActualReportsTestMethod("amazon", "amazon");
+        }
+
+        [Test]
+        public void given_two_time_logs_and_bolcom_account_filter_when_building_month_reports_then_the_expected_month_reports_are_build()
+        {
+            AssertExpectedWithActualReportsTestMethod("bolcom", "bolcom");
+        }
+
+        private void AssertExpectedWithActualReportsTestMethod(string filesPrefix, string accountFilter)
+        {
+            var firstDayOfPeriod = new DateTime(2020, 3, 1);
+            var reportRepositoryFactory = new InMemoryCsvRepositoryFactory(filesPrefix);
+
+            var command = new BuildMonthReportsCommand(firstDayOfPeriod) { AccountFilter = accountFilter };
             var commandHandler = new CommandHandler(_timeLoggerRepositoryFactory, reportRepositoryFactory);
 
             commandHandler.Handle(command);
 
             var expectedReportFullFilePaths = Directory.EnumerateFiles(_expectedReportFilesLocation).ToList();
-            var repositoryFileNames = reportRepositoryFactory.Repositories
+            var repositoriesFileNames = reportRepositoryFactory.Repositories
                 .Select(x => x.FileName)
                 .ToList();
 
             foreach (var expectedReportFullFilePath in expectedReportFullFilePaths)
             {
                 var expectedFileName = Path.GetFileName(expectedReportFullFilePath);
+
                 // ReSharper disable once PossibleNullReferenceException
-                if (!expectedFileName.StartsWith("all")) // no account filter, thus test only files starting with all
+                if (!expectedFileName.StartsWith(filesPrefix))
                 {
                     continue;
                 }
 
-                Assert.IsTrue(repositoryFileNames.Any(fileName => fileName == expectedFileName));
-                
-                var expectedFileLines = File.ReadAllLines(Path.Combine(_expectedReportFilesLocation, expectedFileName)).ToList();
-                var actualFileLines = reportRepositoryFactory.Repositories.Single(x => x.FileName == expectedFileName).SavedReportEntries;
+                Assert.IsTrue(repositoriesFileNames.Any(fileName => fileName == expectedFileName));
+
+                var expectedFileLines =
+                    File.ReadAllLines(Path.Combine(_expectedReportFilesLocation, expectedFileName)).ToList();
+                var actualFileLines = reportRepositoryFactory.Repositories.Single(x => x.FileName == expectedFileName)
+                    .SavedReportEntries;
 
                 Assert.True(expectedFileLines.Count > 0, "Count of expected lines");
                 Assert.True(actualFileLines.Count > 0, "Count of actual lines");
-                Assert.True(expectedFileLines.SequenceEqual(actualFileLines), $"Compare expected with actual for {expectedFileName}");
+                Assert.True(expectedFileLines.SequenceEqual(actualFileLines),
+                    $"Compare expected with actual for {expectedFileName}");
             }
         }
     }
