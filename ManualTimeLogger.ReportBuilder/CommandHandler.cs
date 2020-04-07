@@ -85,7 +85,7 @@ namespace ManualTimeLogger.ReportBuilder
                 .GroupBy(repo => repo.GetEngineerName())
                 .ToDictionary(grouping => grouping.Key, grouping => grouping.SelectMany(repo => repo.GetAllLogEntries().Where(accountFilterFunc)));
             
-            var keysWithoutLogEntries = filteredResult.Where(x => !x.Value.Any()).Select(x => x.Key);
+            var keysWithoutLogEntries = filteredResult.Where(x => !x.Value.Any()).Select(x => x.Key).ToList();
             
             foreach (var keyWithoutLogEntries in keysWithoutLogEntries)
             {
