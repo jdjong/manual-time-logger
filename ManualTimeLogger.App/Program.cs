@@ -33,7 +33,7 @@ namespace ManualTimeLogger.App
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(
                     new LogEntryInputForm(
-                        new CsvFileRepository(Settings.Default.TimeLogsBasePath, $"{Environment.UserName}_timelog_{DateTime.Today:yyyyMM}.csv"),
+                        new CsvFileRepository(Settings.Default.TimeLogsBasePath, $"{Environment.UserName}_timelog_week_{GetMondayDateForDateInWeek(DateTime.Today):yyyyMMdd}.csv"),
                         new LogEntryTextBoxController(new LogEntryInputParser(accounts), autoFillListBoxController, new HotKeyHelper(accounts))
                 ));
             }
@@ -42,6 +42,18 @@ namespace ManualTimeLogger.App
                 Log.Error(e);
                 throw;
             }
+        }
+
+        // TODO, duplication with code in ManualTimeLogger.ReportBuilder.Commands.CommandProvider
+        private static DateTime GetMondayDateForDateInWeek(DateTime aDateInWeek)
+        {
+            var dateIterator = aDateInWeek;
+            while (dateIterator.DayOfWeek != DayOfWeek.Monday)
+            {
+                dateIterator = dateIterator.AddDays(-1);
+            }
+
+            return dateIterator;
         }
     }
 }
