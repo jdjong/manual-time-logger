@@ -126,21 +126,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ManualTimeLogger.Domain\ManualTimeLogger.Domain.csproj">
+    <ProjectReference Include="..\ManualTimeLogger.Domain\TimeLogger.Domain.csproj">
       <Project>{48368ca5-8710-4ba4-b15a-8d6fa873277d}</Project>
-      <Name>ManualTimeLogger.Domain</Name>
+      <Name>TimeLogger.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ManualTimeLogger.Persistence\ManualTimeLogger.Persistence.csproj">
+    <ProjectReference Include="..\ManualTimeLogger.Persistence\TimeLogger.Persistence.csproj">
       <Project>{38d4cce5-5f79-4d81-aa25-34ad5b46e98d}</Project>
-      <Name>ManualTimeLogger.Persistence</Name>
+      <Name>TimeLogger.Persistence</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ManualTimeLogger.ReportBuilder.Persistence\ManualTimeLogger.ReportBuilder.Persistence.csproj">
+    <ProjectReference Include="..\ManualTimeLogger.ReportBuilder.Persistence\TimeLogger.ReportBuilder.Persistence.csproj">
       <Project>{28d87ebd-1d8d-434a-b1c3-da5633b0f0f1}</Project>
-      <Name>ManualTimeLogger.ReportBuilder.Persistence</Name>
+      <Name>TimeLogger.ReportBuilder.Persistence</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ManualTimeLogger.ReportBuilder\ManualTimeLogger.ReportBuilder.csproj">
+    <ProjectReference Include="..\ManualTimeLogger.ReportBuilder\TimeLogger.ReportBuilder.csproj">
       <Project>{EE749E8C-F694-4EC1-959F-2D470A57BB3E}</Project>
-      <Name>ManualTimeLogger.ReportBuilder</Name>
+      <Name>TimeLogger.ReportBuilder</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

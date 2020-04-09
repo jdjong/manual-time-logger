@@ -73,17 +73,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ManualTimeLogger.Domain\ManualTimeLogger.Domain.csproj">
+    <ProjectReference Include="..\ManualTimeLogger.Domain\TimeLogger.Domain.csproj">
       <Project>{48368CA5-8710-4BA4-B15A-8D6FA873277D}</Project>
-      <Name>ManualTimeLogger.Domain</Name>
+      <Name>TimeLogger.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ManualTimeLogger.Persistence\ManualTimeLogger.Persistence.csproj">
+    <ProjectReference Include="..\ManualTimeLogger.Persistence\TimeLogger.Persistence.csproj">
       <Project>{38D4CCE5-5F79-4D81-AA25-34AD5B46E98D}</Project>
-      <Name>ManualTimeLogger.Persistence</Name>
+      <Name>TimeLogger.Persistence</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ManualTimeLogger.ReportBuilder.Persistence\ManualTimeLogger.ReportBuilder.Persistence.csproj">
+    <ProjectReference Include="..\ManualTimeLogger.ReportBuilder.Persistence\TimeLogger.ReportBuilder.Persistence.csproj">
       <Project>{28d87ebd-1d8d-434a-b1c3-da5633b0f0f1}</Project>
-      <Name>ManualTimeLogger.ReportBuilder.Persistence</Name>
+      <Name>TimeLogger.ReportBuilder.Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
