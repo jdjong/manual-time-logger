@@ -34,7 +34,7 @@ namespace ManualTimeLogger.App
                 Application.Run(
                     new LogEntryInputForm(
                         new CsvFileRepository(Settings.Default.TimeLogsBasePath, $"{Environment.UserName}_timelog_week_{GetMondayDateForDateInWeek(DateTime.Today):yyyyMMdd}.csv"),
-                        new LogEntryTextBoxController(new LogEntryInputParser(accounts), autoFillListBoxController, new HotKeyHelper(accounts))
+                        new LogEntryTextBoxController(new LogEntryInputParser(accounts), autoFillListBoxController, new HotKeyManager(accounts))
                 ));
             }
             catch (Exception e)

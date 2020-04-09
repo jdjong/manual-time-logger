@@ -3,11 +3,11 @@ using System.Windows.Forms;
 
 namespace ManualTimeLogger.App
 {
-    public class HotKeyHelper
+    public class HotKeyManager
     {
         private readonly List<string> _accounts;
 
-        public HotKeyHelper(List<string> accounts)
+        public HotKeyManager(List<string> accounts)
         {
             _accounts = accounts;
         }

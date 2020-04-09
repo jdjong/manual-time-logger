@@ -9,15 +9,15 @@ namespace ManualTimeLogger.App
     {
         private readonly LogEntryInputParser _inputParser;
         private readonly IAutoFillListBoxController _autoFillListBoxController;
-        private readonly HotKeyHelper _hotKeyHelper;
+        private readonly HotKeyManager _hotKeyManager;
         private ITimeLoggedHandler _timeLoggedHandler;
         private TextBox _logEntryTextBox;
 
-        public LogEntryTextBoxController(LogEntryInputParser inputParser, IAutoFillListBoxController autoFillListBoxController, HotKeyHelper hotKeyHelper)
+        public LogEntryTextBoxController(LogEntryInputParser inputParser, IAutoFillListBoxController autoFillListBoxController, HotKeyManager hotKeyManager)
         {
             _inputParser = inputParser;
             _autoFillListBoxController = autoFillListBoxController;
-            _hotKeyHelper = hotKeyHelper;
+            _hotKeyManager = hotKeyManager;
         }
 
         public void Init(ITimeLoggedHandler timeLoggedHandler, TextBox logEntryTextBox, ListBox autoFillListBox)
@@ -32,7 +32,7 @@ namespace ManualTimeLogger.App
 
         private void TextBoxKeyDown(object sender, KeyEventArgs e)
         {
-            var hotKeyResult = _hotKeyHelper.GetHotKeyResult(_logEntryTextBox.Text, e);
+            var hotKeyResult = _hotKeyManager.GetHotKeyResult(_logEntryTextBox.Text, e);
             if (!string.IsNullOrEmpty(hotKeyResult))
             {
                 _logEntryTextBox.Text = hotKeyResult;

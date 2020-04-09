@@ -60,7 +60,7 @@
     <Compile Include="AutoFill\DoNothingAutoFillListBoxController.cs" />
     <Compile Include="AutoFill\IAutoFillListBoxController.cs" />
     <Compile Include="AutoFill\IAutoFillHandler.cs" />
-    <Compile Include="HotKeyHelper.cs" />
+    <Compile Include="HotKeyManager.cs" />
     <Compile Include="ITimeLoggedHandler.cs" />
     <Compile Include="LogEntryInputForm.cs">
       <SubType>Form</SubType>
