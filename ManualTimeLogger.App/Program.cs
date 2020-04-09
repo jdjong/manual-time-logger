@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using ManualTimeLogger.App.AutoFill;
+using ManualTimeLogger.App.HotKeys;
 using ManualTimeLogger.App.Properties;
 using ManualTimeLogger.Domain;
 using ManualTimeLogger.Persistence;
@@ -34,7 +35,7 @@ namespace ManualTimeLogger.App
                 Application.Run(
                     new LogEntryInputForm(
                         new CsvFileRepository(Settings.Default.TimeLogsBasePath, $"{Environment.UserName}_timelog_week_{GetMondayDateForDateInWeek(DateTime.Today):yyyyMMdd}.csv"),
-                        new LogEntryTextBoxController(new LogEntryInputParser(accounts), autoFillListBoxController, new HotKeyManager(accounts))
+                        new LogEntryTextBoxController(new LogEntryInputParser(accounts), autoFillListBoxController, new AccountHotKeyState(accounts))
                 ));
             }
             catch (Exception e)

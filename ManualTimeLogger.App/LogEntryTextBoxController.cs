@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using ManualTimeLogger.App.AutoFill;
+using ManualTimeLogger.App.HotKeys;
 using ManualTimeLogger.Domain;
 
 namespace ManualTimeLogger.App
@@ -9,15 +10,17 @@ namespace ManualTimeLogger.App
     {
         private readonly LogEntryInputParser _inputParser;
         private readonly IAutoFillListBoxController _autoFillListBoxController;
-        private readonly HotKeyManager _hotKeyManager;
+        private readonly IHotKeyState _initialHotKeyState;
+        private IHotKeyState _currentHotKeyState;
         private ITimeLoggedHandler _timeLoggedHandler;
         private TextBox _logEntryTextBox;
 
-        public LogEntryTextBoxController(LogEntryInputParser inputParser, IAutoFillListBoxController autoFillListBoxController, HotKeyManager hotKeyManager)
+        public LogEntryTextBoxController(LogEntryInputParser inputParser, IAutoFillListBoxController autoFillListBoxController, IHotKeyState initialHotKeyState)
         {
             _inputParser = inputParser;
             _autoFillListBoxController = autoFillListBoxController;
-            _hotKeyManager = hotKeyManager;
+            _initialHotKeyState = initialHotKeyState;
+            _currentHotKeyState = initialHotKeyState;
         }
 
         public void Init(ITimeLoggedHandler timeLoggedHandler, TextBox logEntryTextBox, ListBox autoFillListBox)
@@ -32,10 +35,11 @@ namespace ManualTimeLogger.App
 
         private void TextBoxKeyDown(object sender, KeyEventArgs e)
         {
-            var hotKeyResult = _hotKeyManager.GetHotKeyResult(_logEntryTextBox.Text, e);
-            if (!string.IsNullOrEmpty(hotKeyResult))
+            var hotKeyResult = _currentHotKeyState.GetHotKeyResult(_logEntryTextBox.Text, e);
+            _currentHotKeyState = hotKeyResult.NewHotKeyState;
+            if (!string.IsNullOrEmpty(hotKeyResult.TextResult))
             {
-                _logEntryTextBox.Text = hotKeyResult;
+                _logEntryTextBox.Text += hotKeyResult.TextResult;
                 MoveTextBoxCursorToEndOfText();
                 e.Handled = e.SuppressKeyPress = true;
                 return;
@@ -70,6 +74,11 @@ namespace ManualTimeLogger.App
         private void TextBoxKeyUp(object sender, KeyEventArgs e)
         {
             DetermineTextColor();
+            if (string.IsNullOrEmpty(_logEntryTextBox.Text))
+            {
+                ResetHotKeyState();
+            }
+
             if (e.KeyCode != Keys.Enter) return;
 
             var input = _logEntryTextBox.Text;
@@ -77,10 +86,20 @@ namespace ManualTimeLogger.App
             {
                 _timeLoggedHandler.HandleTimeLogged(logEntry);
 
-                // Clear text box
-                _logEntryTextBox.Text = string.Empty;
-                _logEntryTextBox.ForeColor = Color.Red;
+                ClearTextBox();
+                ResetHotKeyState();
             }
+        }
+
+        private void ClearTextBox()
+        {
+            _logEntryTextBox.Text = string.Empty;
+            _logEntryTextBox.ForeColor = Color.Red;
+        }
+
+        private void ResetHotKeyState()
+        {
+            _currentHotKeyState = _initialHotKeyState;
         }
 
         // Cursor to end of the text in the text box
